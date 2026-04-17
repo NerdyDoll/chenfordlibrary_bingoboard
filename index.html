@@ -484,7 +484,7 @@ body{
 
 
         <section class="bingo-section">
-            <h2 class="page-title">Chenford's Writing Bingo</h2>
+            <h2 class="page-title">Chenford Writing Bingo</h2>
 
             <div class="bingo-intro">
                 Click a square to mark it off. Use “Shuffle Board” if you want a fresh random bingo card.
@@ -1270,7 +1270,7 @@ body{
         textArea.style.left = "-9999px";
         document.body.appendChild(textArea);
 
-        textArea.focus();
+        textArea.focus({ preventScroll: true });
         textArea.select();
 
         let success = false;
