@@ -81,7 +81,7 @@ body{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    padding:12px 18px;
+    padding:12px 10px;
     border:1px solid var(--border-color);
     background:var(--post-background);
     font-family:var(--serif);
@@ -372,6 +372,113 @@ body{
     min-height:0;
 }
 
+.bingo-settings-group{
+    padding-top:14px;
+    border-top:1px solid var(--border-color);
+}
+
+.bingo-settings-group:first-child{
+    padding-top:0;
+    border-top:none;
+}
+
+.bingo-icon-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:46px;
+    height:46px;
+    padding:0;
+    border:1px solid var(--border-color);
+    background:var(--post-background);
+    cursor:pointer;
+    transition:.25s ease;
+    font-size:1rem;
+}
+
+.bingo-icon-btn:hover{
+    color:#fff;
+    border-color:transparent;
+    background-image:linear-gradient(135deg, var(--gradient));
+}
+
+.bingo-icon-btn.is-active{
+    color:#fff;
+    border-color:transparent;
+    background-image:linear-gradient(135deg, var(--gradient));
+}
+
+.bingo-btn:disabled,
+.bingo-icon-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+    pointer-events:none;
+}
+
+.bingo-settings-meta{
+    margin:10px 0 0;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    font-size:.82rem;
+    line-height:1.35;
+}
+
+.bingo-settings-live{
+    font-weight:600;
+}
+
+.bingo-settings-live.is-error{
+    color:#b55;
+}
+
+.bingo-settings-inline-message{
+    margin-top:8px;
+    min-height:18px;
+    font-size:.8rem;
+    line-height:1.25;
+    font-weight:600;
+}
+
+.bingo-settings-inline-message.is-success{
+    color:var(--color-two);
+}
+
+.bingo-settings-inline-message.is-error{
+    color:#b55;
+}
+
+.bingo-control-btn{
+    gap:5px;
+}
+
+.bingo-control-btn i{
+    font-size:.95rem;
+    line-height:1;
+}
+
+.bingo-control-btn span{
+    display:inline;
+}
+
+.bingo-help-btn{
+    margin-left:auto;
+    border-radius:50%;
+}
+
+.bingo-help-box{
+    margin:0 0 18px;
+    padding:12px 14px;
+    border:1px solid var(--border-color);
+    background:var(--post-background);
+    font-size:.85rem;
+    line-height:1.5;
+}
+
+.bingo-help-box[hidden]{
+    display:none !important;
+}
+
 @media screen and (max-width: 700px){
     .bingo-square{
         font-size:.8rem;
@@ -421,6 +528,23 @@ body{
     .bingo-near{
         font-size:.75rem;
         margin:0 0 5px;
+    }
+    .bingo-controls{
+        gap:8px;
+    }
+
+    .bingo-control-btn{
+        width:46px;
+        height:46px;
+        padding:0;
+    }
+
+    .bingo-control-btn span{
+        display:none;
+    }
+
+    .bingo-control-btn i{
+        font-size:1rem;
     }
 
 }
@@ -484,17 +608,44 @@ body{
 
 
         <section class="bingo-section">
-            <h2 class="page-title">Chenford Writing Bingo</h2>
+            <h2 class="page-title">Chenford's Writing Bingo</h2>
 
             <div class="bingo-intro">
                 Click a square to mark it off. Use “Shuffle Board” if you want a fresh random bingo card.
             </div>
 
             <div class="bingo-controls">
-                <button type="button" id="shuffle-bingo" class="bingo-btn">Shuffle Board</button>
-                <button type="button" id="reset-bingo" class="bingo-btn">Reset Marks</button>
-                <button type="button" id="download-bingo" class="bingo-btn">Download PDF</button>
-                <button type="button" id="toggle-settings" class="bingo-btn">Settings</button>
+                <button type="button" id="shuffle-bingo" class="bingo-btn bingo-control-btn" title="Shuffle Board" aria-label="Shuffle Board">
+                    <i class="fa-solid fa-shuffle" aria-hidden="true"></i>
+                    <span>Shuffle</span>
+                </button>
+
+                <button type="button" id="reset-bingo" class="bingo-btn bingo-control-btn" title="Reset Marks" aria-label="Reset Marks">
+                    <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+                    <span>Reset</span>
+                </button>
+
+                <button type="button" id="download-bingo" class="bingo-btn bingo-control-btn" title="Download PDF" aria-label="Download PDF">
+                    <i class="fa-solid fa-download" aria-hidden="true"></i>
+                    <span>Download</span>
+                </button>
+
+                <button type="button" id="toggle-settings" class="bingo-btn bingo-control-btn" title="Settings" aria-label="Settings">
+                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                </button>
+
+                <button type="button" id="lock-bingo" class="bingo-icon-btn" aria-label="Lock board" title="Lock board">
+                    <i class="fa-solid fa-lock-open" aria-hidden="true"></i>
+                </button>
+
+                <button type="button" id="help-bingo" class="bingo-icon-btn bingo-help-btn" aria-label="Help" title="Help">
+                    <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="bingo-help-box" id="bingo-help-box" hidden>
+                <strong>How it works</strong><br>
+                Click squares to mark them. Shuffle creates a new board. Reset clears marks on the current board. Lock disables shuffle and reset only.
             </div>
 
             <div class="bingo-settings" id="bingo-settings" hidden>
@@ -520,13 +671,6 @@ body{
                 </div>
 
                 <div class="bingo-settings-group">
-                    <label class="bingo-prompt-option">
-                        <input type="checkbox" id="lock-board-setting">
-                        <span>Lock board</span>
-                    </label>
-                </div>
-
-                <div class="bingo-settings-group">
                     <label for="prompt-search" class="bingo-settings-label">Prompt search</label>
                     <input type="text" id="prompt-search" class="bingo-text-input" placeholder="Search prompts...">
                 </div>
@@ -542,6 +686,11 @@ body{
                         <button type="button" id="select-all-prompts" class="bingo-btn">Select All Prompts</button>
                         <button type="button" id="clear-all-prompts" class="bingo-btn">Clear All Prompts</button>
                     </div>
+
+                    <div class="bingo-settings-meta">
+                        <div class="bingo-settings-live" id="prompt-count-preview"></div>
+                        <div class="bingo-settings-live" id="minimum-needed-preview"></div>
+                    </div>
                 </div>
 
                 <div class="bingo-settings-group">
@@ -549,6 +698,7 @@ body{
                     <div class="bingo-share-row">
                         <button type="button" id="copy-share-code" class="bingo-btn">Copy Share Code</button>
                     </div>
+                    <div class="bingo-settings-inline-message" id="share-copy-message"></div>
                     <div class="bingo-share-row bingo-share-load">
                         <input type="text" id="share-code-input" class="bingo-text-input bingo-share-input" placeholder="Paste board code">
                         <button type="button" id="load-share-code" class="bingo-btn">Load Copied Board</button>
@@ -557,6 +707,7 @@ body{
 
                 <div class="bingo-settings-actions">
                     <button type="button" id="copy-board-text" class="bingo-btn">Copy Board</button>
+                    <button type="button" id="reset-settings-default" class="bingo-btn">Reset Defaults</button>
                     <button type="button" id="save-settings" class="bingo-btn">Save Settings</button>
                     <button type="button" id="close-settings" class="bingo-btn">Close</button>
                 </div>
@@ -743,6 +894,13 @@ body{
         };
     }
 
+    function toggleHelpBox() {
+        const helpBox = document.getElementById("bingo-help-box");
+        if (!helpBox) return;
+
+        helpBox.hidden = !helpBox.hidden;
+    }
+
     function loadSettings() {
         const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
         if (!raw) return getDefaultSettings();
@@ -908,9 +1066,6 @@ body{
             if (meta.hasFreeSpace && index === meta.freeIndex) return;
 
             square.addEventListener("click", function () {
-                const settings = loadSettings();
-                if (settings.isLocked) return;
-
                 square.classList.toggle("done");
                 persistCurrentBoard();
                 updateBoardState(getCurrentBoardData());
@@ -1095,12 +1250,7 @@ body{
 
     function reshuffleBoard() {
         const settings = loadSettings();
-        const current = loadBoardData();
         if (settings.isLocked) return;
-
-        if (current && hasProgress(current) && !window.confirm("Shuffle to a completely new board? Current progress will be lost.")) {
-            return;
-        }
 
         const fresh = createFreshBoardData(settings);
         if (!fresh) {
@@ -1119,12 +1269,10 @@ body{
         const promptList = document.getElementById("bingo-prompt-list");
         const freeSpaceToggle = document.getElementById("include-free-space");
         const freeSpaceText = document.getElementById("free-space-text");
-        const lockBoardSetting = document.getElementById("lock-board-setting");
 
         if (select) select.value = String(settings.gridSize);
         if (freeSpaceToggle) freeSpaceToggle.checked = settings.includeFreeSpace;
         if (freeSpaceText) freeSpaceText.value = settings.freeSpaceText || "FREE SPACE";
-        if (lockBoardSetting) lockBoardSetting.checked = settings.isLocked;
 
         if (promptList) {
             const disabledSet = new Set(settings.disabledPrompts);
@@ -1135,6 +1283,8 @@ body{
                 </label>
             `).join("");
         }
+
+        updatePromptCountPreview();
     }
 
     function filterPromptList() {
@@ -1152,7 +1302,6 @@ body{
         const select = document.getElementById("grid-size-select");
         const freeSpaceToggle = document.getElementById("include-free-space");
         const freeSpaceText = document.getElementById("free-space-text");
-        const lockBoardSetting = document.getElementById("lock-board-setting");
         const promptBoxes = document.querySelectorAll(".bingo-prompt-checkbox");
 
         const gridSize = select ? Number(select.value) : DEFAULT_GRID_SIZE;
@@ -1168,7 +1317,7 @@ body{
             includeFreeSpace,
             freeSpaceText: customFreeSpaceText,
             disabledPrompts: sortedPrompts.filter(text => !enabledPrompts.includes(text)),
-            isLocked: !!(lockBoardSetting && lockBoardSetting.checked)
+            isLocked: loadSettings().isLocked
         };
     }
 
@@ -1186,6 +1335,79 @@ body{
         if (!el) return;
         el.textContent = "";
         el.classList.remove("is-error", "is-success");
+    }
+
+    function showInlineCopyMessage(message, isError) {
+        const el = document.getElementById("share-copy-message");
+        if (!el) return;
+
+        el.textContent = message;
+        el.classList.remove("is-success", "is-error");
+        el.classList.add(isError ? "is-error" : "is-success");
+
+        window.setTimeout(function () {
+            el.textContent = "";
+            el.classList.remove("is-success", "is-error");
+        }, 2500);
+    }
+
+    function updatePromptCountPreview() {
+        const settings = getSettingsFromUI();
+        const enabledPrompts = getEnabledPrompts(settings);
+        const meta = getBoardMeta(settings.gridSize, settings.includeFreeSpace);
+
+        const countEl = document.getElementById("prompt-count-preview");
+        const minimumEl = document.getElementById("minimum-needed-preview");
+
+        if (countEl) {
+            countEl.textContent = `${enabledPrompts.length} prompts enabled`;
+        }
+
+        if (minimumEl) {
+            minimumEl.classList.remove("is-error");
+
+            if (enabledPrompts.length < meta.promptCountNeeded) {
+                minimumEl.textContent = `Need at least ${meta.promptCountNeeded} enabled prompts for a ${settings.gridSize}×${settings.gridSize} board.`;
+                minimumEl.classList.add("is-error");
+            } else {
+                minimumEl.textContent = `Minimum needed: ${meta.promptCountNeeded}`;
+            }
+        }
+    }
+
+    function updateLockButton(isLocked) {
+        const lockButton = document.getElementById("lock-bingo");
+        const shuffleButton = document.getElementById("shuffle-bingo");
+        const resetButton = document.getElementById("reset-bingo");
+        if (!lockButton) return;
+
+        const icon = lockButton.querySelector("i");
+        lockButton.classList.toggle("is-active", isLocked);
+        lockButton.setAttribute("aria-label", isLocked ? "Unlock board" : "Lock board");
+        lockButton.setAttribute("title", isLocked ? "Unlock board" : "Lock board");
+
+        if (icon) {
+            icon.className = isLocked ? "fa-solid fa-lock" : "fa-solid fa-lock-open";
+        }
+
+        if (shuffleButton) shuffleButton.disabled = isLocked;
+        if (resetButton) resetButton.disabled = isLocked;
+    }
+
+    function toggleLockBoard() {
+        const settings = loadSettings();
+        settings.isLocked = !settings.isLocked;
+        saveSettings(settings);
+        renderSettingsUI();
+        updateLockButton(settings.isLocked);
+    }
+
+    function resetSettingsToDefault() {
+        const defaults = getDefaultSettings();
+        saveSettings(defaults);
+        renderSettingsUI();
+        updatePromptCountPreview();
+        showSettingsMessage("Settings reset to default.", false);
     }
 
     function saveSettingsFromUI() {
@@ -1213,6 +1435,7 @@ body{
         lastBingoCount = 0;
         renderBoard(freshBoard);
         showSettingsMessage("Settings saved. A new board has been generated.", false);
+        updateLockButton(settings.isLocked);
         closeSettingsPanel();
     }
 
@@ -1262,15 +1485,24 @@ body{
             }
         }
 
+        const scrollX = window.scrollX;
+        const scrollY = window.scrollY;
+
         const textArea = document.createElement("textarea");
         textArea.value = text;
         textArea.setAttribute("readonly", "");
         textArea.style.position = "fixed";
-        textArea.style.top = "-9999px";
-        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.opacity = "0";
         document.body.appendChild(textArea);
 
-        textArea.focus({ preventScroll: true });
+        try {
+            textArea.focus({ preventScroll: true });
+        } catch (error) {
+            textArea.focus();
+        }
+
         textArea.select();
 
         let success = false;
@@ -1281,6 +1513,8 @@ body{
         }
 
         document.body.removeChild(textArea);
+        window.scrollTo(scrollX, scrollY);
+
         return success;
     }
 
@@ -1315,7 +1549,7 @@ body{
 
         const success = await copyTextToClipboard(code);
 
-        showSettingsMessage(
+        showInlineCopyMessage(
             success ? "Share code copied." : "Copy failed in this embed. Try opening the board directly or copy manually.",
             !success
         );
@@ -1325,6 +1559,11 @@ body{
         const input = document.getElementById("share-code-input");
         if (!input || !input.value.trim()) {
             showSettingsMessage("Paste a share code first.", true);
+            return;
+        }
+
+        const current = loadBoardData();
+        if (current && hasProgress(current) && !window.confirm("Load a different shared board? Current progress will be replaced.")) {
             return;
         }
 
@@ -1343,6 +1582,7 @@ body{
             saveBoardData(decoded.board);
             renderSettingsUI();
             renderBoard(decoded.board);
+            updateLockButton((decoded.settings && decoded.settings.isLocked) || false);
             showSettingsMessage("Shared board loaded.", false);
             closeSettingsPanel();
         } catch (error) {
@@ -1367,6 +1607,18 @@ body{
         const copyShareButton = document.getElementById("copy-share-code");
         const loadShareButton = document.getElementById("load-share-code");
         const promptSearch = document.getElementById("prompt-search");
+        const lockButton = document.getElementById("lock-bingo");
+        const resetDefaultsButton = document.getElementById("reset-settings-default");
+        const gridSizeSelect = document.getElementById("grid-size-select");
+        const freeSpaceToggle = document.getElementById("include-free-space");
+        const freeSpaceTextInput = document.getElementById("free-space-text");
+        const helpButton = document.getElementById("help-bingo");
+
+        document.addEventListener("change", function (event) {
+            if (event.target && event.target.classList.contains("bingo-prompt-checkbox")) {
+                updatePromptCountPreview();
+            }
+        });
 
         renderSettingsUI();
 
@@ -1381,6 +1633,9 @@ body{
         if (boardData) {
             renderBoard(boardData);
         }
+
+        updateLockButton(settings.isLocked);
+        updatePromptCountPreview();
 
         if (shuffleButton) {
             shuffleButton.addEventListener("click", function () {
@@ -1413,11 +1668,17 @@ body{
         }
 
         if (selectAllPromptsButton) {
-            selectAllPromptsButton.addEventListener("click", selectAllPrompts);
+            selectAllPromptsButton.addEventListener("click", function () {
+                selectAllPrompts();
+                updatePromptCountPreview();
+            });
         }
 
         if (clearAllPromptsButton) {
-            clearAllPromptsButton.addEventListener("click", clearAllPrompts);
+            clearAllPromptsButton.addEventListener("click", function () {
+                clearAllPrompts();
+                updatePromptCountPreview();
+            });
         }
 
         if (copyBoardButton) {
@@ -1434,6 +1695,29 @@ body{
 
         if (promptSearch) {
             promptSearch.addEventListener("input", filterPromptList);
+        }
+
+        if (lockButton) {
+            lockButton.addEventListener("click", toggleLockBoard);
+        }
+
+        if (resetDefaultsButton) {
+            resetDefaultsButton.addEventListener("click", resetSettingsToDefault);
+        }
+
+        if (gridSizeSelect) {
+            gridSizeSelect.addEventListener("change", updatePromptCountPreview);
+        }
+
+        if (freeSpaceToggle) {
+            freeSpaceToggle.addEventListener("change", updatePromptCountPreview);
+        }
+
+        if (freeSpaceTextInput) {
+            freeSpaceTextInput.addEventListener("input", updatePromptCountPreview);
+        }
+        if (helpButton) {
+            helpButton.addEventListener("click", toggleHelpBox);
         }
     });
 })();
