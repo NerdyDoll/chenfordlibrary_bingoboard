@@ -484,7 +484,7 @@ body{
 
 
         <section class="bingo-section">
-            <h2 class="page-title">Chenford Writing Bingo</h2>
+            <h2 class="page-title">Chenford's Writing Bingo</h2>
 
             <div class="bingo-intro">
                 Click a square to mark it off. Use “Shuffle Board” if you want a fresh random bingo card.
@@ -1252,6 +1252,38 @@ body{
         clearSettingsMessage();
     }
 
+    async function copyTextToClipboard(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (error) {
+                // fall through to legacy fallback
+            }
+        }
+
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.setAttribute("readonly", "");
+        textArea.style.position = "fixed";
+        textArea.style.top = "-9999px";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+
+        textArea.focus();
+        textArea.select();
+
+        let success = false;
+        try {
+            success = document.execCommand("copy");
+        } catch (error) {
+            success = false;
+        }
+
+        document.body.removeChild(textArea);
+        return success;
+    }
+
     async function copyBoardText() {
         const current = getCurrentBoardData();
         if (!current) return;
@@ -1262,8 +1294,12 @@ body{
         }
 
         const text = `Chenford Writing Bingo (${current.gridSize}x${current.gridSize})\n\n${rows.join("\n")}`;
-        await navigator.clipboard.writeText(text);
-        showSettingsMessage("Board text copied.", false);
+        const success = await copyTextToClipboard(text);
+
+        showSettingsMessage(
+            success ? "Board text copied." : "Copy failed here. Try opening the board directly or use manual copy.",
+            !success
+        );
     }
 
     async function copyShareCode() {
@@ -1277,8 +1313,12 @@ body{
             settings
         });
 
-        await navigator.clipboard.writeText(code);
-        showSettingsMessage("Share code copied.", false);
+        const success = await copyTextToClipboard(code);
+
+        showSettingsMessage(
+            success ? "Share code copied." : "Copy failed in this embed. Try opening the board directly or copy manually.",
+            !success
+        );
     }
 
     function loadShareCodeFromInput() {
