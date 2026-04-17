@@ -643,7 +643,27 @@ body{
 
 @media print{
     body{
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .bingo-section{
+        padding:24px;
+        background:linear-gradient(
+            135deg,
+            rgba(221,139,206,0.12),
+            rgba(93,186,139,0.12)
+        ) !important;
+    }
+
+    .bingo-main-view{
         background:#fff;
+        padding:20px;
+        border-radius:6px;
+    }
+
+    .bingo-square{
+        background:#fff !important;
     }
 
     .bingo-controls,
@@ -652,10 +672,6 @@ body{
         display:none !important;
     }
 
-    .bingo-section{
-        padding:0;
-        background:#fff;
-    }
 
     .bingo-status{
         margin:0 0 12px;
@@ -678,8 +694,8 @@ body{
     .bingo-square.done{
         background:linear-gradient(
             135deg,
-            rgba(221,139,206,.35),
-            rgba(93,186,139,.35)
+            rgba(221,139,206,.25),
+            rgba(93,186,139,.25)
         ) !important;
     }
 
