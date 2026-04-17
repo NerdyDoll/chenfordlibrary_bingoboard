@@ -522,6 +522,39 @@ body{
     text-align:center;
 }
 
+.bingo-settings-topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin:0 0 16px;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--border-color);
+}
+
+.bingo-settings-top-title{
+    font-family:var(--serif);
+    font-size:1.15rem;
+}
+
+#free-space-inputs{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:12px;
+}
+
+.bingo-free-space-input-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.bingo-free-space-input-wrap label{
+    font-size:.84rem;
+    font-weight:600;
+}
+
 @media screen and (max-width: 700px){
     .bingo-square{
         font-size:.8rem;
@@ -601,6 +634,11 @@ body{
         font-size:1rem;
     }
 
+    .bingo-settings-topbar{
+        align-items:stretch;
+        flex-direction:column;
+    }
+
 }
 
 @media print{
@@ -668,7 +706,7 @@ body{
                 Click a square to mark it off. Use “Shuffle Board” if you want a fresh random bingo card.
             </div>
 
-            <div class="bingo-controls">
+            <div class="bingo-controls" id="bingo-controls">
                 <button type="button" id="shuffle-bingo" class="bingo-btn bingo-control-btn" title="Shuffle Board" aria-label="Shuffle Board">
                     <i class="fa-solid fa-shuffle" aria-hidden="true"></i>
                     <span>Shuffle</span>
@@ -719,6 +757,11 @@ body{
             </div>
 
             <div class="bingo-settings" id="bingo-settings" hidden>
+                <div class="bingo-settings-topbar">
+                    <div class="bingo-settings-top-title">Settings</div>
+                    <button type="button" id="save-close-settings" class="bingo-btn">Save &amp; Close</button>
+                </div>
+
                 <div class="bingo-settings-group">
                     <label for="grid-size-select" class="bingo-settings-label">Grid size</label>
                     <select id="grid-size-select" class="bingo-select">
@@ -731,13 +774,24 @@ body{
                 <div class="bingo-settings-group">
                     <label class="bingo-prompt-option">
                         <input type="checkbox" id="include-free-space" checked>
-                        <span>Include free space</span>
+                        <span>Include free spaces</span>
                     </label>
                 </div>
 
-                <div class="bingo-settings-group">
-                    <label for="free-space-text" class="bingo-settings-label">Free space text</label>
-                    <input type="text" id="free-space-text" class="bingo-text-input" placeholder="FREE SPACE">
+                <div class="bingo-settings-group" id="free-space-options" hidden>
+                    <label for="free-space-count" class="bingo-settings-label">Number of free spaces</label>
+                    <select id="free-space-count" class="bingo-select">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+
+                    <div class="bingo-settings-help">
+                        Free spaces are placed randomly on the board and are not auto-marked.
+                    </div>
+
+                    <div id="free-space-inputs"></div>
                 </div>
 
                 <div class="bingo-settings-group">
@@ -959,7 +1013,8 @@ body{
             gridSize: DEFAULT_GRID_SIZE,
             disabledPrompts: [],
             includeFreeSpace: true,
-            freeSpaceText: "FREE SPACE",
+            freeSpaceCount: 1,
+            freeSpaceTexts: ["FREE SPACE"],
             isLocked: false
         };
     }
@@ -988,6 +1043,8 @@ body{
                 icon.className = "fa-solid fa-gear";
             }
         }
+
+        updateTopControlsVisibility();
     }
 
     function loadSettings() {
@@ -996,13 +1053,23 @@ body{
 
         try {
             const parsed = JSON.parse(raw);
+            const freeSpaceCount = [1, 2, 3, 4].includes(Number(parsed.freeSpaceCount))
+                ? Number(parsed.freeSpaceCount)
+                : 1;
+
+            let freeSpaceTexts = Array.isArray(parsed.freeSpaceTexts) ? parsed.freeSpaceTexts : ["FREE SPACE"];
+            freeSpaceTexts = freeSpaceTexts.slice(0, freeSpaceCount);
+
+            while (freeSpaceTexts.length < freeSpaceCount) {
+                freeSpaceTexts.push(`FREE SPACE ${freeSpaceTexts.length + 1}`);
+            }
+
             return {
                 gridSize: [3, 4, 5].includes(Number(parsed.gridSize)) ? Number(parsed.gridSize) : DEFAULT_GRID_SIZE,
                 disabledPrompts: Array.isArray(parsed.disabledPrompts) ? parsed.disabledPrompts : [],
                 includeFreeSpace: parsed.includeFreeSpace !== false,
-                freeSpaceText: typeof parsed.freeSpaceText === "string" && parsed.freeSpaceText.trim()
-                    ? parsed.freeSpaceText.trim()
-                    : "FREE SPACE",
+                freeSpaceCount,
+                freeSpaceTexts,
                 isLocked: !!parsed.isLocked
             };
         } catch (error) {
@@ -1029,16 +1096,20 @@ body{
                 return null;
             }
 
-            const meta = getBoardMeta(parsed.gridSize, parsed.includeFreeSpace);
+            const meta = getBoardMeta(parsed.gridSize, parsed.includeFreeSpace, parsed.freeSpaceCount);
             if (parsed.squares.length !== meta.total || parsed.checked.length !== meta.total) {
                 return null;
             }
 
-            if (meta.hasFreeSpace) {
-                parsed.checked[meta.freeIndex] = true;
-            }
-
-            return parsed;
+            return {
+                gridSize: Number(parsed.gridSize),
+                includeFreeSpace: !!parsed.includeFreeSpace,
+                freeSpaceCount: Number(parsed.freeSpaceCount) || 0,
+                freeSpaceTexts: Array.isArray(parsed.freeSpaceTexts) ? parsed.freeSpaceTexts : [],
+                freeIndexes: Array.isArray(parsed.freeIndexes) ? parsed.freeIndexes : [],
+                squares: parsed.squares,
+                checked: parsed.checked
+            };
         } catch (error) {
             return null;
         }
@@ -1048,17 +1119,24 @@ body{
         localStorage.setItem(BOARD_STORAGE_KEY, JSON.stringify(data));
     }
 
-    function getBoardMeta(gridSize, includeFreeSpace) {
+    function getRandomFreeIndexes(total, count) {
+        const indexes = Array.from({ length: total }, (_, i) => i);
+        return shuffleArray(indexes).slice(0, count).sort((a, b) => a - b);
+    }
+
+    function getBoardMeta(gridSize, includeFreeSpace, freeSpaceCount) {
         const total = gridSize * gridSize;
-        const hasFreeSpace = includeFreeSpace && gridSize % 2 === 1;
-        const freeIndex = hasFreeSpace ? Math.floor(total / 2) : -1;
-        const promptCountNeeded = hasFreeSpace ? total - 1 : total;
+        const usableFreeSpaceCount = includeFreeSpace
+            ? Math.max(0, Math.min(Number(freeSpaceCount) || 1, total - 1))
+            : 0;
+
+        const promptCountNeeded = total - usableFreeSpaceCount;
 
         return {
             gridSize,
             total,
-            hasFreeSpace,
-            freeIndex,
+            hasFreeSpace: usableFreeSpaceCount > 0,
+            freeSpaceCount: usableFreeSpaceCount,
             promptCountNeeded
         };
     }
@@ -1069,33 +1147,39 @@ body{
     }
 
     function createFreshBoardData(settings) {
-        const meta = getBoardMeta(settings.gridSize, settings.includeFreeSpace);
+        const meta = getBoardMeta(settings.gridSize, settings.includeFreeSpace, settings.freeSpaceCount);
         const enabledPrompts = getEnabledPrompts(settings);
 
         if (enabledPrompts.length < meta.promptCountNeeded) {
             return null;
         }
 
-        const selected = shuffleArray(enabledPrompts).slice(0, meta.promptCountNeeded);
+        const selectedPrompts = shuffleArray(enabledPrompts).slice(0, meta.promptCountNeeded);
+        const freeIndexes = meta.hasFreeSpace ? getRandomFreeIndexes(meta.total, meta.freeSpaceCount) : [];
+        const freeIndexSet = new Set(freeIndexes);
+
         const squares = [];
-        let pointer = 0;
+        let promptPointer = 0;
+        let freePointer = 0;
 
         for (let i = 0; i < meta.total; i++) {
-            if (meta.hasFreeSpace && i === meta.freeIndex) {
-                squares.push(settings.freeSpaceText || "FREE SPACE");
+            if (freeIndexSet.has(i)) {
+                squares.push(settings.freeSpaceTexts[freePointer] || `FREE SPACE ${freePointer + 1}`);
+                freePointer++;
             } else {
-                squares.push(selected[pointer]);
-                pointer++;
+                squares.push(selectedPrompts[promptPointer]);
+                promptPointer++;
             }
         }
 
         const checked = new Array(meta.total).fill(false);
-        if (meta.hasFreeSpace) checked[meta.freeIndex] = true;
 
         return {
             gridSize: settings.gridSize,
             includeFreeSpace: settings.includeFreeSpace,
-            freeSpaceText: settings.freeSpaceText || "FREE SPACE",
+            freeSpaceCount: meta.freeSpaceCount,
+            freeSpaceTexts: settings.freeSpaceTexts.slice(0, meta.freeSpaceCount),
+            freeIndexes,
             squares,
             checked
         };
@@ -1128,11 +1212,12 @@ body{
         const board = document.getElementById("bingo-board");
         if (!board) return;
 
-        const meta = getBoardMeta(data.gridSize, data.includeFreeSpace);
+        const meta = getBoardMeta(data.gridSize, data.includeFreeSpace, data.freeSpaceCount);
+        const freeIndexSet = new Set(Array.isArray(data.freeIndexes) ? data.freeIndexes : []);
         applyBoardGridSize(data.gridSize);
 
         board.innerHTML = data.squares.map((text, index) => {
-            const isFree = meta.hasFreeSpace && index === meta.freeIndex;
+            const isFree = freeIndexSet.has(index);
             const isDone = !!data.checked[index];
 
             return `
@@ -1148,12 +1233,9 @@ body{
     }
 
     function attachSquareClicks(data) {
-        const meta = getBoardMeta(data.gridSize, data.includeFreeSpace);
         const squares = document.querySelectorAll(".bingo-square");
 
-        squares.forEach((square, index) => {
-            if (meta.hasFreeSpace && index === meta.freeIndex) return;
-
+        squares.forEach((square) => {
             square.addEventListener("click", function () {
                 square.classList.toggle("done");
                 persistCurrentBoard();
@@ -1169,17 +1251,16 @@ body{
 
         const squares = Array.from(board.querySelectorAll(".bingo-square"));
         const gridSize = squares.length ? Math.sqrt(squares.length) : settings.gridSize;
-        const meta = getBoardMeta(gridSize, settings.includeFreeSpace);
+        const saved = loadBoardData();
 
         return {
             gridSize,
             includeFreeSpace: settings.includeFreeSpace,
-            freeSpaceText: settings.freeSpaceText || "FREE SPACE",
+            freeSpaceCount: settings.includeFreeSpace ? settings.freeSpaceCount : 0,
+            freeSpaceTexts: settings.freeSpaceTexts || [],
+            freeIndexes: saved && Array.isArray(saved.freeIndexes) ? saved.freeIndexes : [],
             squares: squares.map(square => square.textContent.trim()),
-            checked: squares.map((square, index) => {
-                if (meta.hasFreeSpace && index === meta.freeIndex) return true;
-                return square.classList.contains("done");
-            })
+            checked: squares.map(square => square.classList.contains("done"))
         };
     }
 
@@ -1237,17 +1318,14 @@ body{
         const celebrationEl = document.getElementById("bingo-celebration");
         if (!board || !status || !progress || !nearEl || !celebrationEl) return;
 
-        const meta = getBoardMeta(data.gridSize, data.includeFreeSpace);
+        const meta = getBoardMeta(data.gridSize, data.includeFreeSpace, data.freeSpaceCount);
         const squares = Array.from(board.querySelectorAll(".bingo-square"));
 
         squares.forEach(square => {
             square.classList.remove("is-winning", "is-near");
         });
 
-        const checked = squares.map((square, index) => {
-            if (meta.hasFreeSpace && index === meta.freeIndex) return true;
-            return square.classList.contains("done");
-        });
+        const checked = squares.map(square => square.classList.contains("done"));
 
         const checkedCount = checked.filter(Boolean).length;
         const winningLines = getWinningLines(checked, data.gridSize);
@@ -1328,9 +1406,7 @@ body{
             return;
         }
 
-        const meta = getBoardMeta(data.gridSize, data.includeFreeSpace);
-        data.checked = new Array(meta.total).fill(false);
-        if (meta.hasFreeSpace) data.checked[meta.freeIndex] = true;
+        data.checked = new Array(data.gridSize * data.gridSize).fill(false);
 
         saveBoardData(data);
         lastBingoCount = 0;
@@ -1352,16 +1428,43 @@ body{
         renderBoard(fresh);
     }
 
+    function renderFreeSpaceInputs(settings) {
+        const wrap = document.getElementById("free-space-inputs");
+        const freeSpaceOptions = document.getElementById("free-space-options");
+        const countSelect = document.getElementById("free-space-count");
+
+        if (!wrap || !freeSpaceOptions || !countSelect) return;
+
+        freeSpaceOptions.hidden = !settings.includeFreeSpace;
+        countSelect.value = String(settings.freeSpaceCount || 1);
+
+        if (!settings.includeFreeSpace) {
+            wrap.innerHTML = "";
+            return;
+        }
+
+        wrap.innerHTML = "";
+        for (let i = 0; i < settings.freeSpaceCount; i++) {
+            const value = settings.freeSpaceTexts[i] || `FREE SPACE ${i + 1}`;
+            wrap.innerHTML += `
+                <div class="bingo-free-space-input-wrap">
+                    <label for="free-space-text-${i}">Free space ${i + 1} text</label>
+                    <input type="text" id="free-space-text-${i}" class="bingo-text-input bingo-free-space-text" data-free-index="${i}" value="${escapeHtml(value)}">
+                </div>
+            `;
+        }
+    }
+
     function renderSettingsUI() {
         const settings = loadSettings();
         const select = document.getElementById("grid-size-select");
         const promptList = document.getElementById("bingo-prompt-list");
         const freeSpaceToggle = document.getElementById("include-free-space");
-        const freeSpaceText = document.getElementById("free-space-text");
 
         if (select) select.value = String(settings.gridSize);
         if (freeSpaceToggle) freeSpaceToggle.checked = settings.includeFreeSpace;
-        if (freeSpaceText) freeSpaceText.value = settings.freeSpaceText || "FREE SPACE";
+
+        renderFreeSpaceInputs(settings);
 
         if (promptList) {
             const disabledSet = new Set(settings.disabledPrompts);
@@ -1390,21 +1493,30 @@ body{
     function getSettingsFromUI() {
         const select = document.getElementById("grid-size-select");
         const freeSpaceToggle = document.getElementById("include-free-space");
-        const freeSpaceText = document.getElementById("free-space-text");
+        const freeSpaceCountSelect = document.getElementById("free-space-count");
         const promptBoxes = document.querySelectorAll(".bingo-prompt-checkbox");
+        const freeSpaceTextInputs = document.querySelectorAll(".bingo-free-space-text");
 
         const gridSize = select ? Number(select.value) : DEFAULT_GRID_SIZE;
         const includeFreeSpace = freeSpaceToggle ? freeSpaceToggle.checked : true;
-        const customFreeSpaceText = freeSpaceText && freeSpaceText.value.trim()
-            ? freeSpaceText.value.trim()
-            : "FREE SPACE";
+        const freeSpaceCount = includeFreeSpace
+            ? (freeSpaceCountSelect ? Number(freeSpaceCountSelect.value) : 1)
+            : 0;
+
+        const freeSpaceTexts = includeFreeSpace
+            ? Array.from(freeSpaceTextInputs).map((input, index) => {
+                const value = input.value.trim();
+                return value || `FREE SPACE ${index + 1}`;
+            })
+            : [];
 
         const enabledPrompts = Array.from(promptBoxes).filter(box => box.checked).map(box => box.value);
 
         return {
             gridSize,
             includeFreeSpace,
-            freeSpaceText: customFreeSpaceText,
+            freeSpaceCount,
+            freeSpaceTexts,
             disabledPrompts: sortedPrompts.filter(text => !enabledPrompts.includes(text)),
             isLocked: loadSettings().isLocked
         };
@@ -1440,10 +1552,23 @@ body{
         }, 2500);
     }
 
+    function updateTopControlsVisibility() {
+        const controls = document.getElementById("bingo-controls");
+        const settingsPanel = document.getElementById("bingo-settings");
+        const helpPanel = document.getElementById("bingo-help-panel");
+        if (!controls) return;
+
+        const hideControls =
+            (settingsPanel && !settingsPanel.hidden) ||
+            (helpPanel && !helpPanel.hidden);
+
+        controls.hidden = !!hideControls;
+    }
+
     function updatePromptCountPreview() {
         const settings = getSettingsFromUI();
         const enabledPrompts = getEnabledPrompts(settings);
-        const meta = getBoardMeta(settings.gridSize, settings.includeFreeSpace);
+        const meta = getBoardMeta(settings.gridSize, settings.includeFreeSpace, settings.freeSpaceCount);
 
         const countEl = document.getElementById("prompt-count-preview");
         const minimumEl = document.getElementById("minimum-needed-preview");
@@ -1551,6 +1676,8 @@ body{
         if (icon) {
             icon.className = opening ? "fa-solid fa-xmark" : "fa-solid fa-gear";
         }
+
+        updateTopControlsVisibility();
     }
 
     function closeSettingsPanel() {
@@ -1569,6 +1696,8 @@ body{
                 icon.className = "fa-solid fa-gear";
             }
         }
+
+        updateTopControlsVisibility();
     }
 
     function selectAllPrompts() {
@@ -1723,6 +1852,8 @@ body{
         const freeSpaceToggle = document.getElementById("include-free-space");
         const freeSpaceTextInput = document.getElementById("free-space-text");
         const helpButton = document.getElementById("help-bingo");
+        const saveCloseSettingsButton = document.getElementById("save-close-settings");
+        const freeSpaceCountSelect = document.getElementById("free-space-count");
 
         document.addEventListener("change", function (event) {
             if (event.target && event.target.classList.contains("bingo-prompt-checkbox")) {
@@ -1829,6 +1960,33 @@ body{
         if (helpButton) {
             helpButton.addEventListener("click", toggleHelpPanel);
         }
+        if (saveCloseSettingsButton) {
+            saveCloseSettingsButton.addEventListener("click", saveSettingsFromUI);
+        }
+
+        if (freeSpaceToggle) {
+            freeSpaceToggle.addEventListener("change", function () {
+                const settings = getSettingsFromUI();
+                renderFreeSpaceInputs(settings);
+                updatePromptCountPreview();
+            });
+        }
+
+        if (freeSpaceCountSelect) {
+            freeSpaceCountSelect.addEventListener("change", function () {
+                const settings = getSettingsFromUI();
+                renderFreeSpaceInputs(settings);
+                updatePromptCountPreview();
+            });
+        }
+
+        document.addEventListener("input", function (event) {
+            if (event.target && event.target.classList.contains("bingo-free-space-text")) {
+                updatePromptCountPreview();
+            }
+        });
+
+        updateTopControlsVisibility();
     });
 })();
 </script>
