@@ -73,8 +73,9 @@ body{
 .bingo-controls{
     display:flex;
     flex-wrap:wrap;
-    gap:10px;
-    margin-bottom:22px;
+    gap:6px;
+    margin-bottom:18px;
+    align-items:center;
 }
 
 .bingo-btn{
@@ -386,14 +387,38 @@ body{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    width:46px;
-    height:46px;
+    width:42px;
+    height:42px;
     padding:0;
     border:1px solid var(--border-color);
     background:var(--post-background);
     cursor:pointer;
     transition:.25s ease;
-    font-size:1rem;
+    font-size:.95rem;
+}
+
+.bingo-help-mini-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:28px;
+    height:28px;
+    padding:0;
+    margin-left:auto;
+    border:1px solid var(--border-color);
+    border-radius:50%;
+    background:var(--post-background);
+    cursor:pointer;
+    transition:.25s ease;
+    font-size:.78rem;
+    opacity:.72;
+}
+
+.bingo-help-mini-btn:hover{
+    opacity:1;
+    color:#fff;
+    border-color:transparent;
+    background-image:linear-gradient(135deg, var(--gradient));
 }
 
 .bingo-icon-btn:hover{
@@ -466,17 +491,35 @@ body{
     border-radius:50%;
 }
 
-.bingo-help-box{
-    margin:0 0 18px;
-    padding:12px 14px;
+.bingo-help-panel{
+    margin:0 0 20px;
+    padding:18px;
     border:1px solid var(--border-color);
     background:var(--post-background);
-    font-size:.85rem;
-    line-height:1.5;
 }
 
-.bingo-help-box[hidden]{
+.bingo-help-panel[hidden]{
     display:none !important;
+}
+
+.bingo-help-section + .bingo-help-section{
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid var(--border-color);
+}
+
+.bingo-help-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    font-size:.88rem;
+    line-height:1.45;
+}
+
+.bingo-help-list i{
+    width:18px;
+    margin-right:6px;
+    text-align:center;
 }
 
 @media screen and (max-width: 700px){
@@ -530,13 +573,24 @@ body{
         margin:0 0 5px;
     }
     .bingo-controls{
-        gap:8px;
+        gap:6px;
     }
 
     .bingo-control-btn{
-        width:46px;
-        height:46px;
+        width:42px;
+        height:42px;
         padding:0;
+    }
+
+    .bingo-icon-btn{
+        width:38px;
+        height:38px;
+    }
+
+    .bingo-help-mini-btn{
+        width:24px;
+        height:24px;
+        font-size:.72rem;
     }
 
     .bingo-control-btn span{
@@ -608,7 +662,7 @@ body{
 
 
         <section class="bingo-section">
-            <h2 class="page-title">Chenford's Writing Bingo</h2>
+            <h2 class="page-title">Chenford Writing Bingo</h2>
 
             <div class="bingo-intro">
                 Click a square to mark it off. Use “Shuffle Board” if you want a fresh random bingo card.
@@ -630,22 +684,38 @@ body{
                     <span>Download</span>
                 </button>
 
-                <button type="button" id="toggle-settings" class="bingo-btn bingo-control-btn" title="Settings" aria-label="Settings">
-                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
-                </button>
-
                 <button type="button" id="lock-bingo" class="bingo-icon-btn" aria-label="Lock board" title="Lock board">
                     <i class="fa-solid fa-lock-open" aria-hidden="true"></i>
                 </button>
 
-                <button type="button" id="help-bingo" class="bingo-icon-btn bingo-help-btn" aria-label="Help" title="Help">
-                    <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+                <button type="button" id="toggle-settings" class="bingo-icon-btn" aria-label="Open settings" title="Open settings">
+                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                </button>
+
+                <button type="button" id="help-bingo" class="bingo-help-mini-btn" aria-label="Help" title="Help">
+                    <i class="fa-solid fa-question" aria-hidden="true"></i>
                 </button>
             </div>
 
-            <div class="bingo-help-box" id="bingo-help-box" hidden>
-                <strong>How it works</strong><br>
-                Click squares to mark them. Shuffle creates a new board. Reset clears marks on the current board. Lock disables shuffle and reset only.
+            <div class="bingo-help-panel" id="bingo-help-panel" hidden>
+                <div class="bingo-help-section">
+                    <h3 class="bingo-settings-label">Controls</h3>
+                    <div class="bingo-help-list">
+                        <div><i class="fa-solid fa-shuffle" aria-hidden="true"></i> Shuffle: creates a brand new bingo board.</div>
+                        <div><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset: clears all current marks from this board.</div>
+                        <div><i class="fa-solid fa-download" aria-hidden="true"></i> Download: opens the print view so you can save as PDF.</div>
+                        <div><i class="fa-solid fa-lock-open" aria-hidden="true"></i> Lock: disables Shuffle and Reset, but you can still mark squares.</div>
+                        <div><i class="fa-solid fa-gear" aria-hidden="true"></i> Settings: changes board options, filters, and sharing tools.</div>
+                        <div><i class="fa-solid fa-circle-question" aria-hidden="true"></i> Help: shows this guide.</div>
+                    </div>
+                </div>
+
+                <div class="bingo-help-section">
+                    <h3 class="bingo-settings-label">Bingo rules</h3>
+                    <div class="bingo-settings-help">
+                        Mark squares as you complete prompts. A bingo is any full row, column, or diagonal. If free space is enabled on an odd-sized board, the middle square is automatically marked. You can keep marking squares even after getting one bingo.
+                    </div>
+                </div>
             </div>
 
             <div class="bingo-settings" id="bingo-settings" hidden>
@@ -894,11 +964,30 @@ body{
         };
     }
 
-    function toggleHelpBox() {
-        const helpBox = document.getElementById("bingo-help-box");
-        if (!helpBox) return;
+    function toggleHelpPanel() {
+        const helpPanel = document.getElementById("bingo-help-panel");
+        const settingsPanel = document.getElementById("bingo-settings");
+        const mainView = document.getElementById("bingo-main-view");
+        if (!helpPanel || !mainView) return;
 
-        helpBox.hidden = !helpBox.hidden;
+        const opening = helpPanel.hidden;
+
+        if (settingsPanel) {
+            settingsPanel.hidden = true;
+        }
+
+        helpPanel.hidden = !opening;
+        mainView.hidden = opening;
+
+        const settingsButton = document.getElementById("toggle-settings");
+        if (settingsButton) {
+            const icon = settingsButton.querySelector("i");
+            settingsButton.setAttribute("aria-label", "Open settings");
+            settingsButton.setAttribute("title", "Open settings");
+            if (icon) {
+                icon.className = "fa-solid fa-gear";
+            }
+        }
     }
 
     function loadSettings() {
@@ -1441,14 +1530,27 @@ body{
 
     function toggleSettingsPanel() {
         const panel = document.getElementById("bingo-settings");
+        const helpPanel = document.getElementById("bingo-help-panel");
         const mainView = document.getElementById("bingo-main-view");
         const button = document.getElementById("toggle-settings");
         if (!panel || !mainView || !button) return;
 
         const opening = panel.hidden;
+
+        if (helpPanel) {
+            helpPanel.hidden = true;
+        }
+
         panel.hidden = !opening;
         mainView.hidden = opening;
-        button.textContent = opening ? "Back to Board" : "Settings";
+
+        const icon = button.querySelector("i");
+        button.setAttribute("aria-label", opening ? "Close settings" : "Open settings");
+        button.setAttribute("title", opening ? "Close settings" : "Open settings");
+
+        if (icon) {
+            icon.className = opening ? "fa-solid fa-xmark" : "fa-solid fa-gear";
+        }
     }
 
     function closeSettingsPanel() {
@@ -1458,7 +1560,15 @@ body{
 
         if (panel) panel.hidden = true;
         if (mainView) mainView.hidden = false;
-        if (button) button.textContent = "Settings";
+
+        if (button) {
+            const icon = button.querySelector("i");
+            button.setAttribute("aria-label", "Open settings");
+            button.setAttribute("title", "Open settings");
+            if (icon) {
+                icon.className = "fa-solid fa-gear";
+            }
+        }
     }
 
     function selectAllPrompts() {
@@ -1717,7 +1827,7 @@ body{
             freeSpaceTextInput.addEventListener("input", updatePromptCountPreview);
         }
         if (helpButton) {
-            helpButton.addEventListener("click", toggleHelpBox);
+            helpButton.addEventListener("click", toggleHelpPanel);
         }
     });
 })();
