@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 
 <style>
 :root{
@@ -563,6 +564,12 @@ body{
     margin-bottom:12px;
 }
 
+.bingo-share-clear-btn{
+    width:42px;
+    height:42px;
+    flex:0 0 auto;
+}
+
 @media screen and (max-width: 700px){
     .bingo-square{
         font-size:.8rem;
@@ -855,7 +862,10 @@ body{
                     <div class="bingo-settings-inline-message" id="share-copy-message"></div>
                     <div class="bingo-share-row bingo-share-load">
                         <input type="text" id="share-code-input" class="bingo-text-input bingo-share-input" placeholder="Paste board code">
-                        <button type="button" id="load-share-code" class="bingo-btn">Load Copied Board</button>
+                        <button type="button" id="clear-share-code" class="bingo-icon-btn bingo-share-clear-btn" aria-label="Clear share code" title="Clear share code">
+                            <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" id="load-share-code" class="bingo-btn">Load</button>
                     </div>
                 </div>
 
@@ -1259,11 +1269,11 @@ body{
     }
 
     function encodeShareCode(data) {
-        return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+        return LZString.compressToEncodedURIComponent(JSON.stringify(data));
     }
 
     function decodeShareCode(code) {
-        return JSON.parse(decodeURIComponent(escape(atob(code))));
+        return JSON.parse(LZString.decompressFromEncodedURIComponent(code));
     }
 
     function getDefaultSettings() {
@@ -1570,20 +1580,20 @@ body{
     }
 
     function getCurrentBoardData() {
-        const settings = loadSettings();
         const board = document.getElementById("bingo-board");
         if (!board) return null;
 
-        const squares = Array.from(board.querySelectorAll(".bingo-square"));
-        const gridSize = squares.length ? Math.sqrt(squares.length) : settings.gridSize;
         const saved = loadBoardData();
+        if (!saved) return null;
+
+        const squares = Array.from(board.querySelectorAll(".bingo-square"));
 
         return {
-            gridSize,
-            includeFreeSpace: settings.includeFreeSpace,
-            freeSpaceCount: settings.includeFreeSpace ? settings.freeSpaceCount : 0,
-            freeSpaceTexts: settings.freeSpaceTexts || [],
-            freeIndexes: saved && Array.isArray(saved.freeIndexes) ? saved.freeIndexes : [],
+            gridSize: saved.gridSize,
+            includeFreeSpace: saved.includeFreeSpace,
+            freeSpaceCount: saved.freeSpaceCount,
+            freeSpaceTexts: saved.freeSpaceTexts,
+            freeIndexes: saved.freeIndexes,
             squares: squares.map(square => square.textContent.trim()),
             checked: squares.map(square => square.classList.contains("done"))
         };
@@ -2150,21 +2160,55 @@ body{
         );
     }
 
+    const PROMPT_INDEX_BY_TEXT = new Map(
+        sortedPrompts.map((prompt, index) => [prompt.text, index])
+    );
+
+    function encodeBoardForShare(board) {
+        return {
+            g: board.gridSize,
+            f: board.includeFreeSpace ? 1 : 0,
+            c: board.freeSpaceCount,
+            t: board.freeSpaceTexts || [],
+            x: board.freeIndexes || [],
+            s: board.squares.map(text => {
+                const promptIndex = PROMPT_INDEX_BY_TEXT.get(text);
+                return typeof promptIndex === "number" ? promptIndex : text;
+            }),
+            k: board.checked.map(value => value ? 1 : 0)
+        };
+    }
+
+    function decodeBoardFromShare(sharedBoard) {
+        return {
+            gridSize: Number(sharedBoard.g),
+            includeFreeSpace: !!sharedBoard.f,
+            freeSpaceCount: Number(sharedBoard.c) || 0,
+            freeSpaceTexts: Array.isArray(sharedBoard.t) ? sharedBoard.t : [],
+            freeIndexes: Array.isArray(sharedBoard.x) ? sharedBoard.x : [],
+            squares: (sharedBoard.s || []).map(value => {
+                if (typeof value === "number" && sortedPrompts[value]) {
+                    return sortedPrompts[value].text;
+                }
+                return String(value);
+            }),
+            checked: (sharedBoard.k || []).map(value => !!value)
+        };
+    }
+
     async function copyShareCode() {
         const board = getCurrentBoardData();
-        const settings = loadSettings();
         if (!board) return;
 
         const code = encodeShareCode({
-            version: 1,
-            board,
-            settings
+            version: 2,
+            board: encodeBoardForShare(board)
         });
 
         const success = await copyTextToClipboard(code);
 
         showInlineCopyMessage(
-            success ? "Share code copied." : "Copy failed in this embed. Try opening the board directly or copy manually.",
+            success ? "Share code copied." : "Copy failed in this embed. Please try again or copy it manually from a prompt/output if available.",
             !success
         );
     }
@@ -2183,20 +2227,19 @@ body{
 
         try {
             const decoded = decodeShareCode(input.value.trim());
-            if (!decoded || !decoded.board || !decoded.settings) {
+            if (!decoded || !decoded.board) {
                 showSettingsMessage("That share code is not valid.", true);
                 return;
             }
 
-            saveSettings({
-                ...getDefaultSettings(),
-                ...decoded.settings
-            });
+            const boardData = decoded.version === 2
+                ? decodeBoardFromShare(decoded.board)
+                : decoded.board;
 
-            saveBoardData(decoded.board);
-            renderSettingsUI();
-            renderBoard(decoded.board);
-            updateLockButton((decoded.settings && decoded.settings.isLocked) || false);
+            saveBoardData(boardData);
+            lastBingoCount = 0;
+            renderBoard(boardData);
+            updateLockButton(loadSettings().isLocked);
             showSettingsMessage("Shared board loaded.", false);
             closeSettingsPanel();
         } catch (error) {
@@ -2230,6 +2273,8 @@ body{
         const saveCloseSettingsButton = document.getElementById("save-close-settings");
         const freeSpaceCountSelect = document.getElementById("free-space-count");
         const promptCategoryView = document.getElementById("prompt-category-view");
+        const clearShareButton = document.getElementById("clear-share-code");
+        const shareCodeInput = document.getElementById("share-code-input");
 
         document.addEventListener("change", function (event) {
             if (!event.target) return;
@@ -2363,6 +2408,17 @@ body{
             promptCategoryView.addEventListener("change", function () {
                 syncVisiblePromptCheckboxesToState();
                 renderSettingsUI();
+            });
+        }
+
+        if (clearShareButton) {
+            clearShareButton.addEventListener("click", function () {
+                if (shareCodeInput) {
+                    shareCodeInput.value = "";
+                    shareCodeInput.focus();
+                }
+                clearSettingsMessage();
+                showInlineCopyMessage("Share code cleared.", false);
             });
         }
 
