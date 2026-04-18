@@ -555,6 +555,14 @@ body{
     font-weight:600;
 }
 
+#prompt-category-view{
+    margin-bottom:10px;
+}
+
+#prompt-search{
+    margin-bottom:12px;
+}
+
 @media screen and (max-width: 700px){
     .bingo-square{
         font-size:.8rem;
@@ -809,22 +817,28 @@ body{
 
                     <div id="free-space-inputs"></div>
                 </div>
-
-                <div class="bingo-settings-group">
-                    <label for="prompt-search" class="bingo-settings-label">Prompt search</label>
-                    <input type="text" id="prompt-search" class="bingo-text-input" placeholder="Search prompts...">
-                </div>
-
+                
                 <div class="bingo-settings-group">
                     <div class="bingo-settings-label">Prompt filter</div>
                     <div class="bingo-settings-help">
                         Uncheck any prompts you never want included when shuffling.
                     </div>
+
+                    <select id="prompt-category-view" class="bingo-select">
+                        <option value="all">All categories</option>
+                    </select>
+
+                    <input type="text" id="prompt-search" class="bingo-text-input" placeholder="Search prompts...">
+
+                    <div class="bingo-settings-meta" id="visible-category-meta" hidden>
+                        <div class="bingo-settings-live" id="visible-category-count"></div>
+                    </div>
+
                     <div class="bingo-prompt-list" id="bingo-prompt-list"></div>
 
                     <div class="bingo-filter-actions">
-                        <button type="button" id="select-all-prompts" class="bingo-btn">Select All Prompts</button>
-                        <button type="button" id="clear-all-prompts" class="bingo-btn">Clear All Prompts</button>
+                        <button type="button" id="select-all-prompts" class="bingo-btn">Select Visible</button>
+                        <button type="button" id="clear-all-prompts" class="bingo-btn">Clear Visible</button>
                     </div>
 
                     <div class="bingo-settings-meta">
@@ -883,192 +897,340 @@ body{
 
 <script>
 (function () {
+    const ALL_CATEGORIES = [
+        "Action",
+        "Angst",
+        "AU",
+        "Characters",
+        "Events",
+        "Fluff",
+        "Injuries",
+        "Locations",
+        "NSFW",
+        "Relationship",
+        "Romance"
+    ];
+    
     const promptPool = [
-        { text: "Fake Dating" },
-        { text: "Undercover" },
-        { text: "Only One Bed" },
-        { text: "Jealousy" },
-        { text: "5+1 Things" },
-        { text: "4+1 Things" },
-        { text: "Hurt/Comfort" },
-        { text: "MCD" },
-        { text: "Rainy Night" },
-        { text: "Love Confession" },
-        { text: "First Kiss" },
-        { text: "Missing Scene" },
-        { text: "Domestic Chenford" },
-        { text: "Angst with Happy Ending" },
-        { text: "Wedding Date" },
-        { text: "Road Trip" },
-        { text: "Secret Relationship" },
-        { text: "Friends to Lovers" },
-        { text: "Alternate First Meeting" },
-        { text: "Holiday Fic" },
-        { text: "Soft Lucy" },
-        { text: "Argument / Make Up" },
-        { text: "Slow Burn" },
-        { text: "Mutual Pining" },
-        { text: "Getting Back Together" },
-        { text: "Undercover Kiss" },
-        { text: "Hospital Visit" },
-        { text: "Late Night Phone Call" },
-        { text: "Accidental Confession" },
-        { text: "Jealous Lucy" },
-        { text: "Jealous Tim" },
-        { text: "Soulmate AU" },
-        { text: "College AU" },
-        { text: "Spy AU" },
-        { text: "Witness Protection AU" },
-        { text: "Bodyguard AU" },
-        { text: "Celebrity AU" },
-        { text: "Time Loop AU" },
-        { text: "Pre-dating Jealousy" },
-        { text: "Pre-dating Angst" },
-        { text: "Arranged Marriage AU" },
-        { text: "Amnesia AU" },
-        { text: "Reincarnation AU" },
-        { text: "Dream Sharing AU" },
-        { text: "Body Swap AU" },
-        { text: "Neighbors AU" },
-        { text: "Coffee Shop AU" },
-        { text: "One Rainy Night" },
-        { text: "Proposal" },
-        { text: "Wedding" },
-        { text: "Roommates AU" },
-        { text: "Protective Lucy" },
-        { text: "Protective Tim" },
-        { text: "Outsider POV" },
-        { text: "Safe House" },
-        { text: "Holiday Party" },
-        { text: "Valentine's Day" },
-        { text: "Halloween" },
-        { text: "New Year's Eve" },
-        { text: "Beach Trip" },
-        { text: "Vacation Fic" },
-        { text: "Secret Crush" },
-        { text: "Friends With Feelings" },
-        { text: "Fake Engagement" },
-        { text: "Breakdown" },
-        { text: "Food Poisoning" },
-        { text: "Roadside Motel" },
-        { text: "The Morning After" },
-        { text: "Unexpected Touch" },
-        { text: "Trapped in a Fire" },
-        { text: "Dancing" },
-        { text: "Unsent Message" },
-        { text: "Lucy is Stabbed" },
-        { text: "Lucy is Shot" },
-        { text: "Lucy is Kidnapped" },
-        { text: "Lucy almost Drowns" },
-        { text: "Tim is Stabbed" },
-        { text: "Tim is Shot" },
-        { text: "Tim is Kidnapped" },
-        { text: "Tim almost Drowns" },
-        { text: "Feral Tim" },
-        { text: "Feral Lucy" },
-        { text: "A Dare" },
-        { text: "A Bet" },
-        { text: "Airport Goodbye" },
-        { text: "Evil Seth Ridley" },
-        { text: "Evil Chris Sanford" },
-        { text: "Isabel Returns" },
-        { text: "Rosalind Returns" },
-        { text: "Caleb's Evil Twin" },
-        { text: "Ray Watkins Returns" },
-        { text: "Heath Everett Returns" },
-        { text: "Airport Reunion" },
-        { text: "Enemies to Lovers" },
-        { text: "Enemies with Benefits" },
-        { text: "Unexpected Pregnancy" },
-        { text: "Hostage Rescue" },
-        { text: "Reincarnation AU" },
-        { text: "Shut Up Kiss" },
-        { text: "Grim Reaper VS Target AU" },
-        { text: "Blind Date" },
-        { text: "Drunken Confessions" },
-        { text: "Arranged Marriage" },
-        { text: "F*ck or Die" },
-        { text: "Just Friends" },
-        { text: "Dark Secret" },
-        { text: "Woke Up Married" },
-        { text: "Wedding Vows" },
-        { text: "Forbidden Love" },
-        { text: "Rookie/TO Romance" },
-        { text: "TO Lucy" },
-        { text: "Cursed Lucy" },
-        { text: "Cursed Tim" },
-        { text: "The Roundup" },
-        { text: "New Year Kiss" },
-        { text: "Hero VS Villain AU" },
-        { text: "Cop VS Criminal AU" },
-        { text: "DOD Part 2" },
-        { text: "Criminal Lucy" },
-        { text: "Criminal Tim" },
-        { text: "Metro Tim" },
-        { text: "Rookie Tim" },
-        { text: "Vampire Tim" },
-        { text: "Vampire Lucy" },
-        { text: "Vampires AU" },
-        { text: "Love Spell" },
-        { text: "Doppelgangers" },
-        { text: "Greenlit" },
-        { text: "Drinking" },
-        { text: "Truth Serum" },
-        { text: "Truth or Dare" },
-        { text: "Pregnancy Scare" },
-        { text: "Role Reversal" },
-        { text: "IA investigation" },
-        { text: "Nightmares" },
-        { text: "Stakeout Op" },
-        { text: "Fake Breakup" },
-        { text: "Fake Death" },
-        { text: "Tim Loses Control" },
-        { text: "Baby Fever" },
-        { text: "Family Dinner" },
-        { text: "Bomb Threat" },
-        { text: "Missile Threat" },
-        { text: "Hostage Situation" },
-        { text: "Injury on Duty" },
-        { text: "Warden/Inmate AU" },
-        { text: "Mafia AU" },
-        { text: "Time Travel AU" },
-        { text: "Flu Season" },
-        { text: "Brush with Death" },
-        { text: "Rookie/TO One-night Stand" },
-        { text: "One-night Stand" },
-        { text: "Major Injury" },
-        { text: "Voicemail" },
-        { text: "Misunderstanding" },
-        { text: "Injured Lucy" },
-        { text: "Injured Tim" },
-        { text: "Radio Silence" },
-        { text: "Car Accident" },
-        { text: "Stolen Shop" },
-        { text: "Interrupted Kiss" },
-        { text: "Shared Bed" },
-        { text: "Hidden Injury" },
-        { text: "Short/Long-term Coma" },
-        { text: "Double Date" },
-        { text: "Karaoke Night" },
-        { text: "Laundry Day" },
-        { text: "Shared Coffee" },
-        { text: "Missed Call" },
-        { text: "Poisoned Meal" },
-        { text: "Movie Night" },
-        { text: "Lazy Morning" },
-        { text: "Power Outage" },
-        { text: "Trapped Together" },
-        { text: "Stuck Elevator" },
-        { text: "Post-Breakup" },
-        { text: "Panic Attack" },
-        { text: "Pillow Talk" },
-        { text: "Apocalypse AU" },
-        { text: "Zombie AU" }
+        { text: "Fake Dating", categories: ["Relationship", "Romance"] },
+        { text: "Undercover", categories: ["Action"] },
+        { text: "Only One Bed", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Jealousy", categories: ["Romance", "Angst"] },
+        { text: "5+1 Things", categories: ["Fluff"] },
+        { text: "4+1 Things", categories: ["Fluff"] },
+        { text: "Hurt/Comfort", categories: ["Angst", "Fluff", "Romance"] },
+        { text: "MCD", categories: ["Angst"] },
+        { text: "Rainy Night", categories: ["Romance", "Fluff", "Locations"] },
+        { text: "Love Confession", categories: ["Romance", "Relationship"] },
+        { text: "First Kiss", categories: ["Romance", "Relationship"] },
+        { text: "Missing Scene", categories: ["Fluff"] },
+        { text: "Domestic Chenford", categories: ["Romance", "Fluff", "Relationship"] },
+        { text: "Angst with Happy Ending", categories: ["Angst", "Romance"] },
+        { text: "Wedding Date", categories: ["Romance", "Events", "Relationship"] },
+        { text: "Road Trip", categories: ["Fluff", "Locations", "Events"] },
+        { text: "Secret Relationship", categories: ["Relationship", "Romance"] },
+        { text: "Friends to Lovers", categories: ["Relationship", "Romance"] },
+        { text: "Alternate First Meeting", categories: ["AU", "Relationship"] },
+        { text: "Holiday Fic", categories: ["Events", "Fluff"] },
+        { text: "Soft Lucy", categories: ["Characters", "Fluff"] },
+        { text: "Argument / Make Up", categories: ["Relationship", "Angst", "Romance"] },
+        { text: "Slow Burn", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Mutual Pining", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Getting Back Together", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Undercover Kiss", categories: ["Romance", "Action", "Relationship"] },
+        { text: "Hospital Visit", categories: ["Injuries", "Angst", "Locations"] },
+        { text: "Late Night Phone Call", categories: ["Romance", "Angst"] },
+        { text: "Accidental Confession", categories: ["Romance", "Relationship"] },
+        { text: "Jealous Lucy", categories: ["Characters", "Romance", "Angst"] },
+        { text: "Jealous Tim", categories: ["Characters", "Romance", "Angst"] },
+        { text: "Soulmate AU", categories: ["AU", "Romance", "Relationship"] },
+        { text: "College AU", categories: ["AU"] },
+        { text: "Spy AU", categories: ["AU", "Action"] },
+        { text: "Witness Protection AU", categories: ["AU", "Action"] },
+        { text: "Bodyguard AU", categories: ["AU", "Action", "Relationship"] },
+        { text: "Celebrity AU", categories: ["AU"] },
+        { text: "Time Loop AU", categories: ["AU", "Angst"] },
+        { text: "Pre-dating Jealousy", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Pre-dating Angst", categories: ["Relationship", "Angst"] },
+        { text: "Amnesia AU", categories: ["AU", "Angst", "Romance"] },
+        { text: "Reincarnation AU", categories: ["AU", "Romance"] },
+        { text: "Dream Sharing AU", categories: ["AU", "Romance"] },
+        { text: "Body Swap AU", categories: ["AU"] },
+        { text: "Neighbors AU", categories: ["AU", "Romance", "Relationship"] },
+        { text: "Coffee Shop AU", categories: ["AU", "Locations", "Fluff", "Romance"] },
+        { text: "One Rainy Night", categories: ["Romance", "Fluff", "Locations"] },
+        { text: "Proposal", categories: ["Romance", "Events", "Relationship"] },
+        { text: "Wedding", categories: ["Romance", "Events", "Relationship"] },
+        { text: "Roommates AU", categories: ["AU", "Relationship", "Fluff"] },
+        { text: "Protective Lucy", categories: ["Characters", "Romance", "Angst", "Action"] },
+        { text: "Protective Tim", categories: ["Characters", "Romance", "Angst", "Action"] },
+        { text: "Outsider POV", categories: ["Characters", "Fluff"] },
+        { text: "Safe House", categories: ["Action", "Locations", "Romance"] },
+        { text: "Holiday Party", categories: ["Events", "Fluff"] },
+        { text: "Valentine's Day", categories: ["Events", "Romance"] },
+        { text: "Halloween", categories: ["Events"] },
+        { text: "New Year's Eve", categories: ["Events", "Romance"] },
+        { text: "Beach Trip", categories: ["Locations", "Events", "Fluff"] },
+        { text: "Vacation Fic", categories: ["Locations", "Events", "Fluff"] },
+        { text: "Secret Crush", categories: ["Relationship", "Romance"] },
+        { text: "Friends With Feelings", categories: ["Relationship", "Romance"] },
+        { text: "Fake Engagement", categories: ["Relationship", "Romance"] },
+        { text: "Breakdown", categories: ["Angst"] },
+        { text: "Food Poisoning", categories: ["Injuries", "Angst"] },
+        { text: "Roadside Motel", categories: ["Locations", "Relationship", "Romance"] },
+        { text: "The Morning After", categories: ["Romance", "NSFW", "Relationship"] },
+        { text: "Unexpected Touch", categories: ["Romance", "Fluff"] },
+        { text: "Trapped in a Fire", categories: ["Action", "Injuries", "Angst"] },
+        { text: "Dancing", categories: ["Romance", "Fluff"] },
+        { text: "Unsent Message", categories: ["Angst", "Romance"] },
+        { text: "Lucy is Stabbed", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Lucy is Shot", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Lucy is Kidnapped", categories: ["Characters", "Action", "Injuries", "Angst"] },
+        { text: "Lucy Almost Drowns", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Tim is Stabbed", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Tim is Shot", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Tim is Kidnapped", categories: ["Characters", "Action", "Injuries", "Angst"] },
+        { text: "Tim Almost Drowns", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Feral Tim", categories: ["Characters", "Angst"] },
+        { text: "Feral Lucy", categories: ["Characters", "Angst"] },
+        { text: "A Dare", categories: ["Fluff", "Romance"] },
+        { text: "A Bet", categories: ["Fluff", "Romance"] },
+        { text: "Airport Goodbye", categories: ["Locations", "Romance", "Angst"] },
+        { text: "Evil Seth Ridley", categories: ["Characters", "Action"] },
+        { text: "Evil Chris Sanford", categories: ["Characters", "Action"] },
+        { text: "Isabel Returns", categories: ["Characters", "Angst", "Events"] },
+        { text: "Rosalind Returns", categories: ["Characters", "Action", "Angst"] },
+        { text: "Caleb's Evil Twin", categories: ["Characters", "AU"] },
+        { text: "Ray Watkins Returns", categories: ["Characters", "Action", "Events"] },
+        { text: "Heath Everett Returns", categories: ["Characters", "Action", "Events"] },
+        { text: "Airport Reunion", categories: ["Locations", "Romance", "Fluff"] },
+        { text: "Enemies to Lovers", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Enemies with Benefits", categories: ["Relationship", "Romance", "NSFW"] },
+        { text: "Unexpected Pregnancy", categories: ["Romance", "Angst", "Relationship"] },
+        { text: "Pregnancy Cravings", categories: ["Romance", "Fluff", "Relationship"] },
+        { text: "Hostage Rescue", categories: ["Action", "Angst"] },
+        { text: "Shut Up Kiss", categories: ["Romance"] },
+        { text: "Grim Reaper VS Target AU", categories: ["AU", "Action", "Romance"] },
+        { text: "Blind Date", categories: ["Romance", "Events"] },
+        { text: "Drunken Confessions", categories: ["Romance", "Fluff"] },
+        { text: "Arranged Marriage", categories: ["Relationship", "Romance"] },
+        { text: "F*ck or Die", categories: ["NSFW", "AU"] },
+        { text: "Just Friends", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Dark Secret", categories: ["Angst"] },
+        { text: "Woke Up Married", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Wedding Vows", categories: ["Romance", "Events"] },
+        { text: "Forbidden Love", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Rookie/TO Romance", categories: ["Relationship", "Romance"] },
+        { text: "TO Lucy", categories: ["Characters", "AU"] },
+        { text: "Cursed Lucy", categories: ["Characters", "AU", "Angst"] },
+        { text: "Cursed Tim", categories: ["Characters", "AU", "Angst"] },
+        { text: "The Roundup", categories: ["Events", "Action"] },
+        { text: "New Year Kiss", categories: ["Events", "Romance"] },
+        { text: "Hero VS Villain AU", categories: ["AU", "Action"] },
+        { text: "Cop VS Criminal AU", categories: ["AU", "Action", "Relationship"] },
+        { text: "DOD Part 2", categories: ["Action", "Angst", "Events"] },
+        { text: "Criminal Lucy", categories: ["Characters", "AU", "Action"] },
+        { text: "Criminal Tim", categories: ["Characters", "AU", "Action"] },
+        { text: "Metro Tim", categories: ["Characters"] },
+        { text: "Rookie Tim", categories: ["Characters", "AU"] },
+        { text: "Vampire Tim", categories: ["Characters", "AU"] },
+        { text: "Vampire Lucy", categories: ["Characters", "AU"] },
+        { text: "Vampires AU", categories: ["AU"] },
+        { text: "Love Spell", categories: ["AU", "Romance"] },
+        { text: "Doppelganger", categories: ["AU", "Characters"] },
+        { text: "Greenlit", categories: ["Events", "Romance"] },
+        { text: "Drinking", categories: ["Events", "Fluff"] },
+        { text: "Truth Serum", categories: ["AU", "Fluff", "Romance"] },
+        { text: "Truth or Dare", categories: ["Fluff", "Romance", "Events"] },
+        { text: "Pregnancy Scare", categories: ["Romance", "Angst", "NSFW"] },
+        { text: "Role Reversal", categories: ["AU", "Relationship"] },
+        { text: "IA investigation", categories: ["Action", "Angst"] },
+        { text: "Nightmares", categories: ["Angst"] },
+        { text: "Stakeout Op", categories: ["Action"] },
+        { text: "Fake Breakup", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Fake Death", categories: ["Action", "Angst"] },
+        { text: "Tim Loses Control", categories: ["Characters", "Angst"] },
+        { text: "Baby Fever", categories: ["Romance", "Fluff"] },
+        { text: "Family Dinner", categories: ["Events", "Fluff"] },
+        { text: "Bomb Threat", categories: ["Action", "Angst"] },
+        { text: "Missile Threat", categories: ["Action", "Angst"] },
+        { text: "Hostage Situation", categories: ["Action", "Angst"] },
+        { text: "Injury on Duty", categories: ["Injuries", "Action", "Angst"] },
+        { text: "Warden / Inmate AU", categories: ["AU", "Action", "Relationship"] },
+        { text: "Mafia AU", categories: ["AU", "Action"] },
+        { text: "Time Travel AU", categories: ["AU"] },
+        { text: "Flu Season", categories: ["Injuries", "Fluff"] },
+        { text: "Brush with Death", categories: ["Angst", "Injuries"] },
+        { text: "Rookie/TO One-night Stand", categories: ["Relationship", "Romance", "NSFW"] },
+        { text: "One-night Stand", categories: ["Romance", "NSFW"] },
+        { text: "Major Injury", categories: ["Injuries", "Angst"] },
+        { text: "Voicemail", categories: ["Angst", "Romance"] },
+        { text: "Rain Kiss", categories: ["Romance", "Fluff"] },
+        { text: "Bad Weather", categories: ["Events"] },
+        { text: "Birthday", categories: ["Events", "Fluff"] },
+        { text: "Soothing Hug", categories: ["Fluff", "Romance"] },
+        { text: "Desparate Hug", categories: ["Angst", "Romance"] },
+        { text: "Goodbye Kiss", categories: ["Romance", "Angst"] },
+        { text: "Misunderstanding", categories: ["Angst", "Relationship"] },
+        { text: "Pep Talk", categories: ["Fluff", "Characters"] },
+        { text: "Fresh Start", categories: ["Romance", "Fluff"] },
+        { text: "Injured Lucy", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Injured Tim", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Lucy is Sick", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Tim is Sick", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Radio Silence", categories: ["Angst", "Relationship"] },
+        { text: "Car Accident", categories: ["Action", "Injuries", "Angst"] },
+        { text: "Stolen Shop", categories: ["Action"] },
+        { text: "Interrupted Kiss", categories: ["Romance", "Angst"] },
+        { text: "Heartbroken", categories: ["Angst", "Romance"] },
+        { text: "Shared Bed", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Hidden Injury", categories: ["Injuries", "Angst"] },
+        { text: "Short / Long-term Coma", categories: ["Injuries", "Angst"] },
+        { text: "Plain Clothes Day", categories: ["Events", "Fluff"] },
+        { text: "Heatwave", categories: ["Events"] },
+        { text: "Wildfire", categories: ["Events"] },
+        { text: "Locker Room", categories: ["Locations"] },
+        { text: "Double Date", categories: ["Romance", "Events", "Fluff"] },
+        { text: "Mistaken For a Couple", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Mistaken For a Criminal", categories: ["Action", "Angst"] },
+        { text: "Plus One", categories: ["Romance", "Events"] },
+        { text: "Las Torres Bar", categories: ["Locations"] },
+        { text: "Kid Fic", categories: ["Fluff", "Romance"] },
+        { text: "Kojo", categories: ["Characters", "Fluff"] },
+        { text: "Roll Call", categories: ["Locations", "Events"] },
+        { text: "Speed Dating", categories: ["Romance", "Events", "Fluff"] },
+        { text: "Work Party", categories: ["Events", "Fluff"] },
+        { text: "Charity Gala", categories: ["Events", "Locations"] },
+        { text: "Single Parent", categories: ["AU", "Fluff", "Romance"] },
+        { text: "Pinky Promise", categories: ["Fluff", "Romance"] },
+        { text: "Game Night", categories: ["Fluff", "Events"] },
+        { text: "Foodtruck", categories: ["Locations", "Fluff"] },
+        { text: "Karaoke Night", categories: ["Events", "Fluff"] },
+        { text: "Laundry Day", categories: ["Fluff"] },
+        { text: "Shared Coffee", categories: ["Fluff", "Romance"] },
+        { text: "Missed Call", categories: ["Angst"] },
+        { text: "Poisoned Meal", categories: ["Action", "Injuries", "Angst"] },
+        { text: "Movie Night", categories: ["Fluff", "Romance"] },
+        { text: "Lazy Morning", categories: ["Fluff", "Romance"] },
+        { text: "Morning Run", categories: ["Fluff"] },
+        { text: "Postcards", categories: ["Fluff", "Romance"] },
+        { text: "Power Outage", categories: ["Events", "Fluff", "Romance"] },
+        { text: "Trapped Together", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Stuck Elevator", categories: ["Locations", "Relationship", "Angst"] },
+        { text: "Post-Breakup", categories: ["Relationship", "Angst", "Romance"] },
+        { text: "Panic Attack", categories: ["Angst"] },
+        { text: "Pillow Talk", categories: ["Romance", "NSFW", "Fluff"] },
+        { text: "Interrogation Room", categories: ["Locations", "Action"] },
+        { text: "Apocalypse AU", categories: ["AU", "Action", "Angst"] },
+        { text: "Zombie AU", categories: ["AU", "Action", "Angst"] },
+        { text: "Social Media", categories: ["Fluff"] },
+        { text: "Escort Work", categories: ["Action"] },
+        { text: "Emergency Room", categories: ["Locations", "Injuries", "Angst"] },
+        { text: "Tim's House", categories: ["Locations", "Fluff"] },
+        { text: "Lucy's Apartment", categories: ["Locations", "Fluff"] },
+        { text: "Baby-Sitting", categories: ["Fluff"] },
+        { text: "Clothes Sharing", categories: ["Romance", "Fluff"] },
+        { text: "Shop Talk", categories: ["Fluff", "Characters"] },
+        { text: "Head Injury", categories: ["Injuries", "Angst"] },
+        { text: "Worried Lucy", categories: ["Characters", "Angst", "Romance"] },
+        { text: "Spilled Drink", categories: ["Fluff", "Romance"] },
+        { text: "Worried Tim", categories: ["Characters", "Angst", "Romance"] },
+        { text: "Foot Chase", categories: ["Action"] },
+        { text: "Traffic Stop", categories: ["Action"] },
+        { text: "Ride Along", categories: ["Events", "Characters"] },
+        { text: "Backup Call", categories: ["Action"] },
+        { text: "Code Three", categories: ["Action"] },
+        { text: "Night Shift", categories: ["Events", "Locations"] },
+        { text: "Desk Duty", categories: ["Characters", "Fluff"] },
+        { text: "Training Exercise", categories: ["Action", "Events"] },
+        { text: "Field Training", categories: ["Action", "Events"] },
+        { text: "Probation Day", categories: ["Events"] },
+        { text: "Body Cam", categories: ["Action"] },
+        { text: "Evidence Room", categories: ["Locations"] },
+        { text: "Court Testimony", categories: ["Action", "Events"] },
+        { text: "Burn Injury", categories: ["Injuries", "Angst"] },
+        { text: "Bleeding Out", categories: ["Injuries", "Angst"] },
+        { text: "Trust Issues", categories: ["Relationship", "Angst"] },
+        { text: "Fear of Loss", categories: ["Angst", "Romance"] },
+        { text: "Pushing Away", categories: ["Relationship", "Angst"] },
+        { text: "Silent Treatment", categories: ["Relationship", "Angst"] },
+        { text: "Unspoken Feelings", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Almost Confession", categories: ["Romance", "Angst"] },
+        { text: "Wrong Timing", categories: ["Angst", "Romance"] },
+        { text: "Second Thoughts", categories: ["Angst", "Romance"] },
+        { text: "Regret", categories: ["Angst"] },
+        { text: "Wrong Text", categories: ["Fluff", "Romance"] },
+        { text: "Group Chat", categories: ["Fluff"] },
+        { text: "Inside Joke", categories: ["Fluff", "Romance"] },
+        { text: "Nickname", categories: ["Fluff", "Romance"] },
+        { text: "Running Late", categories: ["Fluff"] },
+        { text: "Coffee Run", categories: ["Fluff", "Romance"] },
+        { text: "Takeout Night", categories: ["Fluff", "Romance"] },
+        { text: "Messy Kitchen", categories: ["Fluff", "Romance"] },
+        { text: "Lost Keys", categories: ["Fluff"] },
+        { text: "Bad Cooking", categories: ["Fluff"] },
+        { text: "Fake Marriage", categories: ["Relationship", "Romance"] },
+        { text: "Secret Marriage", categories: ["Relationship", "Romance"] },
+        { text: "Accidental Date", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Forced Proximity", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Identity Reveal", categories: ["Action", "Angst"] },
+        { text: "Hidden Past", categories: ["Angst", "Characters"] },
+        { text: "Double Life", categories: ["Action", "Angst"] },
+        { text: "Forehead Kiss", categories: ["Romance", "Fluff"] },
+        { text: "Kitchen Dance", categories: ["Romance", "Fluff"] },
+        { text: "Holding Hands", categories: ["Romance", "Fluff"] },
+        { text: "Magnetic Pull", categories: ["Romance", "Angst"] },
+        { text: "Caught Staring", categories: ["Romance", "Fluff"] },
+        { text: "Late Night Visit", categories: ["Romance", "Angst"] },
+        { text: "Crossing Lines", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Idiots in Love", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Oblivious Idiots", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Mechanic AU", categories: ["AU"] },
+        { text: "Stripper AU", categories: ["AU", "NSFW"] },
+        { text: "Prison AU", categories: ["AU", "Action", "Angst"] },
+        { text: "Assassins AU", categories: ["AU", "Action"] },
+        { text: "Everyone Knows", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Bonfire", categories: ["Events", "Fluff", "Romance"] },
+        { text: "Secret Santa", categories: ["Events", "Fluff"] },
+        { text: "Car Confession", categories: ["Romance", "Angst"] },
+        { text: "Late Night Drive", categories: ["Fluff", "Romance"] },
+        { text: "Shared Silence", categories: ["Romance", "Angst"] },
+        { text: "One Last Time", categories: ["Angst", "Romance"] },
+        { text: "Temple Kiss", categories: ["Romance", "Fluff"] },
+        { text: "Sleepy Confession", categories: ["Romance", "Fluff"] },
+        { text: "Morning Cuddles", categories: ["Romance", "Fluff"] },
+        { text: "Couch Naps", categories: ["Romance", "Fluff"] },
+        { text: "Shared Hoodie", categories: ["Romance", "Fluff"] },
+        { text: "False Accusation", categories: ["Action", "Angst"] },
+        { text: "Oh. Moment", categories: ["Romance", "Fluff"] },
+        { text: "Temporary Breakup", categories: ["Relationship", "Angst", "Romance"] },
+        { text: "Shared Space", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "No Escape", categories: ["Action", "Angst"] },
+        { text: "Locked In", categories: ["Action", "Angst", "Locations"] },
+        { text: "Accidental Marriage", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Fake Identity", categories: ["Action", "AU"] },
+        { text: "Identity Mixup", categories: ["Fluff", "Action"] },
+        { text: "Ride or Die", categories: ["Relationship", "Romance", "Action"] },
+        { text: "Mistaken Identity", categories: ["Action", "Fluff"] },
+        { text: "Drunk Marriage", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Thunderstorm", categories: ["Events"] },
+        { text: "Hiking", categories: ["Events", "Locations", "Fluff"] },
+        { text: "Sparring", categories: ["Action", "Fluff"] },
+        { text: "Picnic Date", categories: ["Romance", "Fluff", "Events"] },
+        { text: "Sunburnt", categories: ["Injuries", "Fluff"] },
+        { text: "Pool Party", categories: ["Events", "Fluff"] },
+        { text: "Halloween Party", categories: ["Events", "Fluff"] },
+        { text: "Barbecue Party", categories: ["Events", "Fluff"] },
+        { text: "Trick or Treating", categories: ["Events", "Fluff"] },
+        { text: "Haunted House", categories: ["Events", "Locations"] },
+        { text: "Ghost Stories", categories: ["Events", "Fluff"] },
+        { text: "Horror Movies Marathon", categories: ["Events", "Fluff"] },
+        { text: "New Year Resolutions", categories: ["Events", "Fluff", "Romance"] }
     ];
 
     const sortedPrompts = promptPool
-        .map(prompt => prompt.text)
-        .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+        .slice()
+        .sort((a, b) => a.text.localeCompare(b.text, undefined, { sensitivity: "base" }));
 
     const BOARD_STORAGE_KEY = "chenford_bingo_saved_board_v5";
     const SETTINGS_STORAGE_KEY = "chenford_bingo_settings_v3";
@@ -1076,6 +1238,7 @@ body{
 
     let lastBingoCount = 0;
     let celebrationTimeout = null;
+    let promptEnabledState = new Map();
 
     function shuffleArray(array) {
         const copy = array.slice();
@@ -1219,6 +1382,45 @@ body{
         return shuffleArray(indexes).slice(0, count).sort((a, b) => a - b);
     }
 
+    function initializePromptEnabledState(settings) {
+        const disabledSet = new Set(settings.disabledPrompts || []);
+        promptEnabledState = new Map();
+
+        sortedPrompts.forEach(prompt => {
+            promptEnabledState.set(prompt.text, !disabledSet.has(prompt.text));
+        });
+    }
+
+    function syncVisiblePromptCheckboxesToState() {
+        document.querySelectorAll(".bingo-prompt-checkbox").forEach(box => {
+            promptEnabledState.set(box.value, box.checked);
+        });
+    }
+
+    function getPromptEnabled(text) {
+        return promptEnabledState.has(text) ? promptEnabledState.get(text) : true;
+    }
+
+    function setPromptEnabled(text, enabled) {
+        promptEnabledState.set(text, !!enabled);
+    }
+
+    function getAllEnabledPromptTexts() {
+        return sortedPrompts
+            .map(prompt => prompt.text)
+            .filter(text => getPromptEnabled(text));
+    }
+
+    function getAllDisabledPromptTexts() {
+        return sortedPrompts
+            .map(prompt => prompt.text)
+            .filter(text => !getPromptEnabled(text));
+    }
+
+    function getPromptsForCategory(category) {
+        return sortedPrompts.filter(prompt => promptMatchesCategory(prompt, category));
+    }
+
     function getBoardMeta(gridSize, includeFreeSpace, freeSpaceCount) {
         const total = gridSize * gridSize;
         const usableFreeSpaceCount = includeFreeSpace
@@ -1236,9 +1438,37 @@ body{
         };
     }
 
+    function getPromptCategoryViewValue() {
+        const select = document.getElementById("prompt-category-view");
+        return select ? select.value : "all";
+    }
+
+    function promptMatchesCategory(prompt, selectedCategory) {
+        if (selectedCategory === "all") return true;
+        return Array.isArray(prompt.categories) && prompt.categories.includes(selectedCategory);
+    }
+
+    function populatePromptCategoryView() {
+        const select = document.getElementById("prompt-category-view");
+        if (!select) return;
+
+        const currentValue = select.value || "all";
+
+        select.innerHTML = `
+            <option value="all">All categories</option>
+            ${ALL_CATEGORIES.map(category => `
+                <option value="${escapeHtml(category)}">${escapeHtml(category)}</option>
+            `).join("")}
+        `;
+
+        const hasCurrent = Array.from(select.options).some(option => option.value === currentValue);
+        select.value = hasCurrent ? currentValue : "all";
+    }
+
     function getEnabledPrompts(settings) {
         const disabledPromptSet = new Set(settings.disabledPrompts);
-        return sortedPrompts.filter(prompt => !disabledPromptSet.has(prompt));
+
+        return sortedPrompts.filter(prompt => !disabledPromptSet.has(prompt.text));
     }
 
     function createFreshBoardData(settings) {
@@ -1262,7 +1492,7 @@ body{
                 squares.push(settings.freeSpaceTexts[freePointer] || `FREE SPACE ${freePointer + 1}`);
                 freePointer++;
             } else {
-                squares.push(selectedPrompts[promptPointer]);
+                squares.push(selectedPrompts[promptPointer].text);
                 promptPointer++;
             }
         }
@@ -1483,12 +1713,7 @@ body{
 
     function hasProgress(data) {
         if (!data) return false;
-        const meta = getBoardMeta(data.gridSize, data.includeFreeSpace);
-
-        return data.checked.some((value, index) => {
-            if (meta.hasFreeSpace && index === meta.freeIndex) return false;
-            return value;
-        });
+        return data.checked.some(Boolean);
     }
 
     function resetMarks() {
@@ -1550,46 +1775,75 @@ body{
         }
     }
 
-    function renderSettingsUI() {
+    function renderSettingsUI(options = {}) {
         const settings = loadSettings();
         const select = document.getElementById("grid-size-select");
         const promptList = document.getElementById("bingo-prompt-list");
         const freeSpaceToggle = document.getElementById("include-free-space");
 
+        if (options.resetPromptState) {
+            initializePromptEnabledState(settings);
+        } else if (!promptEnabledState.size) {
+            initializePromptEnabledState(settings);
+        } else {
+            syncVisiblePromptCheckboxesToState();
+        }
+
         if (select) select.value = String(settings.gridSize);
         if (freeSpaceToggle) freeSpaceToggle.checked = settings.includeFreeSpace;
 
         renderFreeSpaceInputs(settings);
+        populatePromptCategoryView();
+
+        const selectedPromptCategory = getPromptCategoryViewValue();
 
         if (promptList) {
-            const disabledSet = new Set(settings.disabledPrompts);
-            promptList.innerHTML = sortedPrompts.map(prompt => `
-                <label class="bingo-prompt-option" data-prompt-label="${escapeHtml(prompt.toLowerCase())}">
-                    <input type="checkbox" class="bingo-prompt-checkbox" value="${escapeHtml(prompt)}" ${disabledSet.has(prompt) ? "" : "checked"}>
-                    <span>${escapeHtml(prompt)}</span>
-                </label>
-            `).join("");
+            promptList.innerHTML = sortedPrompts
+                .filter(prompt => promptMatchesCategory(prompt, selectedPromptCategory))
+                .map(prompt => `
+                    <label
+                        class="bingo-prompt-option"
+                        data-prompt-label="${escapeHtml(prompt.text.toLowerCase())}"
+                        data-prompt-categories="${escapeHtml((prompt.categories || []).join("|"))}"
+                    >
+                        <input
+                            type="checkbox"
+                            class="bingo-prompt-checkbox"
+                            value="${escapeHtml(prompt.text)}"
+                            ${getPromptEnabled(prompt.text) ? "checked" : ""}
+                        >
+                        <span>${escapeHtml(prompt.text)}</span>
+                    </label>
+                `).join("");
         }
 
+        filterPromptList();
         updatePromptCountPreview();
     }
 
     function filterPromptList() {
         const input = document.getElementById("prompt-search");
         const query = input ? input.value.trim().toLowerCase() : "";
+        const selectedCategory = getPromptCategoryViewValue();
         const options = document.querySelectorAll(".bingo-prompt-option[data-prompt-label]");
 
         options.forEach(option => {
             const label = option.getAttribute("data-prompt-label") || "";
-            option.style.display = label.includes(query) ? "" : "none";
+            const categories = (option.getAttribute("data-prompt-categories") || "").split("|").filter(Boolean);
+
+            const matchesSearch = label.includes(query);
+            const matchesCategory = selectedCategory === "all" || categories.includes(selectedCategory);
+
+            option.style.display = matchesSearch && matchesCategory ? "" : "none";
         });
     }
 
     function getSettingsFromUI() {
+        syncVisiblePromptCheckboxesToState();
+
         const select = document.getElementById("grid-size-select");
         const freeSpaceToggle = document.getElementById("include-free-space");
         const freeSpaceCountSelect = document.getElementById("free-space-count");
-        const promptBoxes = document.querySelectorAll(".bingo-prompt-checkbox");
         const freeSpaceTextInputs = document.querySelectorAll(".bingo-free-space-text");
 
         const gridSize = select ? Number(select.value) : DEFAULT_GRID_SIZE;
@@ -1605,14 +1859,12 @@ body{
             })
             : [];
 
-        const enabledPrompts = Array.from(promptBoxes).filter(box => box.checked).map(box => box.value);
-
         return {
             gridSize,
             includeFreeSpace,
             freeSpaceCount,
             freeSpaceTexts,
-            disabledPrompts: sortedPrompts.filter(text => !enabledPrompts.includes(text)),
+            disabledPrompts: getAllDisabledPromptTexts(),
             isLocked: loadSettings().isLocked
         };
     }
@@ -1661,15 +1913,21 @@ body{
     }
 
     function updatePromptCountPreview() {
+        syncVisiblePromptCheckboxesToState();
+
         const settings = getSettingsFromUI();
         const enabledPrompts = getEnabledPrompts(settings);
         const meta = getBoardMeta(settings.gridSize, settings.includeFreeSpace, settings.freeSpaceCount);
 
         const countEl = document.getElementById("prompt-count-preview");
         const minimumEl = document.getElementById("minimum-needed-preview");
+        const visibleMetaEl = document.getElementById("visible-category-meta");
+        const visibleCountEl = document.getElementById("visible-category-count");
+
+        const selectedCategory = getPromptCategoryViewValue();
 
         if (countEl) {
-            countEl.textContent = `${enabledPrompts.length} prompts enabled`;
+            countEl.textContent = `${enabledPrompts.length} / ${sortedPrompts.length} prompts enabled overall`;
         }
 
         if (minimumEl) {
@@ -1680,6 +1938,19 @@ body{
                 minimumEl.classList.add("is-error");
             } else {
                 minimumEl.textContent = `Minimum needed: ${meta.promptCountNeeded}`;
+            }
+        }
+
+        if (visibleMetaEl && visibleCountEl) {
+            if (selectedCategory !== "all") {
+                const categoryPrompts = getPromptsForCategory(selectedCategory);
+                const visibleChecked = categoryPrompts.filter(prompt => getPromptEnabled(prompt.text)).length;
+
+                visibleMetaEl.hidden = false;
+                visibleCountEl.textContent = `${visibleChecked} / ${categoryPrompts.length} enabled in ${selectedCategory}`;
+            } else {
+                visibleMetaEl.hidden = true;
+                visibleCountEl.textContent = "";
             }
         }
     }
@@ -1721,7 +1992,7 @@ body{
 
     function saveSettingsFromUI() {
         const settings = getSettingsFromUI();
-        const meta = getBoardMeta(settings.gridSize, settings.includeFreeSpace);
+        const meta = getBoardMeta(settings.gridSize, settings.includeFreeSpace, settings.freeSpaceCount);
         const enabledPrompts = getEnabledPrompts(settings);
 
         if (enabledPrompts.length < meta.promptCountNeeded) {
@@ -1795,16 +2066,25 @@ body{
         updateTopControlsVisibility();
     }
 
+    function getVisiblePromptCheckboxes() {
+        return Array.from(document.querySelectorAll(".bingo-prompt-option[data-prompt-label]"))
+            .filter(option => option.style.display !== "none")
+            .map(option => option.querySelector(".bingo-prompt-checkbox"))
+            .filter(Boolean);
+    }
+
     function selectAllPrompts() {
-        document.querySelectorAll(".bingo-prompt-checkbox").forEach(box => {
+        getVisiblePromptCheckboxes().forEach(box => {
             box.checked = true;
+            setPromptEnabled(box.value, true);
         });
         clearSettingsMessage();
     }
 
     function clearAllPrompts() {
-        document.querySelectorAll(".bingo-prompt-checkbox").forEach(box => {
+        getVisiblePromptCheckboxes().forEach(box => {
             box.checked = false;
+            setPromptEnabled(box.value, false);
         });
         clearSettingsMessage();
     }
@@ -1949,14 +2229,18 @@ body{
         const helpButton = document.getElementById("help-bingo");
         const saveCloseSettingsButton = document.getElementById("save-close-settings");
         const freeSpaceCountSelect = document.getElementById("free-space-count");
+        const promptCategoryView = document.getElementById("prompt-category-view");
 
         document.addEventListener("change", function (event) {
-            if (event.target && event.target.classList.contains("bingo-prompt-checkbox")) {
+            if (!event.target) return;
+
+            if (event.target.classList.contains("bingo-prompt-checkbox")) {
+                setPromptEnabled(event.target.value, event.target.checked);
                 updatePromptCountPreview();
             }
         });
 
-        renderSettingsUI();
+        renderSettingsUI({ preservePromptState: false });
 
         let boardData = loadBoardData();
         const settings = loadSettings();
@@ -2072,6 +2356,13 @@ body{
                 const settings = getSettingsFromUI();
                 renderFreeSpaceInputs(settings);
                 updatePromptCountPreview();
+            });
+        }
+
+        if (promptCategoryView) {
+            promptCategoryView.addEventListener("change", function () {
+                syncVisiblePromptCheckboxesToState();
+                renderSettingsUI();
             });
         }
 
