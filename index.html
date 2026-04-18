@@ -83,7 +83,8 @@ body{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    padding:12px 10px;
+    gap:5px;
+    padding:10px 9px;
     border:1px solid var(--border-color);
     background:var(--post-background);
     font-family:var(--serif);
@@ -251,6 +252,8 @@ body{
     flex-wrap:wrap;
     gap:10px;
     margin-top:16px;
+    padding-top:14px;
+    border-top:1px solid var(--border-color);
 }
 
 .bingo-settings-message{
@@ -474,17 +477,9 @@ body{
     color:#b55;
 }
 
-.bingo-control-btn{
-    gap:5px;
-}
-
-.bingo-control-btn i{
+.bingo-btn i{
     font-size:.95rem;
     line-height:1;
-}
-
-.bingo-control-btn span{
-    display:inline;
 }
 
 .bingo-help-btn{
@@ -570,6 +565,56 @@ body{
     flex:0 0 auto;
 }
 
+.bingo-modal[hidden]{
+    display:none !important;
+}
+
+.bingo-modal{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+}
+
+.bingo-modal-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.38);
+}
+
+.bingo-modal-dialog{
+    position:relative;
+    z-index:1;
+    width:min(92vw, 420px);
+    margin:10vh auto 0;
+    padding:20px;
+    border:1px solid var(--border-color);
+    background:var(--post-background);
+    box-shadow:0 16px 40px rgba(0,0,0,.18);
+}
+
+.bingo-modal-title{
+    margin:0 0 10px;
+    font-family:var(--serif);
+    font-size:1.15rem;
+    color:var(--text-color);
+}
+
+.bingo-modal-text{
+    margin:0 0 18px;
+    font-size:.92rem;
+    line-height:1.6;
+}
+
+.bingo-modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}
+
+.bingo-modal-dialog{
+    border-radius:14px;
+}
+
 @media screen and (max-width: 700px){
     .bingo-square{
         font-size:.8rem;
@@ -652,6 +697,70 @@ body{
     .bingo-settings-topbar{
         align-items:stretch;
         flex-direction:column;
+    }
+
+    .bingo-share-input{
+        flex:1 1 150px;
+        min-width:0;
+    }
+    .bingo-modal-dialog{
+        width:calc(90vw - 24px);
+        margin:8vh auto 0;
+        padding:16px;
+    }
+
+    .bingo-modal-title{
+        font-size:1rem;
+    }
+
+    .bingo-modal-text{
+        font-size:.86rem;
+        line-height:1.5;
+        margin:0 0 14px;
+    }
+
+    .bingo-modal-actions{
+        flex-direction:column-reverse;
+        gap:8px;
+    }
+
+    .bingo-modal-actions .bingo-btn{
+        width:100%;
+        justify-content:center;
+    }
+    .bingo-settings-actions{
+        flex-wrap:nowrap;
+        gap:6px;
+    }
+
+    .bingo-settings-actions .bingo-btn{
+        min-width:0;
+        padding:10px 8px;
+        font-size:.85rem;
+    }
+
+    #copy-board-text,
+    #reset-settings-default{
+        flex:1 1 0;
+    }
+
+    #save-settings,
+    #close-settings{
+        width:42px;
+        height:42px;
+        padding:0;
+        flex:0 0 42px;
+    }
+
+    #save-settings span,
+    #close-settings span{
+        display:none;
+    }
+
+    #save-settings i,
+    #close-settings i{
+        font-size:1rem;
+        line-height:1;
     }
 
 }
@@ -872,8 +981,15 @@ body{
                 <div class="bingo-settings-actions">
                     <button type="button" id="copy-board-text" class="bingo-btn">Copy Board</button>
                     <button type="button" id="reset-settings-default" class="bingo-btn">Reset Defaults</button>
-                    <button type="button" id="save-settings" class="bingo-btn">Save Settings</button>
-                    <button type="button" id="close-settings" class="bingo-btn">Close</button>
+                    <button type="button" id="save-settings" class="bingo-btn" aria-label="Save settings">
+                        <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+                        <span>Save Settings</span>
+                    </button>
+
+                    <button type="button" id="close-settings" class="bingo-btn" aria-label="Close settings">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                        <span>Close</span>
+                    </button>
                 </div>
 
                 <div class="bingo-settings-message" id="bingo-settings-message"></div>
@@ -968,7 +1084,7 @@ body{
         { text: "Body Swap AU", categories: ["AU"] },
         { text: "Neighbors AU", categories: ["AU", "Romance", "Relationship"] },
         { text: "Coffee Shop AU", categories: ["AU", "Locations", "Fluff", "Romance"] },
-        { text: "One Rainy Night", categories: ["Romance", "Fluff", "Locations"] },
+        { text: "Sunrise", categories: ["Romance", "Fluff", "Locations"] },
         { text: "Proposal", categories: ["Romance", "Events", "Relationship"] },
         { text: "Wedding", categories: ["Romance", "Events", "Relationship"] },
         { text: "Roommates AU", categories: ["AU", "Relationship", "Fluff"] },
@@ -1235,7 +1351,9 @@ body{
         { text: "Haunted House", categories: ["Events", "Locations"] },
         { text: "Ghost Stories", categories: ["Events", "Fluff"] },
         { text: "Horror Movies Marathon", categories: ["Events", "Fluff"] },
-        { text: "New Year Resolutions", categories: ["Events", "Fluff", "Romance"] }
+        { text: "New Year Resolutions", categories: ["Events", "Fluff", "Romance"] },
+        { text: "Brokedown Car", categories: ["Events", "Romance"] },
+        { text: "Sunset", categories: ["Events", "Romance"] }
     ];
 
     const sortedPrompts = promptPool
@@ -1277,9 +1395,13 @@ body{
     }
 
     function getDefaultSettings() {
+        const disabledByDefault = sortedPrompts
+            .filter(prompt => Array.isArray(prompt.categories) && prompt.categories.includes("NSFW"))
+            .map(prompt => prompt.text);
+
         return {
             gridSize: DEFAULT_GRID_SIZE,
-            disabledPrompts: [],
+            disabledPrompts: disabledByDefault,
             includeFreeSpace: true,
             freeSpaceCount: 1,
             freeSpaceTexts: ["FREE SPACE"],
@@ -1726,14 +1848,78 @@ body{
         return data.checked.some(Boolean);
     }
 
-    function resetMarks() {
+    function customConfirm(message, options = {}) {
+        return new Promise(resolve => {
+            const modal = document.getElementById("bingo-modal");
+            const text = document.getElementById("bingo-modal-text");
+            const title = document.getElementById("bingo-modal-title");
+            const confirmBtn = document.getElementById("bingo-modal-confirm");
+            const cancelBtn = document.getElementById("bingo-modal-cancel");
+            const backdrop = document.getElementById("bingo-modal-backdrop");
+
+            if (!modal || !text || !title || !confirmBtn || !cancelBtn || !backdrop) {
+                resolve(window.confirm(message));
+                return;
+            }
+
+            title.textContent = options.title || "Confirm";
+            text.textContent = message;
+            confirmBtn.textContent = options.confirmText || "Confirm";
+            cancelBtn.textContent = options.cancelText || "Cancel";
+
+            modal.hidden = false;
+            document.body.style.overflow = "hidden";
+
+            const cleanup = () => {
+                modal.hidden = true;
+                document.body.style.overflow = "";
+                confirmBtn.removeEventListener("click", onConfirm);
+                cancelBtn.removeEventListener("click", onCancel);
+                backdrop.removeEventListener("click", onCancel);
+                document.removeEventListener("keydown", onKeydown);
+            };
+
+            const onConfirm = () => {
+                cleanup();
+                resolve(true);
+            };
+
+            const onCancel = () => {
+                cleanup();
+                resolve(false);
+            };
+
+            const onKeydown = (event) => {
+                if (event.key === "Escape") {
+                    onCancel();
+                }
+            };
+
+            confirmBtn.addEventListener("click", onConfirm);
+            cancelBtn.addEventListener("click", onCancel);
+            backdrop.addEventListener("click", onCancel);
+            document.addEventListener("keydown", onKeydown);
+
+            confirmBtn.focus();
+        });
+    }
+    
+    async function resetMarks() {
         const settings = loadSettings();
         const data = loadBoardData();
         if (!data) return;
         if (settings.isLocked) return;
 
-        if (hasProgress(data) && !window.confirm("Reset all current marks on this board?")) {
-            return;
+        if (hasProgress(data)) {
+            const confirmed = await customConfirm(
+                "Reset all current marks on this board?",
+                {
+                    title: "Reset marks",
+                    confirmText: "Reset"
+                }
+            );
+
+            if (!confirmed) return;
         }
 
         data.checked = new Array(data.gridSize * data.gridSize).fill(false);
@@ -2213,7 +2399,7 @@ body{
         );
     }
 
-    function loadShareCodeFromInput() {
+    async function loadShareCodeFromInput() {
         const input = document.getElementById("share-code-input");
         if (!input || !input.value.trim()) {
             showSettingsMessage("Paste a share code first.", true);
@@ -2221,8 +2407,16 @@ body{
         }
 
         const current = loadBoardData();
-        if (current && hasProgress(current) && !window.confirm("Load a different shared board? Current progress will be replaced.")) {
-            return;
+        if (current && hasProgress(current)) {
+            const confirmed = await customConfirm(
+                "Load a different shared board? Current progress will be replaced.",
+                {
+                    title: "Load shared board",
+                    confirmText: "Load"
+                }
+            );
+
+            if (!confirmed) return;
         }
 
         try {
@@ -2432,5 +2626,16 @@ body{
     });
 })();
 </script>
+<div class="bingo-modal" id="bingo-modal" hidden>
+    <div class="bingo-modal-backdrop" id="bingo-modal-backdrop"></div>
+    <div class="bingo-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="bingo-modal-title">
+        <div class="bingo-modal-title" id="bingo-modal-title">Confirm</div>
+        <div class="bingo-modal-text" id="bingo-modal-text"></div>
+        <div class="bingo-modal-actions">
+            <button type="button" id="bingo-modal-cancel" class="bingo-btn">Cancel</button>
+            <button type="button" id="bingo-modal-confirm" class="bingo-btn">Confirm</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
