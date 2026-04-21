@@ -158,25 +158,8 @@ body{
 .bingo-square.free{
     font-family:var(--serif);
     font-size:1rem;
-    font-weight:700;
-    letter-spacing:.04em;
-}
-
-.bingo-note{
-    margin-top:22px;
-    padding-top:18px;
-    border-top:1px solid var(--border-color);
-    font-size:.86rem;
-    line-height:1.7;
-    opacity:.85;
-}
-
-.bingo-status{
-    margin:0;
-    min-height:24px;
-    font-size:.9rem;
-    line-height:1.35;
     font-weight:600;
+    letter-spacing:.04em;
 }
 
 .bingo-status.is-bingo{
@@ -203,6 +186,15 @@ body{
 }
 
 .bingo-settings-label{
+    display:block;
+    margin:0 0 8px;
+    font-family:var(--serif);
+    font-size:1rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.bingo-settings-label-free{
     display:block;
     margin:0 0 8px;
     font-family:var(--serif);
@@ -288,8 +280,7 @@ body{
     background-image:linear-gradient(135deg, var(--gradient));
 }
 
-.bingo-text-input,
-.bingo-textarea{
+.bingo-text-input{
     width:100%;
     padding:10px 12px;
     border:1px solid var(--border-color);
@@ -298,10 +289,6 @@ body{
     font:inherit;
 }
 
-.bingo-textarea{
-    min-height:90px;
-    resize:vertical;
-}
 
 .bingo-filter-actions{
     display:flex;
@@ -482,11 +469,6 @@ body{
     line-height:1;
 }
 
-.bingo-help-btn{
-    margin-left:auto;
-    border-radius:50%;
-}
-
 .bingo-help-panel{
     margin:0 0 20px;
     padding:18px;
@@ -537,6 +519,14 @@ body{
     display:flex;
     flex-direction:column;
     gap:10px;
+    margin-top:12px;
+}
+
+#toggle-free-space-options{
+    margin-top:14px;
+}
+
+#free-space-options{
     margin-top:12px;
 }
 
@@ -642,12 +632,6 @@ body{
     gap:8px;
     margin-left:auto;
     flex:0 0 auto;
-}
-
-.bingo-toggle-control{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
     min-width:0;
 }
 
@@ -712,10 +696,6 @@ body{
     gap:10px 14px;
 }
 
-#bingo-weight-container{
-    transition: all .25s ease;
-}
-
 .bingo-expand-btn{
     width:100%;
     justify-content:space-between;
@@ -731,12 +711,18 @@ body{
     transition:transform .25s ease;
 }
 
+#bingo-prompt-filter-container{
+    margin-top:12px;
+    transition:all .25s ease;
+}
+
 .bingo-expand-btn.is-open .bingo-expand-chevron{
     transform:rotate(180deg);
 }
 
 #bingo-weight-container{
     margin-top:12px;
+    transition:all .25s ease;
 }
 
 .bingo-weight-item{
@@ -844,6 +830,10 @@ body{
 
 .bingo-weight-item.is-disabled .bingo-weight-slider{
     cursor:not-allowed;
+}
+
+#toggle-free-space-options:disabled {
+    opacity: 0.4;
 }
 
 @media screen and (max-width: 700px){
@@ -1032,6 +1022,10 @@ body{
         font-size:.8rem;
     }
 
+    .bingo-square.free{
+        font-size:.95rem;
+    }
+
 }
 
 @media print{
@@ -1055,13 +1049,8 @@ body{
         border-radius:6px;
     }
 
-    .bingo-square{
-        background:#fff !important;
-    }
-
     .bingo-controls,
-    .bingo-intro,
-    .bingo-note{
+    .bingo-intro{
         display:none !important;
     }
 
@@ -1181,62 +1170,95 @@ body{
                 </div>
 
                 <div class="bingo-settings-group">
+                    <div class="bingo-settings-label">Free Spaces Editor</div>
+
+                    <div class="bingo-settings-help">
+                        Edit the number of free spaces and its texts.
+                    </div>
+
                     <div class="bingo-toggle-row">
-                        <span class="bingo-settings-label" style="margin:0;">Include free spaces</span>
-                        <label class="bingo-toggle" aria-label="Include free spaces">
+                        <span class="bingo-settings-label-free" style="margin:0;">Include free spaces</span>
+                        <label class="bingo-toggle">
                             <input type="checkbox" id="include-free-space" checked>
                             <span class="bingo-toggle-slider"></span>
                         </label>
                     </div>
-                </div>
 
-                <div class="bingo-settings-group" id="free-space-options" hidden>
-                    <label for="free-space-count" class="bingo-settings-label">Number of free spaces</label>
-                    <select id="free-space-count" class="bingo-select">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
+                    <button
+                        type="button"
+                        id="toggle-free-space-options"
+                        class="bingo-btn bingo-expand-btn"
+                        aria-expanded="false"
+                    >
+                        <i class="fa-solid fa-star" aria-hidden="true"></i>
+                        <span class="bingo-expand-btn-text">Free space options</span>
+                        <i class="fa-solid fa-chevron-down bingo-expand-chevron" aria-hidden="true"></i>
+                    </button>
 
-                    <div class="bingo-settings-help">
-                        Free spaces are placed randomly on the board and are not auto-marked.
+                    <div id="free-space-options" hidden>
+                        <label for="free-space-count" class="bingo-settings-label">Number of free spaces</label>
+
+                        <input
+                            type="number"
+                            id="free-space-count"
+                            class="bingo-text-input"
+                            min="1"
+                            step="1"
+                            inputmode="numeric"
+                        >
+
+                        <div class="bingo-settings-meta">
+                            <div class="bingo-settings-live" id="free-space-count-help"></div>
+                        </div>
+
+                        <div class="bingo-settings-help">
+                            Free spaces are placed randomly on the board and are not auto-marked.
+                        </div>
+
+                        <div id="free-space-inputs"></div>
                     </div>
-
-                    <div id="free-space-inputs"></div>
                 </div>
                 
                 <div class="bingo-settings-group">
-                    <div class="bingo-settings-label">Prompt filter</div>
+                    <div class="bingo-settings-label">Prompt Filter</div>
+
                     <div class="bingo-settings-help">
                         Uncheck any prompts you never want included when shuffling.
                     </div>
 
-                    <div class="bingo-toggle-inline-row">
-                        <select id="prompt-category-view" class="bingo-select">
-                            <option value="all">All categories</option>
-                        </select>
+                    <button type="button" id="toggle-prompt-filter" class="bingo-btn bingo-expand-btn" aria-expanded="false">
+                        <i class="fa-solid fa-filter" aria-hidden="true"></i>
+                        <span class="bingo-expand-btn-text">Show prompt filter</span>
+                        <i class="fa-solid fa-chevron-down bingo-expand-chevron" aria-hidden="true"></i>
+                    </button>
 
-                        <div class="bingo-toggle-control">
-                            <span class="bingo-toggle-label">NSFW</span>
-                            <label class="bingo-toggle" aria-label="Toggle NSFW prompts">
-                                <input type="checkbox" id="nsfw-toggle">
-                                <span class="bingo-toggle-slider"></span>
-                            </label>
+                    <div id="bingo-prompt-filter-container" hidden>
+                        <div class="bingo-toggle-inline-row" style="margin-top:12px;">
+                            <select id="prompt-category-view" class="bingo-select">
+                                <option value="all">All categories</option>
+                            </select>
+
+                            <div class="bingo-toggle-control">
+                                <span class="bingo-toggle-label">NSFW</span>
+                                <label class="bingo-toggle" aria-label="Toggle NSFW prompts">
+                                    <input type="checkbox" id="nsfw-toggle">
+                                    <span class="bingo-toggle-slider"></span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                    <input type="text" id="prompt-search" class="bingo-text-input" placeholder="Search prompts...">
+                        <input type="text" id="prompt-search" class="bingo-text-input" placeholder="Search prompts...">
 
-                    <div class="bingo-settings-meta" id="visible-category-meta" hidden>
-                        <div class="bingo-settings-live" id="visible-category-count"></div>
-                    </div>
+                        <div class="bingo-settings-meta" id="visible-category-meta" hidden>
+                            <div class="bingo-settings-live" id="visible-category-count"></div>
+                        </div>
 
-                    <div class="bingo-prompt-list" id="bingo-prompt-list"></div>
+                        <div class="bingo-prompt-list" id="bingo-prompt-list"></div>
 
-                    <div class="bingo-filter-actions">
-                        <button type="button" id="select-all-prompts" class="bingo-btn">Select Visible</button>
-                        <button type="button" id="clear-all-prompts" class="bingo-btn">Clear Visible</button>
+                        <div class="bingo-filter-actions">
+                            <button type="button" id="select-all-prompts" class="bingo-btn">Select Visible</button>
+                            <button type="button" id="clear-all-prompts" class="bingo-btn">Clear Visible</button>
+                        </div>
                     </div>
 
                     <div class="bingo-settings-meta">
@@ -1315,15 +1337,6 @@ body{
         
 
 </div>
-
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0" height="0" style="display:block">
-    <defs>
-        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%" gradientTransform="rotate(-45)" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#bdc2e8"></stop>
-            <stop offset="100%" stop-color="#e6dee9"></stop>
-        </linearGradient>
-    </defs>
-</svg>
 
 <script>
 (function () {
@@ -2088,8 +2101,15 @@ body{
 
         try {
             const parsed = JSON.parse(raw);
-            const freeSpaceCount = [1, 2, 3, 4].includes(Number(parsed.freeSpaceCount))
-                ? Number(parsed.freeSpaceCount)
+            const parsedGridSize = [3, 4, 5].includes(Number(parsed.gridSize))
+                ? Number(parsed.gridSize)
+                : DEFAULT_GRID_SIZE;
+
+            const maxFreeSpaces = parsedGridSize * parsedGridSize;
+            const rawFreeSpaceCount = Number(parsed.freeSpaceCount);
+
+            const freeSpaceCount = Number.isInteger(rawFreeSpaceCount) && rawFreeSpaceCount >= 1
+                ? Math.min(rawFreeSpaceCount, maxFreeSpaces)
                 : 1;
 
             let freeSpaceTexts = Array.isArray(parsed.freeSpaceTexts) ? parsed.freeSpaceTexts : ["FREE SPACE"];
@@ -2113,7 +2133,7 @@ body{
             });
 
             return {
-                gridSize: [3, 4, 5].includes(Number(parsed.gridSize)) ? Number(parsed.gridSize) : DEFAULT_GRID_SIZE,
+                gridSize: parsedGridSize,
                 disabledPrompts: Array.isArray(parsed.disabledPrompts) ? parsed.disabledPrompts : [],
                 includeFreeSpace: parsed.includeFreeSpace !== false,
                 freeSpaceCount,
@@ -2244,7 +2264,7 @@ body{
     function getBoardMeta(gridSize, includeFreeSpace, freeSpaceCount) {
         const total = gridSize * gridSize;
         const usableFreeSpaceCount = includeFreeSpace
-            ? Math.max(0, Math.min(Number(freeSpaceCount) || 1, total - 1))
+            ? Math.max(0, Math.min(Number(freeSpaceCount) || 1, total))
             : 0;
 
         const promptCountNeeded = total - usableFreeSpaceCount;
@@ -2383,8 +2403,13 @@ body{
             meta.promptCountNeeded,
             settings.categoryWeights || getDefaultCategoryWeights()
         );
+
         const freeIndexes = meta.hasFreeSpace ? getRandomFreeIndexes(meta.total, meta.freeSpaceCount) : [];
         const freeIndexSet = new Set(freeIndexes);
+
+        const shuffledFreeTexts = shuffleArray(
+            (settings.freeSpaceTexts || []).slice(0, meta.freeSpaceCount)
+        );
 
         const squares = [];
         let promptPointer = 0;
@@ -2392,7 +2417,7 @@ body{
 
         for (let i = 0; i < meta.total; i++) {
             if (freeIndexSet.has(i)) {
-                squares.push(settings.freeSpaceTexts[freePointer] || `FREE SPACE ${freePointer + 1}`);
+                squares.push(shuffledFreeTexts[freePointer] || `FREE SPACE ${freePointer + 1}`);
                 freePointer++;
             } else {
                 squares.push(selectedPrompts[promptPointer].text);
@@ -2406,7 +2431,7 @@ body{
             gridSize: settings.gridSize,
             includeFreeSpace: settings.includeFreeSpace,
             freeSpaceCount: meta.freeSpaceCount,
-            freeSpaceTexts: settings.freeSpaceTexts.slice(0, meta.freeSpaceCount),
+            freeSpaceTexts: shuffledFreeTexts,
             freeIndexes,
             squares,
             checked
@@ -2715,15 +2740,28 @@ body{
         renderBoard(fresh);
     }
 
+    function updateFreeSpaceCountHelp(gridSize) {
+        const helpEl = document.getElementById("free-space-count-help");
+        if (!helpEl) return;
+
+        const maxFreeSpaces = gridSize * gridSize;
+        helpEl.textContent = `Current board allows 1–${maxFreeSpaces} free spaces.`;
+    }
+
     function renderFreeSpaceInputs(settings) {
         const wrap = document.getElementById("free-space-inputs");
-        const freeSpaceOptions = document.getElementById("free-space-options");
-        const countSelect = document.getElementById("free-space-count");
+        const countInput = document.getElementById("free-space-count");
 
-        if (!wrap || !freeSpaceOptions || !countSelect) return;
+        if (!wrap || !countInput) return;
 
-        freeSpaceOptions.hidden = !settings.includeFreeSpace;
-        countSelect.value = String(settings.freeSpaceCount || 1);
+        const maxFreeSpaces = settings.gridSize * settings.gridSize;
+        const safeCount = Math.max(1, Math.min(Number(settings.freeSpaceCount) || 1, maxFreeSpaces));
+
+        countInput.min = "1";
+        countInput.max = String(maxFreeSpaces);
+        countInput.value = String(safeCount);
+
+        updateFreeSpaceCountHelp(settings.gridSize);
 
         if (!settings.includeFreeSpace) {
             wrap.innerHTML = "";
@@ -2731,7 +2769,7 @@ body{
         }
 
         wrap.innerHTML = "";
-        for (let i = 0; i < settings.freeSpaceCount; i++) {
+        for (let i = 0; i < safeCount; i++) {
             const value = settings.freeSpaceTexts[i] || `FREE SPACE ${i + 1}`;
             wrap.innerHTML += `
                 <div class="bingo-free-space-input-wrap">
@@ -2864,8 +2902,16 @@ body{
 
         const gridSize = select ? Number(select.value) : DEFAULT_GRID_SIZE;
         const includeFreeSpace = freeSpaceToggle ? freeSpaceToggle.checked : true;
+        const maxFreeSpaces = gridSize * gridSize;
+        const rawFreeSpaceValue = freeSpaceCountSelect ? freeSpaceCountSelect.value.trim() : "";
+        const rawFreeSpaceCount = Number(rawFreeSpaceValue);
+
         const freeSpaceCount = includeFreeSpace
-            ? (freeSpaceCountSelect ? Number(freeSpaceCountSelect.value) : 1)
+            ? (
+                rawFreeSpaceValue === ""
+                    ? 1
+                    : Math.max(1, Math.min(Number.isFinite(rawFreeSpaceCount) ? rawFreeSpaceCount : 1, maxFreeSpaces))
+            )
             : 0;
 
         const freeSpaceTexts = includeFreeSpace
@@ -3260,6 +3306,25 @@ body{
         window.print();
     }
 
+    function updateFreeSpaceDropdownState() {
+        const toggle = document.getElementById("include-free-space");
+        const btn = document.getElementById("toggle-free-space-options");
+        const container = document.getElementById("free-space-options");
+
+        if (!toggle || !btn || !container) return;
+
+        const enabled = toggle.checked;
+
+        btn.disabled = !enabled;
+
+        // Auto-close when disabled
+        if (!enabled) {
+            container.hidden = true;
+            btn.classList.remove("is-open");
+            btn.setAttribute("aria-expanded", "false");
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         const shuffleButton = document.getElementById("shuffle-bingo");
         const resetButton = document.getElementById("reset-bingo");
@@ -3277,7 +3342,6 @@ body{
         const resetDefaultsButton = document.getElementById("reset-settings-default");
         const gridSizeSelect = document.getElementById("grid-size-select");
         const freeSpaceToggle = document.getElementById("include-free-space");
-        const freeSpaceTextInput = document.getElementById("free-space-text");
         const helpButton = document.getElementById("help-bingo");
         const saveCloseSettingsButton = document.getElementById("save-close-settings");
         const freeSpaceCountSelect = document.getElementById("free-space-count");
@@ -3288,6 +3352,10 @@ body{
         const resetCategoryWeightsButton = document.getElementById("reset-category-weights");
         const toggleWeightsBtn = document.getElementById("toggle-weights");
         const weightContainer = document.getElementById("bingo-weight-container");
+        const togglePromptFilterBtn = document.getElementById("toggle-prompt-filter");
+        const promptFilterContainer = document.getElementById("bingo-prompt-filter-container");
+        const toggleFreeSpaceBtn = document.getElementById("toggle-free-space-options");
+        const freeSpaceOptions = document.getElementById("free-space-options");
 
         if (toggleWeightsBtn && weightContainer) {
             toggleWeightsBtn.addEventListener("click", () => {
@@ -3300,6 +3368,21 @@ body{
                 const textEl = toggleWeightsBtn.querySelector(".bingo-expand-btn-text");
                 if (textEl) {
                     textEl.textContent = opening ? "Hide category weights" : "Show category weights";
+                }
+            });
+        }
+
+        if (togglePromptFilterBtn && promptFilterContainer) {
+            togglePromptFilterBtn.addEventListener("click", () => {
+                const opening = promptFilterContainer.hidden;
+
+                promptFilterContainer.hidden = !opening;
+                togglePromptFilterBtn.classList.toggle("is-open", opening);
+                togglePromptFilterBtn.setAttribute("aria-expanded", opening ? "true" : "false");
+
+                const textEl = togglePromptFilterBtn.querySelector(".bingo-expand-btn-text");
+                if (textEl) {
+                    textEl.textContent = opening ? "Hide prompt filter" : "Show prompt filter";
                 }
             });
         }
@@ -3414,21 +3497,11 @@ body{
         }
 
         if (gridSizeSelect) {
-            gridSizeSelect.addEventListener("change", updatePromptCountPreview);
-        }
-
-        if (freeSpaceToggle) {
-            freeSpaceToggle.addEventListener("change", updatePromptCountPreview);
-        }
-
-        if (freeSpaceTextInput) {
-            freeSpaceTextInput.addEventListener("input", updatePromptCountPreview);
-        }
-        if (helpButton) {
-            helpButton.addEventListener("click", toggleHelpPanel);
-        }
-        if (saveCloseSettingsButton) {
-            saveCloseSettingsButton.addEventListener("click", saveSettingsFromUI);
+            gridSizeSelect.addEventListener("change", function () {
+                const settings = getSettingsFromUI();
+                renderFreeSpaceInputs(settings);
+                updatePromptCountPreview();
+            });
         }
 
         if (freeSpaceToggle) {
@@ -3436,10 +3509,22 @@ body{
                 const settings = getSettingsFromUI();
                 renderFreeSpaceInputs(settings);
                 updatePromptCountPreview();
+                updateFreeSpaceDropdownState();
             });
         }
 
+        if (helpButton) {
+            helpButton.addEventListener("click", toggleHelpPanel);
+        }
+        if (saveCloseSettingsButton) {
+            saveCloseSettingsButton.addEventListener("click", saveSettingsFromUI);
+        }
+
         if (freeSpaceCountSelect) {
+            freeSpaceCountSelect.addEventListener("input", function () {
+                updatePromptCountPreview();
+            });
+
             freeSpaceCountSelect.addEventListener("change", function () {
                 const settings = getSettingsFromUI();
                 renderFreeSpaceInputs(settings);
@@ -3481,7 +3566,27 @@ body{
             resetCategoryWeightsButton.addEventListener("click", resetCategoryWeightsToDefault);
         }
 
+        if (toggleFreeSpaceBtn && freeSpaceOptions) {
+            toggleFreeSpaceBtn.addEventListener("click", () => {
+                if (toggleFreeSpaceBtn.disabled) return;
+
+                const opening = freeSpaceOptions.hidden;
+
+                freeSpaceOptions.hidden = !opening;
+                toggleFreeSpaceBtn.classList.toggle("is-open", opening);
+                toggleFreeSpaceBtn.setAttribute("aria-expanded", opening ? "true" : "false");
+
+                const textEl = toggleFreeSpaceBtn.querySelector(".bingo-expand-btn-text");
+                if (textEl) {
+                    textEl.textContent = opening
+                        ? "Hide free space options"
+                        : "Free space options";
+                }
+            });
+        }
+
         updateTopControlsVisibility();
+        updateFreeSpaceDropdownState();
     });
 })();
 </script>
