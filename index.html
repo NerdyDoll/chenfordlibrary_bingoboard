@@ -615,6 +615,237 @@ body{
     border-radius:14px;
 }
 
+.bingo-toggle-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+
+.bingo-toggle-inline-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:10px;
+    width:100%;
+}
+
+.bingo-toggle-inline-row .bingo-select{
+    margin-bottom:0;
+    flex:0 1 auto;
+}
+
+.bingo-toggle-control{
+    display:inline-flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    margin-left:auto;
+    flex:0 0 auto;
+}
+
+.bingo-toggle-control{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-width:0;
+}
+
+.bingo-toggle-label{
+    font-size:.88rem;
+    line-height:1.2;
+    white-space:nowrap;
+}
+
+.bingo-toggle{
+    position:relative;
+    width:44px;
+    height:24px;
+    flex:0 0 auto;
+}
+
+.bingo-toggle input{
+    position:absolute;
+    opacity:0;
+    pointer-events:none;
+}
+
+.bingo-toggle-slider{
+    position:absolute;
+    inset:0;
+    border:1px solid var(--border-color);
+    background:#f3f3f3;
+    border-radius:999px;
+    transition:.25s ease;
+    cursor:pointer;
+}
+
+.bingo-toggle-slider::after{
+    content:"";
+    position:absolute;
+    top:2px;
+    left:2px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.14);
+    transition:.25s ease;
+}
+
+.bingo-toggle input:checked + .bingo-toggle-slider{
+    border-color:transparent;
+    background-image:linear-gradient(135deg, var(--gradient));
+}
+
+.bingo-toggle input:checked + .bingo-toggle-slider::after{
+    transform:translateX(20px);
+}
+
+.bingo-toggle input:focus-visible + .bingo-toggle-slider{
+    box-shadow:0 0 0 3px rgba(221,139,206,.18);
+}
+
+.bingo-weight-list{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:10px 14px;
+}
+
+#bingo-weight-container{
+    transition: all .25s ease;
+}
+
+.bingo-expand-btn{
+    width:100%;
+    justify-content:space-between;
+    padding:12px 14px;
+}
+
+.bingo-expand-btn-text{
+    flex:1 1 auto;
+    text-align:left;
+}
+
+.bingo-expand-chevron{
+    transition:transform .25s ease;
+}
+
+.bingo-expand-btn.is-open .bingo-expand-chevron{
+    transform:rotate(180deg);
+}
+
+#bingo-weight-container{
+    margin-top:12px;
+}
+
+.bingo-weight-item{
+    display:grid;
+    grid-template-columns:70px 1fr 28px;
+    align-items:center;
+    gap:8px;
+    padding:10px 0;
+    border-bottom:1px solid var(--border-color);
+}
+
+.bingo-weight-name{
+    font-size:.9rem;
+    line-height:1.2;
+    text-align:left;
+    white-space:nowrap;
+}
+
+.bingo-weight-value{
+    width:28px;
+    text-align:center;
+    font-weight:700;
+    font-size:.88rem;
+}
+
+.bingo-weight-slider{
+    -webkit-appearance:none;
+    appearance:none;
+    width:100%;
+    min-width:0;
+    height:18px;
+    margin:0;
+    padding:0;
+    border:none;
+    outline:none;
+    background:
+        linear-gradient(to right,
+            transparent 0,
+            transparent calc(25% - 1px),
+            rgba(0,0,0,.14) calc(25% - 1px),
+            rgba(0,0,0,.14) calc(25% + 1px),
+            transparent calc(25% + 1px),
+            transparent calc(50% - 1px),
+            rgba(0,0,0,.14) calc(50% - 1px),
+            rgba(0,0,0,.14) calc(50% + 1px),
+            transparent calc(50% + 1px),
+            transparent calc(75% - 1px),
+            rgba(0,0,0,.14) calc(75% - 1px),
+            rgba(0,0,0,.14) calc(75% + 1px),
+            transparent calc(75% + 1px)
+        ),
+        linear-gradient(#ddd,#ddd);
+    background-repeat:no-repeat;
+    background-size:100% 6px, 100% 6px;
+    background-position:center;
+    cursor:pointer;
+}
+
+/* Chrome / Edge / Safari */
+.bingo-weight-slider::-webkit-slider-runnable-track{
+    height:18px;
+    background:transparent;
+    border:none;
+}
+
+.bingo-weight-slider::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:16px;
+    height:16px;
+    margin-top:1px;
+    border:none;
+    border-radius:50%;
+    background:var(--color-one);
+    box-shadow:0 1px 3px rgba(0,0,0,.18);
+    cursor:pointer;
+}
+
+/* Firefox */
+.bingo-weight-slider::-moz-range-track{
+    height:18px;
+    background:transparent;
+    border:none;
+}
+
+.bingo-weight-slider::-moz-range-progress{
+    background:transparent;
+    height:18px;
+}
+
+.bingo-weight-slider::-moz-range-thumb{
+    width:16px;
+    height:16px;
+    border:none;
+    border-radius:50%;
+    background:var(--color-one);
+    box-shadow:0 1px 3px rgba(0,0,0,.18);
+    cursor:pointer;
+}
+
+/* Disabled */
+.bingo-weight-item.is-disabled{
+    opacity:.5;
+}
+
+.bingo-weight-item.is-disabled .bingo-weight-slider{
+    cursor:not-allowed;
+}
+
 @media screen and (max-width: 700px){
     .bingo-square{
         font-size:.8rem;
@@ -761,6 +992,44 @@ body{
     #close-settings i{
         font-size:1rem;
         line-height:1;
+    }
+
+    .bingo-toggle-inline-row{
+        align-items:center;
+        gap:10px;
+        flex-wrap:nowrap;
+    }
+
+    .bingo-toggle-inline-row .bingo-select{
+        min-width:0;
+        flex:1 1 auto;
+    }
+
+    .bingo-toggle-control{
+        margin-left:auto;
+        flex:0 0 auto;
+    }
+
+    .bingo-toggle-label{
+        font-size:.82rem;
+    }
+
+    .bingo-weight-list{
+        grid-template-columns:1fr;
+    }
+
+    .bingo-weight-item{
+        grid-template-columns:78px 1fr 22px;
+        gap:6px;
+    }
+
+    .bingo-weight-name{
+        font-size:.82rem;
+    }
+
+    .bingo-weight-value{
+        width:22px;
+        font-size:.8rem;
     }
 
 }
@@ -912,10 +1181,13 @@ body{
                 </div>
 
                 <div class="bingo-settings-group">
-                    <label class="bingo-prompt-option">
-                        <input type="checkbox" id="include-free-space" checked>
-                        <span>Include free spaces</span>
-                    </label>
+                    <div class="bingo-toggle-row">
+                        <span class="bingo-settings-label" style="margin:0;">Include free spaces</span>
+                        <label class="bingo-toggle" aria-label="Include free spaces">
+                            <input type="checkbox" id="include-free-space" checked>
+                            <span class="bingo-toggle-slider"></span>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="bingo-settings-group" id="free-space-options" hidden>
@@ -940,9 +1212,19 @@ body{
                         Uncheck any prompts you never want included when shuffling.
                     </div>
 
-                    <select id="prompt-category-view" class="bingo-select">
-                        <option value="all">All categories</option>
-                    </select>
+                    <div class="bingo-toggle-inline-row">
+                        <select id="prompt-category-view" class="bingo-select">
+                            <option value="all">All categories</option>
+                        </select>
+
+                        <div class="bingo-toggle-control">
+                            <span class="bingo-toggle-label">NSFW</span>
+                            <label class="bingo-toggle" aria-label="Toggle NSFW prompts">
+                                <input type="checkbox" id="nsfw-toggle">
+                                <span class="bingo-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
 
                     <input type="text" id="prompt-search" class="bingo-text-input" placeholder="Search prompts...">
 
@@ -964,9 +1246,32 @@ body{
                 </div>
 
                 <div class="bingo-settings-group">
+                    <div class="bingo-settings-label">Category Weighter</div>
+                    
+                    <div class="bingo-settings-help">
+                        Higher values make prompts from that category more likely to appear when shuffling. Lower values make them rarer.
+                    </div>
+                    
+                    <button type="button" id="toggle-weights" class="bingo-btn bingo-expand-btn" aria-expanded="false">
+                        <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                        <span class="bingo-expand-btn-text">Show category weights</span>
+                        <i class="fa-solid fa-chevron-down bingo-expand-chevron" aria-hidden="true"></i>
+                    </button>
+
+                    <div id="bingo-weight-container" hidden>
+                        <div class="bingo-weight-list" id="bingo-weight-list"></div>
+
+                        <div class="bingo-filter-actions">
+                            <button type="button" id="reset-category-weights" class="bingo-btn">Reset Weights</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bingo-settings-group">
                     <div class="bingo-settings-label">Share Board</div>
                     <div class="bingo-share-row">
                         <button type="button" id="copy-share-code" class="bingo-btn">Copy Share Code</button>
+                        <button type="button" id="copy-share-link" class="bingo-btn">Copy Share Link</button>
                     </div>
                     <div class="bingo-settings-inline-message" id="share-copy-message"></div>
                     <div class="bingo-share-row bingo-share-load">
@@ -980,7 +1285,7 @@ body{
 
                 <div class="bingo-settings-actions">
                     <button type="button" id="copy-board-text" class="bingo-btn">Copy Board</button>
-                    <button type="button" id="reset-settings-default" class="bingo-btn">Reset Defaults</button>
+                    <button type="button" id="reset-settings-default" class="bingo-btn">Reset</button>
                     <button type="button" id="save-settings" class="bingo-btn" aria-label="Save settings">
                         <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
                         <span>Save Settings</span>
@@ -1038,18 +1343,31 @@ body{
     ];
     
     const promptPool = [
-        { text: "Fake Dating", categories: ["Relationship", "Romance"] },
-        { text: "Undercover", categories: ["Action"] },
-        { text: "Only One Bed", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Fake Dating", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Fake Kiss", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Fake Proposal", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Undercover", categories: ["Action", "Angst"] },
+        { text: "Only One Bed", categories: ["Relationship", "Romance", "Fluff", "Angst"] },
         { text: "Jealousy", categories: ["Romance", "Angst"] },
         { text: "5+1 Things", categories: ["Fluff"] },
         { text: "4+1 Things", categories: ["Fluff"] },
+        { text: "Pillow Fort", categories: ["Fluff"] },
+        { text: "Belly Rub", categories: ["Fluff"] },
         { text: "Hurt/Comfort", categories: ["Angst", "Fluff", "Romance"] },
         { text: "MCD", categories: ["Angst"] },
-        { text: "Rainy Night", categories: ["Romance", "Fluff", "Locations"] },
-        { text: "Love Confession", categories: ["Romance", "Relationship"] },
-        { text: "First Kiss", categories: ["Romance", "Relationship"] },
-        { text: "Missing Scene", categories: ["Fluff"] },
+        { text: "Self-Sacrifice", categories: ["Angst"] },
+        { text: "Rainy Night", categories: ["Romance", "Fluff", "Angst"] },
+        { text: "Love Confession", categories: ["Romance"] },
+        { text: "Love Letters", categories: ["Romance"] },
+        { text: "First Kiss", categories: ["Romance", "Fluff"] },
+        { text: "Secret Kisses", categories: ["Romance", "Fluff"] },
+        { text: "Wake-up Kiss", categories: ["Romance", "Fluff"] },
+        { text: "Stakeout Kiss", categories: ["Romance", "Fluff"] },
+        { text: "Matching Pyjamas", categories: ["Romance", "Fluff"] },
+        { text: "Polaroid Camera", categories: ["Romance", "Fluff"] },
+        { text: "Handmade Gifts", categories: ["Romance", "Fluff"] },
+        { text: "Too Hot For Clothes", categories: ["Romance", "Fluff"] },
+        { text: "Missing Scene", categories: ["Fluff", "Angst"] },
         { text: "Domestic Chenford", categories: ["Romance", "Fluff", "Relationship"] },
         { text: "Angst with Happy Ending", categories: ["Angst", "Romance"] },
         { text: "Wedding Date", categories: ["Romance", "Events", "Relationship"] },
@@ -1063,142 +1381,262 @@ body{
         { text: "Slow Burn", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Mutual Pining", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Getting Back Together", categories: ["Relationship", "Romance", "Angst"] },
-        { text: "Undercover Kiss", categories: ["Romance", "Action", "Relationship"] },
+        { text: "Undercover Kiss", categories: ["Romance", "Relationship", "Angst"] },
+        { text: "Undercover Love", categories: ["Romance", "Relationship", "Angst"] },
+        { text: "Undercover Relationship", categories: ["Romance", "Relationship", "Angst"] },
         { text: "Hospital Visit", categories: ["Injuries", "Angst", "Locations"] },
+        { text: "Downplaying Traumas", categories: ["Injuries", "Angst"] },
+        { text: "Downplaying Injuries", categories: ["Injuries", "Angst"] },
         { text: "Late Night Phone Call", categories: ["Romance", "Angst"] },
-        { text: "Accidental Confession", categories: ["Romance", "Relationship"] },
+        { text: "Accidental Confession", categories: ["Romance", "Relationship", "Angst"] },
         { text: "Jealous Lucy", categories: ["Characters", "Romance", "Angst"] },
         { text: "Jealous Tim", categories: ["Characters", "Romance", "Angst"] },
-        { text: "Soulmate AU", categories: ["AU", "Romance", "Relationship"] },
+        { text: "Soulmate AU: Timers", categories: ["AU", "Romance", "Relationship", "Angst"] },
+        { text: "Soulmate AU", categories: ["AU", "Romance", "Relationship", "Angst"] },
+        { text: "Soulmate AU: Shared Dreams", categories: ["AU", "Romance", "Relationship", "Angst"] },
+        { text: "Soulmate AU: Shared Scars", categories: ["AU", "Romance", "Relationship", "Angst"] },
+        { text: "Soulmate AU: Shared Tattooes", categories: ["AU", "Romance", "Relationship", "Angst"] },
+        { text: "Soulmate AU: Pain Sharing", categories: ["AU", "Romance", "Relationship", "Angst"] },
+        { text: "Soulmate AU: Mind Reading", categories: ["AU", "Romance", "Relationship", "Angst"] },
+        { text: "Mind Reading AU", categories: ["AU", "Romance", "Relationship", "Angst"] },
+        { text: "Soulmate AU: Marks", categories: ["AU", "Romance", "Relationship", "Angst"] },
         { text: "College AU", categories: ["AU"] },
+        { text: "Military AU", categories: ["AU"] },
         { text: "Spy AU", categories: ["AU", "Action"] },
         { text: "Witness Protection AU", categories: ["AU", "Action"] },
         { text: "Bodyguard AU", categories: ["AU", "Action", "Relationship"] },
         { text: "Celebrity AU", categories: ["AU"] },
         { text: "Time Loop AU", categories: ["AU", "Angst"] },
+        { text: "Stalker", categories: ["Angst"] },
         { text: "Pre-dating Jealousy", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Pre-dating Angst", categories: ["Relationship", "Angst"] },
         { text: "Amnesia AU", categories: ["AU", "Angst", "Romance"] },
+        { text: "Amnesia AU - Fake Memories", categories: ["AU", "Angst", "Romance"] },
+        { text: "Temporary Memory Loss", categories: ["Injuries", "Angst"] },
         { text: "Reincarnation AU", categories: ["AU", "Romance"] },
         { text: "Dream Sharing AU", categories: ["AU", "Romance"] },
         { text: "Body Swap AU", categories: ["AU"] },
+        { text: "CEO/Boss AU", categories: ["AU"] },
+        { text: "Prisoners AU", categories: ["AU"] },
+        { text: "Sex Worker AU", categories: ["AU", "NSFW"] },
+        { text: "Accidental Soulbond", categories: ["AU", "Angst"] },
         { text: "Neighbors AU", categories: ["AU", "Romance", "Relationship"] },
         { text: "Coffee Shop AU", categories: ["AU", "Locations", "Fluff", "Romance"] },
-        { text: "Sunrise", categories: ["Romance", "Fluff", "Locations"] },
+        { text: "Period Pain", categories: ["Romance", "Fluff"] },
+        { text: "Sunrise", categories: ["Romance", "Fluff"] },
         { text: "Proposal", categories: ["Romance", "Events", "Relationship"] },
+        { text: "Ruined Proposal", categories: ["Romance", "Events", "Angst"] },
         { text: "Wedding", categories: ["Romance", "Events", "Relationship"] },
         { text: "Roommates AU", categories: ["AU", "Relationship", "Fluff"] },
         { text: "Protective Lucy", categories: ["Characters", "Romance", "Angst", "Action"] },
         { text: "Protective Tim", categories: ["Characters", "Romance", "Angst", "Action"] },
         { text: "Outsider POV", categories: ["Characters", "Fluff"] },
         { text: "Safe House", categories: ["Action", "Locations", "Romance"] },
+        { text: "Masquerade Party", categories: ["Events"] },
         { text: "Holiday Party", categories: ["Events", "Fluff"] },
         { text: "Valentine's Day", categories: ["Events", "Romance"] },
+        { text: "Veteran's Day", categories: ["Events"] },
         { text: "Halloween", categories: ["Events"] },
+        { text: "Awkward Family Reunion", categories: ["Events"] },
         { text: "New Year's Eve", categories: ["Events", "Romance"] },
         { text: "Beach Trip", categories: ["Locations", "Events", "Fluff"] },
         { text: "Vacation Fic", categories: ["Locations", "Events", "Fluff"] },
-        { text: "Secret Crush", categories: ["Relationship", "Romance"] },
+        { text: "Secret Crush", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Secret Admirer", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Friends With Feelings", categories: ["Relationship", "Romance"] },
-        { text: "Fake Engagement", categories: ["Relationship", "Romance"] },
+        { text: "Fake Engagement", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Breakdown", categories: ["Angst"] },
+        { text: "Kidnapping", categories: ["Angst"] },
+        { text: "Stranded in Space", categories: ["Angst"] },
+        { text: "Stranded on an Island", categories: ["Angst"] },
+        { text: "Badass in Distress", categories: ["Angst", "Action"] },
         { text: "Food Poisoning", categories: ["Injuries", "Angst"] },
+        { text: "Morning Sickness", categories: ["Injuries", "Fluff"] },
         { text: "Roadside Motel", categories: ["Locations", "Relationship", "Romance"] },
-        { text: "The Morning After", categories: ["Romance", "NSFW", "Relationship"] },
+        { text: "The Morning After", categories: ["Romance", "Relationship"] },
         { text: "Unexpected Touch", categories: ["Romance", "Fluff"] },
         { text: "Trapped in a Fire", categories: ["Action", "Injuries", "Angst"] },
+        { text: "Trapped in a Dream", categories: ["Action", "Injuries", "Angst"] },
+        { text: "Trapped in Coma", categories: ["Action", "Injuries", "Angst"] },
+        { text: "Hiding Together", categories: ["Action", "Angst"] },
+        { text: "Imprisonment", categories: ["Action", "Angst"] },
+        { text: "Injury Recovery", categories: ["Injuries", "Angst", "Fluff"] },
         { text: "Dancing", categories: ["Romance", "Fluff"] },
+        { text: "Flirting", categories: ["Romance", "Fluff"] },
+        { text: "Kissing 'Lessons'", categories: ["Romance", "Fluff"] },
         { text: "Unsent Message", categories: ["Angst", "Romance"] },
         { text: "Lucy is Stabbed", categories: ["Characters", "Injuries", "Angst"] },
         { text: "Lucy is Shot", categories: ["Characters", "Injuries", "Angst"] },
         { text: "Lucy is Kidnapped", categories: ["Characters", "Action", "Injuries", "Angst"] },
         { text: "Lucy Almost Drowns", categories: ["Characters", "Injuries", "Angst"] },
+        { text: "Temporary Blindness", categories: ["Injuries", "Angst"] },
         { text: "Tim is Stabbed", categories: ["Characters", "Injuries", "Angst"] },
         { text: "Tim is Shot", categories: ["Characters", "Injuries", "Angst"] },
         { text: "Tim is Kidnapped", categories: ["Characters", "Action", "Injuries", "Angst"] },
+        { text: "Tim & Lucy Kidnapped", categories: ["Characters", "Action", "Injuries", "Angst"] },
         { text: "Tim Almost Drowns", categories: ["Characters", "Injuries", "Angst"] },
         { text: "Feral Tim", categories: ["Characters", "Angst"] },
         { text: "Feral Lucy", categories: ["Characters", "Angst"] },
+        { text: "Drunk Lucy", categories: ["Characters", "Angst", "Fluff"] },
+        { text: "Drunk Tim", categories: ["Characters", "Angst", "Fluff"] },
+        { text: "Van Life Lucy", categories: ["Characters"] },
         { text: "A Dare", categories: ["Fluff", "Romance"] },
+        { text: "Gossips", categories: ["Fluff", "Romance"] },
+        { text: "Blackmail", categories: ["Angst"] },
+        { text: "Platonic Cuddling", categories: ["Fluff", "Romance"] },
+        { text: "Weekend Getaway", categories: ["Fluff", "Romance", "Events"] },
         { text: "A Bet", categories: ["Fluff", "Romance"] },
         { text: "Airport Goodbye", categories: ["Locations", "Romance", "Angst"] },
-        { text: "Evil Seth Ridley", categories: ["Characters", "Action"] },
-        { text: "Evil Chris Sanford", categories: ["Characters", "Action"] },
-        { text: "Isabel Returns", categories: ["Characters", "Angst", "Events"] },
-        { text: "Rosalind Returns", categories: ["Characters", "Action", "Angst"] },
-        { text: "Caleb's Evil Twin", categories: ["Characters", "AU"] },
-        { text: "Ray Watkins Returns", categories: ["Characters", "Action", "Events"] },
-        { text: "Heath Everett Returns", categories: ["Characters", "Action", "Events"] },
+        { text: "Evil Seth Ridley", categories: ["Characters", "Action", "Angst"] },
+        { text: "Evil Chris Sanford", categories: ["Characters", "Action", "Angst"] },
+        { text: "Isabel Returns", categories: ["Characters", "Angst"] },
+        { text: "Rachel Returns", categories: ["Characters", "Angst"] },
+        { text: "Ashley Returns", categories: ["Characters", "Angst"] },
+        { text: "Emmett Returns", categories: ["Characters", "Angst"] },
+        { text: "Chris Returns", categories: ["Characters", "Angst"] },
+        { text: "Rosalind Returns", categories: ["Characters", "Angst"] },
+        { text: "Caleb's Evil Twin", categories: ["Characters", "Angst"] },
+        { text: "Caleb Copycat", categories: ["Characters", "Angst"] },
+        { text: "Ray Watkins Returns", categories: ["Characters", "Angst"] },
+        { text: "Heath Everett Returns", categories: ["Characters", "Angst"] },
         { text: "Airport Reunion", categories: ["Locations", "Romance", "Fluff"] },
         { text: "Enemies to Lovers", categories: ["Relationship", "Romance", "Angst"] },
-        { text: "Enemies with Benefits", categories: ["Relationship", "Romance", "NSFW"] },
+        { text: "Exes to Lovers", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Enemies with Benefits", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Exes with Benefits", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Unexpected Pregnancy", categories: ["Romance", "Angst", "Relationship"] },
         { text: "Pregnancy Cravings", categories: ["Romance", "Fluff", "Relationship"] },
+		{ text: "Pregnancy", categories: ["Romance", "Fluff", "Relationship"] },
         { text: "Hostage Rescue", categories: ["Action", "Angst"] },
         { text: "Shut Up Kiss", categories: ["Romance"] },
-        { text: "Grim Reaper VS Target AU", categories: ["AU", "Action", "Romance"] },
+        { text: "Grim Reaper VS Target AU", categories: ["AU", "Action", "Romance", "Angst"] },
         { text: "Blind Date", categories: ["Romance", "Events"] },
-        { text: "Drunken Confessions", categories: ["Romance", "Fluff"] },
-        { text: "Arranged Marriage", categories: ["Relationship", "Romance"] },
-        { text: "F*ck or Die", categories: ["NSFW", "AU"] },
+        { text: "Drunken Confessions", categories: ["Romance", "Fluff", "Angst"] },
+        { text: "Arranged Marriage", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Childhood Friends", categories: ["Relationship", "Romance", "Angst", "AU"] },
+        { text: "F*ck or Die", categories: ["NSFW"] },
         { text: "Just Friends", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Dark Secret", categories: ["Angst"] },
-        { text: "Woke Up Married", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Woke Up Married", categories: ["Relationship", "Romance", "Fluff", "Angst"] },
+        { text: "Woke Up Naked", categories: ["Romance", "Fluff", "Angst"] },
         { text: "Wedding Vows", categories: ["Romance", "Events"] },
         { text: "Forbidden Love", categories: ["Relationship", "Romance", "Angst"] },
-        { text: "Rookie/TO Romance", categories: ["Relationship", "Romance"] },
+        { text: "Rookie/TO Romance", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Pregnancy Reveal", categories: ["Romance", "Fluff"] },
+        { text: "Eloping", categories: ["Romance", "Fluff"] },
+        { text: "Stargazing", categories: ["Romance", "Fluff"] },
+        { text: "Ice Skating", categories: ["Romance", "Fluff"] },
+        { text: "Christmas Card", categories: ["Romance", "Fluff"] },
+        { text: "Choosing Gifts", categories: ["Romance", "Fluff"] },
         { text: "TO Lucy", categories: ["Characters", "AU"] },
         { text: "Cursed Lucy", categories: ["Characters", "AU", "Angst"] },
         { text: "Cursed Tim", categories: ["Characters", "AU", "Angst"] },
         { text: "The Roundup", categories: ["Events", "Action"] },
         { text: "New Year Kiss", categories: ["Events", "Romance"] },
+        { text: "Promotion Day", categories: ["Events"] },
+        { text: "Housewarming Party", categories: ["Events"] },
+        { text: "Family Gathering", categories: ["Events"] },
+        { text: "Court Day", categories: ["Events"] },
+        { text: "Engagement Party", categories: ["Events", "Fluff", "Romance"] },
+        { text: "Graduation Day", categories: ["Events", "Romance"] },
+        { text: "Surprise Party", categories: ["Events", "Romance"] },
         { text: "Hero VS Villain AU", categories: ["AU", "Action"] },
         { text: "Cop VS Criminal AU", categories: ["AU", "Action", "Relationship"] },
         { text: "DOD Part 2", categories: ["Action", "Angst", "Events"] },
-        { text: "Criminal Lucy", categories: ["Characters", "AU", "Action"] },
-        { text: "Criminal Tim", categories: ["Characters", "AU", "Action"] },
+        { text: "Criminal Lucy", categories: ["Characters", "AU"] },
+        { text: "Criminal Tim", categories: ["Characters", "AU"] },
+        { text: "Cowboy Tim", categories: ["Characters", "AU"] },
+        { text: "Detective Tim", categories: ["Characters"] },
+        { text: "Detective Lucy", categories: ["Characters"] },
         { text: "Metro Tim", categories: ["Characters"] },
+        { text: "Workaholic Tim", categories: ["Characters"] },
+        { text: "Workaholic Lucy", categories: ["Characters"] },
+        { text: "Vulnerable Lucy", categories: ["Characters"] },
+        { text: "Vulnerable Tim", categories: ["Characters"] },
+        { text: "Grumpy Tim", categories: ["Characters"] },
+        { text: "Clingy Tim", categories: ["Characters"] },
+        { text: "Clingy Lucy", categories: ["Characters"] },
+        { text: "Pregnant Lucy", categories: ["Characters"] },
+        { text: "Possessive Lucy", categories: ["Characters"] },
+        { text: "Possessive Tim", categories: ["Characters"] },
+        { text: "Scared Tim", categories: ["Characters"] },
+        { text: "Scared Lucy", categories: ["Characters"] },
+        { text: "Insecure Lucy", categories: ["Characters"] },
+        { text: "Insecure Tim", categories: ["Characters"] },
+        { text: "Chaos Lucy", categories: ["Characters"] },
+        { text: "Chaos Tim", categories: ["Characters"] },
+        { text: "Sappy Tim", categories: ["Characters"] },
+        { text: "Tim Arrested", categories: ["Characters"] },
+        { text: "Lucy Arrested", categories: ["Characters"] },
         { text: "Rookie Tim", categories: ["Characters", "AU"] },
         { text: "Vampire Tim", categories: ["Characters", "AU"] },
         { text: "Vampire Lucy", categories: ["Characters", "AU"] },
         { text: "Vampires AU", categories: ["AU"] },
-        { text: "Love Spell", categories: ["AU", "Romance"] },
+        { text: "Vampires AU - Blood Drinking", categories: ["AU"] },
+        { text: "Vampires AU - Bonding", categories: ["AU"] },
+        { text: "Medieval AU", categories: ["AU"] },
+        { text: "Pilot / Cabin Crew AU", categories: ["AU"] },
+        { text: "Knight & Princess AU", categories: ["AU"] },
+        { text: "Love Spell", categories: ["AU", "Romance", "Angst"] },
         { text: "Doppelganger", categories: ["AU", "Characters"] },
-        { text: "Greenlit", categories: ["Events", "Romance"] },
-        { text: "Drinking", categories: ["Events", "Fluff"] },
-        { text: "Truth Serum", categories: ["AU", "Fluff", "Romance"] },
+        { text: "Greenlit", categories: ["Events", "Angst"] },
+        { text: "Drinking", categories: ["Events", "Fluff", "Angst"] },
+        { text: "Truth Serum", categories: ["AU", "Fluff", "Romance", "Angst"] },
         { text: "Truth or Dare", categories: ["Fluff", "Romance", "Events"] },
-        { text: "Pregnancy Scare", categories: ["Romance", "Angst", "NSFW"] },
+        { text: "Pregnancy Scare", categories: ["Romance", "Angst"] },
         { text: "Role Reversal", categories: ["AU", "Relationship"] },
+        { text: "Role Reversal: DOD", categories: ["AU", "Relationship"] },
         { text: "IA investigation", categories: ["Action", "Angst"] },
         { text: "Nightmares", categories: ["Angst"] },
+        { text: "Rooftop Chase", categories: ["Action"] },
+        { text: "Sudden Ambush", categories: ["Action", "Angst"] },
+        { text: "Quarantine", categories: ["Angst"] },
+        { text: "Quarantine House", categories: ["Locations"] },
+        { text: "Break Room", categories: ["Locations"] },
+        { text: "Hospital Hallway", categories: ["Locations"] },
         { text: "Stakeout Op", categories: ["Action"] },
         { text: "Fake Breakup", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Fake Death", categories: ["Action", "Angst"] },
         { text: "Tim Loses Control", categories: ["Characters", "Angst"] },
         { text: "Baby Fever", categories: ["Romance", "Fluff"] },
+        { text: "Baby Names", categories: ["Romance", "Fluff"] },
         { text: "Family Dinner", categories: ["Events", "Fluff"] },
         { text: "Bomb Threat", categories: ["Action", "Angst"] },
         { text: "Missile Threat", categories: ["Action", "Angst"] },
         { text: "Hostage Situation", categories: ["Action", "Angst"] },
         { text: "Injury on Duty", categories: ["Injuries", "Action", "Angst"] },
-        { text: "Warden / Inmate AU", categories: ["AU", "Action", "Relationship"] },
+        { text: "Warden / Inmate AU", categories: ["AU", "Action", "Angst"] },
+        { text: "Bounty Hunters AU", categories: ["AU", "Action", "Angst"] },
+        { text: "Thieves AU", categories: ["AU", "Action", "Angst"] },
+        { text: "Angel / Demon AU", categories: ["AU", "Angst"] },
+        { text: "Handcuffed Together", categories: ["Action", "Romance", "Angst"] },
+        { text: "Mermaid / Sailor AU", categories: ["AU", "Angst", "Relationship"] },
         { text: "Mafia AU", categories: ["AU", "Action"] },
         { text: "Time Travel AU", categories: ["AU"] },
         { text: "Flu Season", categories: ["Injuries", "Fluff"] },
         { text: "Brush with Death", categories: ["Angst", "Injuries"] },
-        { text: "Rookie/TO One-night Stand", categories: ["Relationship", "Romance", "NSFW"] },
-        { text: "One-night Stand", categories: ["Romance", "NSFW"] },
+        { text: "Rookie/TO One-night Stand", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Rookie/TO Kiss", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "One-night Stand", categories: ["Romance", "Angst"] },
         { text: "Major Injury", categories: ["Injuries", "Angst"] },
-        { text: "Voicemail", categories: ["Angst", "Romance"] },
+        { text: "Concussions", categories: ["Injuries", "Angst"] },
+        { text: "Voicemail", categories: ["Angst", "Romance", "Fluff"] },
+        { text: "Drunk Voicemail", categories: ["Angst", "Romance"] },
+        { text: "Drunk Phonecall", categories: ["Angst", "Romance"] },
+        { text: "Drunk Texts", categories: ["Angst", "Romance"] },
         { text: "Rain Kiss", categories: ["Romance", "Fluff"] },
+        { text: "Nose Kiss", categories: ["Romance", "Fluff"] },
+        { text: "Promise Kiss", categories: ["Romance", "Fluff"] },
+        { text: "Living Together", categories: ["Romance", "Fluff"] },
         { text: "Bad Weather", categories: ["Events"] },
         { text: "Birthday", categories: ["Events", "Fluff"] },
+        { text: "Birthday Surprise Party", categories: ["Events", "Fluff"] },
+        { text: "Birthday Gifts", categories: ["Events", "Fluff"] },
         { text: "Soothing Hug", categories: ["Fluff", "Romance"] },
         { text: "Desparate Hug", categories: ["Angst", "Romance"] },
         { text: "Goodbye Kiss", categories: ["Romance", "Angst"] },
         { text: "Misunderstanding", categories: ["Angst", "Relationship"] },
-        { text: "Pep Talk", categories: ["Fluff", "Characters"] },
+        { text: "Pep Talk", categories: ["Fluff", "Angst"] },
         { text: "Fresh Start", categories: ["Romance", "Fluff"] },
         { text: "Injured Lucy", categories: ["Characters", "Injuries", "Angst"] },
         { text: "Injured Tim", categories: ["Characters", "Injuries", "Angst"] },
@@ -1209,20 +1647,25 @@ body{
         { text: "Stolen Shop", categories: ["Action"] },
         { text: "Interrupted Kiss", categories: ["Romance", "Angst"] },
         { text: "Heartbroken", categories: ["Angst", "Romance"] },
-        { text: "Shared Bed", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Shared Bed", categories: ["Relationship", "Romance", "Fluff", "Angst"] },
         { text: "Hidden Injury", categories: ["Injuries", "Angst"] },
         { text: "Short / Long-term Coma", categories: ["Injuries", "Angst"] },
-        { text: "Plain Clothes Day", categories: ["Events", "Fluff"] },
+        { text: "Plain Clothes Day", categories: ["Events", "Angst"] },
         { text: "Heatwave", categories: ["Events"] },
         { text: "Wildfire", categories: ["Events"] },
+        { text: "Earthquake", categories: ["Events"] },
+        { text: "Home Invasion", categories: ["Events", "Locations"] },
         { text: "Locker Room", categories: ["Locations"] },
-        { text: "Double Date", categories: ["Romance", "Events", "Fluff"] },
-        { text: "Mistaken For a Couple", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Double Date", categories: ["Romance", "Events", "Fluff", "Angst"] },
+        { text: "Mistaken For a Couple", categories: ["Relationship", "Romance", "Fluff", "Angst"] },
         { text: "Mistaken For a Criminal", categories: ["Action", "Angst"] },
         { text: "Plus One", categories: ["Romance", "Events"] },
         { text: "Las Torres Bar", categories: ["Locations"] },
+        { text: "Las Vegas", categories: ["Locations"] },
+        { text: "Las Vegas Marriage", categories: ["Events", "Angst", "Romance"] },
+        { text: "Lighthouse", categories: ["Locations"] },
         { text: "Kid Fic", categories: ["Fluff", "Romance"] },
-        { text: "Kojo", categories: ["Characters", "Fluff"] },
+        { text: "Kojo", categories: ["Characters"] },
         { text: "Roll Call", categories: ["Locations", "Events"] },
         { text: "Speed Dating", categories: ["Romance", "Events", "Fluff"] },
         { text: "Work Party", categories: ["Events", "Fluff"] },
@@ -1234,6 +1677,8 @@ body{
         { text: "Karaoke Night", categories: ["Events", "Fluff"] },
         { text: "Laundry Day", categories: ["Fluff"] },
         { text: "Shared Coffee", categories: ["Fluff", "Romance"] },
+        { text: "Love At First Sight", categories: ["Fluff", "Romance"] },
+        { text: "Lust At First Sight", categories: ["Fluff", "Romance"] },
         { text: "Missed Call", categories: ["Angst"] },
         { text: "Poisoned Meal", categories: ["Action", "Injuries", "Angst"] },
         { text: "Movie Night", categories: ["Fluff", "Romance"] },
@@ -1241,40 +1686,64 @@ body{
         { text: "Morning Run", categories: ["Fluff"] },
         { text: "Postcards", categories: ["Fluff", "Romance"] },
         { text: "Power Outage", categories: ["Events", "Fluff", "Romance"] },
-        { text: "Trapped Together", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Trapped Together", categories: ["Locations", "Romance", "Angst"] },
         { text: "Stuck Elevator", categories: ["Locations", "Relationship", "Angst"] },
         { text: "Post-Breakup", categories: ["Relationship", "Angst", "Romance"] },
+		{ text: "Make Out, Stop Crime", categories: ["Angst", "Romance"] },
+		{ text: "Party Make Out", categories: ["Angst", "Romance"] },
         { text: "Panic Attack", categories: ["Angst"] },
-        { text: "Pillow Talk", categories: ["Romance", "NSFW", "Fluff"] },
+        { text: "Bank Robbery", categories: ["Angst", "Action"] },
+        { text: "Pillow Talk", categories: ["Romance", "Fluff"] },
         { text: "Interrogation Room", categories: ["Locations", "Action"] },
         { text: "Apocalypse AU", categories: ["AU", "Action", "Angst"] },
         { text: "Zombie AU", categories: ["AU", "Action", "Angst"] },
-        { text: "Social Media", categories: ["Fluff"] },
+        { text: "Social Media", categories: ["Fluff", "Angst"] },
         { text: "Escort Work", categories: ["Action"] },
         { text: "Emergency Room", categories: ["Locations", "Injuries", "Angst"] },
-        { text: "Tim's House", categories: ["Locations", "Fluff"] },
-        { text: "Lucy's Apartment", categories: ["Locations", "Fluff"] },
+        { text: "Allergic Reactions", categories: ["Injuries", "Angst"] },
+        { text: "Tim's House", categories: ["Locations"] },
+        { text: "Lucy's Apartment", categories: ["Locations"] },
         { text: "Baby-Sitting", categories: ["Fluff"] },
-        { text: "Clothes Sharing", categories: ["Romance", "Fluff"] },
-        { text: "Shop Talk", categories: ["Fluff", "Characters"] },
+        { text: "Suddenly Naked", categories: ["Fluff", "Romance", "Angst"] },
+        { text: "Clothes Sharing", categories: ["Romance", "Fluff", "Angst"] },
+        { text: "Shop Talk", categories: ["Fluff", "Angst"] },
+        { text: "Dim / Juicy Return", categories: ["Characters", "Angst"] },
         { text: "Head Injury", categories: ["Injuries", "Angst"] },
         { text: "Worried Lucy", categories: ["Characters", "Angst", "Romance"] },
-        { text: "Spilled Drink", categories: ["Fluff", "Romance"] },
+        { text: "Spilled Drink", categories: ["Fluff", "Romance", "Angst"] },
+        { text: "Summer Fling AU", categories: ["Fluff", "Romance", "Angst", "AU"] },
         { text: "Worried Tim", categories: ["Characters", "Angst", "Romance"] },
         { text: "Foot Chase", categories: ["Action"] },
         { text: "Traffic Stop", categories: ["Action"] },
-        { text: "Ride Along", categories: ["Events", "Characters"] },
+        { text: "Ride Along", categories: ["Events"] },
         { text: "Backup Call", categories: ["Action"] },
         { text: "Code Three", categories: ["Action"] },
         { text: "Night Shift", categories: ["Events", "Locations"] },
-        { text: "Desk Duty", categories: ["Characters", "Fluff"] },
+        { text: "Desk Duty", categories: ["Action"] },
+        { text: "Soulbonded to the Enemy", categories: ["Angst", "Romance"] },
+        { text: "Soulbonding is Illegal", categories: ["Angst", "Romance"] },
+        { text: "Broken Soulbound", categories: ["Angst", "Romance"] },
+        { text: "Station Explosion", categories: ["Angst"] },
         { text: "Training Exercise", categories: ["Action", "Events"] },
         { text: "Field Training", categories: ["Action", "Events"] },
-        { text: "Probation Day", categories: ["Events"] },
+        { text: "Probation Period", categories: ["Events"] },
+        { text: "Camping", categories: ["Events"] },
         { text: "Body Cam", categories: ["Action"] },
+        { text: "Chained To A Wall", categories: ["Action", "Angst"] },
         { text: "Evidence Room", categories: ["Locations"] },
         { text: "Court Testimony", categories: ["Action", "Events"] },
         { text: "Burn Injury", categories: ["Injuries", "Angst"] },
+        { text: "Internal Bleeding", categories: ["Injuries", "Angst"] },
+        { text: "Knife Wounds", categories: ["Injuries", "Angst"] },
+        { text: "Heatstroke", categories: ["Injuries", "Angst"] },
+        { text: "Fainting", categories: ["Injuries", "Angst"] },
+        { text: "Presumed Dead - Reunion", categories: ["Fluff", "Angst"] },
+        { text: "Presumed Dead", categories: ["Angst"] },
+        { text: "Gunshot Wound - Abdomen", categories: ["Injuries", "Angst"] },
+        { text: "Gunshot Wound - Arm", categories: ["Injuries", "Angst"] },
+        { text: "Gunshot Wound - Chest", categories: ["Injuries", "Angst"] },
+        { text: "Gunshot Wound - Hand", categories: ["Injuries", "Angst"] },
+        { text: "Gunshot Wound - Leg", categories: ["Injuries", "Angst"] },
         { text: "Bleeding Out", categories: ["Injuries", "Angst"] },
         { text: "Trust Issues", categories: ["Relationship", "Angst"] },
         { text: "Fear of Loss", categories: ["Angst", "Romance"] },
@@ -1285,8 +1754,11 @@ body{
         { text: "Wrong Timing", categories: ["Angst", "Romance"] },
         { text: "Second Thoughts", categories: ["Angst", "Romance"] },
         { text: "Regret", categories: ["Angst"] },
-        { text: "Wrong Text", categories: ["Fluff", "Romance"] },
+        { text: "Survivor Guilt", categories: ["Angst"] },
+        { text: "Wrong Text", categories: ["Fluff", "Romance", "Angst"] },
+        { text: "Wrong Number", categories: ["Fluff", "Romance", "Angst"] },
         { text: "Group Chat", categories: ["Fluff"] },
+        { text: "Texting", categories: ["Fluff"] },
         { text: "Inside Joke", categories: ["Fluff", "Romance"] },
         { text: "Nickname", categories: ["Fluff", "Romance"] },
         { text: "Running Late", categories: ["Fluff"] },
@@ -1294,16 +1766,22 @@ body{
         { text: "Takeout Night", categories: ["Fluff", "Romance"] },
         { text: "Messy Kitchen", categories: ["Fluff", "Romance"] },
         { text: "Lost Keys", categories: ["Fluff"] },
+		{ text: "Lost Love", categories: ["Fluff", "Angst", "Romance"] },
+		{ text: "Soul Marks", categories: ["Fluff", "Angst", "Romance"] },
+		{ text: "Rivals", categories: ["Angst", "Romance"] },
         { text: "Bad Cooking", categories: ["Fluff"] },
-        { text: "Fake Marriage", categories: ["Relationship", "Romance"] },
+        { text: "Fake Marriage", categories: ["Relationship", "Romance", "Angst"] },
+		{ text: "Marriage Pact", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Secret Marriage", categories: ["Relationship", "Romance"] },
         { text: "Accidental Date", categories: ["Relationship", "Romance", "Fluff"] },
         { text: "Forced Proximity", categories: ["Relationship", "Romance", "Angst"] },
         { text: "Identity Reveal", categories: ["Action", "Angst"] },
-        { text: "Hidden Past", categories: ["Angst", "Characters"] },
+        { text: "Hidden Past", categories: ["Angst"] },
         { text: "Double Life", categories: ["Action", "Angst"] },
         { text: "Forehead Kiss", categories: ["Romance", "Fluff"] },
         { text: "Kitchen Dance", categories: ["Romance", "Fluff"] },
+        { text: "Slow Dance", categories: ["Romance", "Fluff"] },
+        { text: "Wedding Dance", categories: ["Romance", "Fluff"] },
         { text: "Holding Hands", categories: ["Romance", "Fluff"] },
         { text: "Magnetic Pull", categories: ["Romance", "Angst"] },
         { text: "Caught Staring", categories: ["Romance", "Fluff"] },
@@ -1312,18 +1790,29 @@ body{
         { text: "Idiots in Love", categories: ["Relationship", "Romance", "Fluff"] },
         { text: "Oblivious Idiots", categories: ["Relationship", "Romance", "Fluff"] },
         { text: "Mechanic AU", categories: ["AU"] },
-        { text: "Stripper AU", categories: ["AU", "NSFW"] },
+        { text: "Space AU", categories: ["AU"] },
+        { text: "Astronauts AU", categories: ["AU"] },
+        { text: "Criminals AU", categories: ["AU"] },
+        { text: "Gang Wars AU", categories: ["AU"] },
+        { text: "Ghosts AU", categories: ["AU"] },
+        { text: "Cursed With Immortality AU", categories: ["AU"] },
+        { text: "Vampire / Vampire Hunter AU", categories: ["AU", "Angst"] },
+        { text: "Dog Walker AU", categories: ["AU", "Romance"] },
+        { text: "Stripper AU", categories: ["AU"] },
         { text: "Prison AU", categories: ["AU", "Action", "Angst"] },
         { text: "Assassins AU", categories: ["AU", "Action"] },
         { text: "Everyone Knows", categories: ["Relationship", "Romance", "Fluff"] },
         { text: "Bonfire", categories: ["Events", "Fluff", "Romance"] },
         { text: "Secret Santa", categories: ["Events", "Fluff"] },
         { text: "Car Confession", categories: ["Romance", "Angst"] },
-        { text: "Late Night Drive", categories: ["Fluff", "Romance"] },
+        { text: "Late Night Drive", categories: ["Fluff", "Romance", "Angst"] },
+        { text: "Mother's Day", categories: ["Fluff", "Romance", "Events"] },
+        { text: "Father's Day", categories: ["Fluff", "Romance", "Events"] },
+        { text: "April Fool's Day", categories: ["Fluff", "Romance", "Events"] },
         { text: "Shared Silence", categories: ["Romance", "Angst"] },
         { text: "One Last Time", categories: ["Angst", "Romance"] },
         { text: "Temple Kiss", categories: ["Romance", "Fluff"] },
-        { text: "Sleepy Confession", categories: ["Romance", "Fluff"] },
+        { text: "Sleepy Confession", categories: ["Romance", "Fluff", "Angst"] },
         { text: "Morning Cuddles", categories: ["Romance", "Fluff"] },
         { text: "Couch Naps", categories: ["Romance", "Fluff"] },
         { text: "Shared Hoodie", categories: ["Romance", "Fluff"] },
@@ -1333,18 +1822,21 @@ body{
         { text: "Shared Space", categories: ["Relationship", "Romance", "Fluff"] },
         { text: "No Escape", categories: ["Action", "Angst"] },
         { text: "Locked In", categories: ["Action", "Angst", "Locations"] },
-        { text: "Accidental Marriage", categories: ["Relationship", "Romance", "Fluff"] },
-        { text: "Fake Identity", categories: ["Action", "AU"] },
-        { text: "Identity Mixup", categories: ["Fluff", "Action"] },
-        { text: "Ride or Die", categories: ["Relationship", "Romance", "Action"] },
+        { text: "Accidental Marriage", categories: ["Relationship", "Romance", "Angst"] },
+        { text: "Fake Identity", categories: ["Action", "AU", "Angst"] },
+        { text: "Cooking Together", categories: ["Fluff", "Romance"] },
+        { text: "Ride or Die", categories: ["Relationship", "Romance", "Action", "Angst"] },
         { text: "Mistaken Identity", categories: ["Action", "Fluff"] },
-        { text: "Drunk Marriage", categories: ["Relationship", "Romance", "Fluff"] },
+        { text: "Drunk Marriage", categories: ["Relationship", "Romance", "Fluff", "Angst"] },
         { text: "Thunderstorm", categories: ["Events"] },
+        { text: "Natural Disaster", categories: ["Events"] },
+        { text: "Tsunami Warning", categories: ["Events"] },
         { text: "Hiking", categories: ["Events", "Locations", "Fluff"] },
         { text: "Sparring", categories: ["Action", "Fluff"] },
         { text: "Picnic Date", categories: ["Romance", "Fluff", "Events"] },
         { text: "Sunburnt", categories: ["Injuries", "Fluff"] },
         { text: "Pool Party", categories: ["Events", "Fluff"] },
+        { text: "Baby Shower", categories: ["Events", "Fluff"] },
         { text: "Halloween Party", categories: ["Events", "Fluff"] },
         { text: "Barbecue Party", categories: ["Events", "Fluff"] },
         { text: "Trick or Treating", categories: ["Events", "Fluff"] },
@@ -1352,8 +1844,135 @@ body{
         { text: "Ghost Stories", categories: ["Events", "Fluff"] },
         { text: "Horror Movies Marathon", categories: ["Events", "Fluff"] },
         { text: "New Year Resolutions", categories: ["Events", "Fluff", "Romance"] },
+		{ text: "Love At First Sight", categories: ["Fluff", "Romance"] },
         { text: "Brokedown Car", categories: ["Events", "Romance"] },
-        { text: "Sunset", categories: ["Events", "Romance"] }
+        { text: "Sunset", categories: ["Events", "Romance"] },
+        { text: "Enclosed Spaces", categories: ["Locations", "Angst"] },
+        { text: "Plane Crash", categories: ["Injuries", "Angst"] },
+        { text: "Shipwrecked", categories: ["Angst"] },
+        { text: "Helicopter Crash", categories: ["Injuries", "Angst"] },
+        { text: "DOD Tattoo", categories: ["Angst"] },
+		{ text: "Hollywood Sign", categories: ["Locations"] },
+		{ text: "Abandoned Building", categories: ["Locations"] },
+		{ text: "Westview Hospital", categories: ["Locations"] },
+		{ text: "LAPD Gym", categories: ["Locations"] },
+		{ text: "Mid-Wilshire Parking Lot", categories: ["Locations"] },
+		{ text: "Grocery Store", categories: ["Locations"] },
+		{ text: "Movie Theater", categories: ["Locations"] },
+		{ text: "Hot Air Balloon", categories: ["Locations"] },
+		{ text: "Helicopter", categories: ["Locations"] },
+		{ text: "Shaw Memorial Hospital", categories: ["Locations"] },
+		{ text: "Cemetery", categories: ["Locations", "Angst"] },
+		{ text: "Adoption", categories: ["Fluff", "Romance"] },
+		{ text: "Sleep Talking", categories: ["Fluff", "Romance"] },
+		{ text: "Almost Kiss", categories: ["Fluff", "Romance"] },
+		{ text: "Pet Names", categories: ["Fluff", "Romance"] },
+		{ text: "Unheard Confession", categories: ["Angst", "Romance"] },
+		{ text: "Hoodie Theft", categories: ["Fluff", "Romance"] },
+		{ text: "Unsaid Goodbye", categories: ["Angst", "Romance"] },
+		{ text: "Wrong Target", categories: ["Angst", "Action"] },
+		{ text: "Arrest Gone Wrong", categories: ["Angst", "Action"] },
+		{ text: "No Backup", categories: ["Angst", "Action"] },
+		{ text: "Critical Hit", categories: ["Angst", "Action", "Injuries"] },
+		{ text: "Guilt Spiral", categories: ["Angst", "Romance"] },
+		{ text: "Fake Flirting", categories: ["Angst", "Romance"] },
+		{ text: "Infertility", categories: ["Angst", "Romance"] },
+		{ text: "Fertility Issues", categories: ["Angst", "Romance"] },
+		{ text: "Shoulder Kiss", categories: ["Fluff", "Romance"] },
+		{ text: "Spa Day", categories: ["Fluff", "Romance", "Events"] },
+		{ text: "Moving In Day", categories: ["Fluff", "Romance", "Events"] },
+		{ text: "Hitmen AU", categories: ["AU", "Action", "Angst"] },
+		{ text: "Honeymoon", categories: ["Fluff", "Romance"] },
+		{ text: "Awkward Secret", categories: ["Fluff", "Romance"] },
+		{ text: "Girl Dad Tim", categories: ["Fluff", "Characters"] },
+		{ text: "Co-Parenting", categories: ["Fluff", "Angst"] },
+		{ text: "#GrumpyCop", categories: ["Fluff"] },
+		{ text: "Girl Mom Lucy", categories: ["Fluff", "Characters"] },
+		{ text: "Boy Dad Tim", categories: ["Fluff", "Characters"] },
+		{ text: "Boy Mom Lucy", categories: ["Fluff", "Characters"] },
+		{ text: "Hurt Lucy", categories: ["Injuries", "Characters"] },
+		{ text: "Hurt Tim", categories: ["Injuries", "Characters"] },
+		{ text: "Corruption", categories: ["Angst"] },
+		{ text: "Threats", categories: ["Angst"] },
+		{ text: "Depression", categories: ["Angst"] },
+		{ text: "Scars", categories: ["Angst", "Injuries"] },
+		{ text: "Hallucinations", categories: ["Angst", "Injuries"] },
+		{ text: "Hypothermia", categories: ["Angst", "Injuries"] },
+		{ text: "Drug Abuse", categories: ["Angst", "Injuries"] },
+        { text: "69", categories: ["NSFW"] },
+        { text: "Begging", categories: ["NSFW"] },
+        { text: "Biting", categories: ["NSFW"] },
+        { text: "Blow Job", categories: ["NSFW"] },
+        { text: "Body Worship", categories: ["NSFW"] },
+        { text: "Vampire Sex", categories: ["NSFW"] },
+        { text: "Daddy Kink", categories: ["NSFW"] },
+        { text: "Dirty Talk", categories: ["NSFW"] },
+        { text: "Angry Sex", categories: ["NSFW"] },
+        { text: "Dry Humping", categories: ["NSFW"] },
+        { text: "Oral Sex", categories: ["NSFW"] },
+        { text: "Hand Job", categories: ["NSFW"] },
+        { text: "Hair Pulling", categories: ["NSFW"] },
+        { text: "Choking", categories: ["NSFW"] },
+        { text: "BDSM", categories: ["NSFW"] },
+        { text: "Lap Dance", categories: ["NSFW"] },
+        { text: "Praise Kink", categories: ["NSFW"] },
+        { text: "Masturbation", categories: ["NSFW"] },
+        { text: "Sex Toys", categories: ["NSFW"] },
+        { text: "First Time Sex", categories: ["NSFW"] },
+        { text: "Phone Sex", categories: ["NSFW"] },
+        { text: "Secretly a Virgin", categories: ["NSFW"] },
+        { text: "Sexting", categories: ["NSFW"] },
+        { text: "Rough Sex", categories: ["NSFW"] },
+        { text: "Shower Sex", categories: ["NSFW"] },
+        { text: "Spanking", categories: ["NSFW"] },
+        { text: "Car Sex", categories: ["NSFW"] },
+        { text: "Touch Starved", categories: ["NSFW"] },
+        { text: "Aftercare", categories: ["NSFW"] },
+        { text: "Dildos", categories: ["NSFW"] },
+        { text: "Wet Dreams", categories: ["NSFW"] },
+        { text: "Dream Sex", categories: ["NSFW"] },
+        { text: "Sexy Lingerie", categories: ["NSFW"] },
+        { text: "Scent Kink", categories: ["NSFW"] },
+        { text: "Handcuffs", categories: ["NSFW"] },
+        { text: "Hate Sex", categories: ["NSFW"] },
+        { text: "Mile-High Club", categories: ["NSFW"] },
+        { text: "Orgasm Denial", categories: ["NSFW"] },
+        { text: "Teasing", categories: ["NSFW"] },
+        { text: "Sexual Favor", categories: ["NSFW"] },
+        { text: "Public Sex", categories: ["NSFW"] },
+        { text: "Drunken Sex", categories: ["NSFW"] },
+        { text: "Healing Sex", categories: ["NSFW"] },
+        { text: "Leaked Sex Tape", categories: ["NSFW"] },
+        { text: "Fingering", categories: ["NSFW"] },
+        { text: "Dom/Sub", categories: ["NSFW"] },
+        { text: "Emotional Sex", categories: ["NSFW"] },
+        { text: "Vibrators", categories: ["NSFW"] },
+        { text: "In Uniform Sex", categories: ["NSFW"] },
+        { text: "Wall Sex", categories: ["NSFW"] },
+        { text: "Outdoor Sex", categories: ["NSFW"] },
+		{ text: "Kitchen Sex", categories: ["NSFW"] },
+		{ text: "Couch Sex", categories: ["NSFW"] },
+		{ text: "Comfort Sex", categories: ["NSFW"] },
+		{ text: "Wedding Sex", categories: ["NSFW"] },
+		{ text: "Honeymoon Sex", categories: ["NSFW"] },
+		{ text: "Chair Sex", categories: ["NSFW"] },
+		{ text: "Edging", categories: ["NSFW"] },
+		{ text: "Office Sex", categories: ["NSFW"] },
+		{ text: "Video Sex", categories: ["NSFW"] },
+		{ text: "Sex-Induced Soulbond", categories: ["NSFW"] },
+		{ text: "National Orgasm Day", categories: ["NSFW"] },
+		{ text: "Period Sex", categories: ["NSFW"] },
+		{ text: "Reconciliation Sex", categories: ["NSFW"] },
+		{ text: "Undercover Sex", categories: ["NSFW"] },
+		{ text: "Stakeout Sex", categories: ["NSFW"] },
+		{ text: "Rookie/TO Sex", categories: ["NSFW"] },
+		{ text: "Phone Sex Operator", categories: ["NSFW"] },
+		{ text: "Doggy Style Sex", categories: ["NSFW"] },
+		{ text: "DOD Tattoo Worship", categories: ["NSFW"] },
+		{ text: "Horny Lucy", categories: ["NSFW", "Characters"] },
+		{ text: "Horny Tim", categories: ["NSFW", "Characters"] },
+		{ text: "Missed You Sex", categories: ["NSFW"] },
+		{ text: "Vampire Blood Sex", categories: ["NSFW"] },
     ];
 
     const sortedPrompts = promptPool
@@ -1394,6 +2013,78 @@ body{
         return JSON.parse(LZString.decompressFromEncodedURIComponent(code));
     }
 
+    function getShareCodeFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("b") || "";
+    }
+
+    function buildShareUrl(code) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("b", code);
+        return url.toString();
+    }
+
+    async function copyShareLink() {
+        const board = getCurrentBoardData();
+        if (!board) return;
+
+        const code = encodeShareCode({
+            v: 3,
+            b: encodeBoardForShare(board)
+        });
+
+        const url = buildShareUrl(code);
+        const success = await copyTextToClipboard(url);
+
+        showInlineCopyMessage(
+            success ? "Share link copied." : "Share link copy failed.",
+            !success
+        );
+    }
+
+    function loadShareCodeFromUrlIfPresent() {
+        const code = getShareCodeFromUrl();
+        if (!code) return false;
+
+        try {
+            const decoded = decodeShareCode(code);
+            if (!decoded) return false;
+
+            let boardData = null;
+
+            if (decoded.v === 3 && decoded.b) {
+                boardData = decodeBoardFromShare(decoded.b);
+            } else if (decoded.version === 2 && decoded.board) {
+                boardData = decodeBoardFromShare(decoded.board);
+            }
+
+            if (!boardData) return false;
+
+            saveBoardData(boardData);
+            lastBingoCount = 0;
+            renderBoard(boardData);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function getDefaultCategoryWeights() {
+        return {
+            Action: 2,
+            Angst: 3,
+            AU: 2,
+            Characters: 2,
+            Events: 1,
+            Fluff: 3,
+            Injuries: 2,
+            Locations: 1,
+            NSFW: 1,
+            Relationship: 3,
+            Romance: 3
+        };
+    }
+
     function getDefaultSettings() {
         const disabledByDefault = sortedPrompts
             .filter(prompt => Array.isArray(prompt.categories) && prompt.categories.includes("NSFW"))
@@ -1405,8 +2096,19 @@ body{
             includeFreeSpace: true,
             freeSpaceCount: 1,
             freeSpaceTexts: ["FREE SPACE"],
-            isLocked: false
+            isLocked: false,
+            categoryWeights: getDefaultCategoryWeights()
         };
+    }
+
+    function resetSettingsToDefault() {
+        const defaults = getDefaultSettings();
+        saveSettings(defaults);
+        initializePromptEnabledState(defaults);
+        renderSettingsUI({ resetPromptState: true });
+        updatePromptCountPreview();
+        syncNSFWToggleUI();
+        showSettingsMessage("Settings reset to default.", false);
     }
 
     function toggleHelpPanel() {
@@ -1454,13 +2156,27 @@ body{
                 freeSpaceTexts.push(`FREE SPACE ${freeSpaceTexts.length + 1}`);
             }
 
+            const defaultWeights = getDefaultCategoryWeights();
+            const parsedWeights = parsed.categoryWeights && typeof parsed.categoryWeights === "object"
+                ? parsed.categoryWeights
+                : {};
+
+            const mergedWeights = {};
+            ALL_CATEGORIES.forEach(category => {
+                const rawWeight = Number(parsedWeights[category]);
+                mergedWeights[category] = Number.isFinite(rawWeight) && rawWeight >= 0
+                    ? rawWeight
+                    : defaultWeights[category];
+            });
+
             return {
                 gridSize: [3, 4, 5].includes(Number(parsed.gridSize)) ? Number(parsed.gridSize) : DEFAULT_GRID_SIZE,
                 disabledPrompts: Array.isArray(parsed.disabledPrompts) ? parsed.disabledPrompts : [],
                 includeFreeSpace: parsed.includeFreeSpace !== false,
                 freeSpaceCount,
                 freeSpaceTexts,
-                isLocked: !!parsed.isLocked
+                isLocked: !!parsed.isLocked,
+                categoryWeights: mergedWeights
             };
         } catch (error) {
             return getDefaultSettings();
@@ -1537,12 +2253,6 @@ body{
         promptEnabledState.set(text, !!enabled);
     }
 
-    function getAllEnabledPromptTexts() {
-        return sortedPrompts
-            .map(prompt => prompt.text)
-            .filter(text => getPromptEnabled(text));
-    }
-
     function getAllDisabledPromptTexts() {
         return sortedPrompts
             .map(prompt => prompt.text)
@@ -1551,6 +2261,35 @@ body{
 
     function getPromptsForCategory(category) {
         return sortedPrompts.filter(prompt => promptMatchesCategory(prompt, category));
+    }
+
+    function getNSFWPromptTexts() {
+        return sortedPrompts
+            .filter(prompt => Array.isArray(prompt.categories) && prompt.categories.includes("NSFW"))
+            .map(prompt => prompt.text);
+    }
+
+    function areAllNSFWPromptsEnabled() {
+        const nsfwTexts = getNSFWPromptTexts();
+        return nsfwTexts.every(text => getPromptEnabled(text));
+    }
+
+    function setAllNSFWPrompts(enabled) {
+        getNSFWPromptTexts().forEach(text => {
+            setPromptEnabled(text, enabled);
+        });
+
+        document.querySelectorAll(".bingo-prompt-checkbox").forEach(box => {
+            if (getNSFWPromptTexts().includes(box.value)) {
+                box.checked = !!enabled;
+            }
+        });
+    }
+
+    function syncNSFWToggleUI() {
+        const nsfwToggle = document.getElementById("nsfw-toggle");
+        if (!nsfwToggle) return;
+        nsfwToggle.checked = areAllNSFWPromptsEnabled();
     }
 
     function getBoardMeta(gridSize, includeFreeSpace, freeSpaceCount) {
@@ -1600,7 +2339,86 @@ body{
     function getEnabledPrompts(settings) {
         const disabledPromptSet = new Set(settings.disabledPrompts);
 
-        return sortedPrompts.filter(prompt => !disabledPromptSet.has(prompt.text));
+        const nsfwEnabled = areAllNSFWPromptsEnabled();
+
+        return sortedPrompts.filter(prompt => {
+            if (disabledPromptSet.has(prompt.text)) return false;
+
+            // 🚫 Hard filter: remove NSFW prompts entirely if toggle is off
+            if (!nsfwEnabled && Array.isArray(prompt.categories) && prompt.categories.includes("NSFW")) {
+                return false;
+            }
+
+            return true;
+        });
+    }
+
+    function getPromptWeight(prompt, categoryWeights) {
+        if (!prompt || !Array.isArray(prompt.categories) || !prompt.categories.length) {
+            return 1;
+        }
+
+        const nsfwEnabled = areAllNSFWPromptsEnabled();
+
+        const weights = prompt.categories
+            .map(category => {
+                // 🚫 If NSFW is OFF → treat its weight as 0
+                if (category === "NSFW" && !nsfwEnabled) return 0;
+
+                return Number(categoryWeights?.[category]) || 0;
+            })
+            .filter(weight => weight > 0);
+
+        if (!weights.length) {
+            return 1;
+        }
+
+        return Math.max(...weights);
+    }
+
+    function pickWeightedPrompt(prompts, categoryWeights) {
+        if (!prompts.length) return null;
+
+        const weighted = prompts.map(prompt => ({
+            prompt,
+            weight: getPromptWeight(prompt, categoryWeights)
+        }));
+
+        const totalWeight = weighted.reduce((sum, item) => sum + item.weight, 0);
+
+        if (totalWeight <= 0) {
+            return prompts[Math.floor(Math.random() * prompts.length)];
+        }
+
+        let roll = Math.random() * totalWeight;
+
+        for (const item of weighted) {
+            roll -= item.weight;
+            if (roll <= 0) {
+                return item.prompt;
+            }
+        }
+
+        return weighted[weighted.length - 1].prompt;
+    }
+
+    function getWeightedPromptSelection(enabledPrompts, count, categoryWeights) {
+        const pool = enabledPrompts.slice();
+        const picked = [];
+
+        while (picked.length < count && pool.length) {
+            const chosen = pickWeightedPrompt(pool, categoryWeights);
+            if (!chosen) break;
+
+            picked.push(chosen);
+
+            const index = pool.findIndex(prompt => prompt.text === chosen.text);
+            if (index !== -1) {
+                pool.splice(index, 1);
+            }
+        }
+
+        return picked;
     }
 
     function createFreshBoardData(settings) {
@@ -1611,7 +2429,11 @@ body{
             return null;
         }
 
-        const selectedPrompts = shuffleArray(enabledPrompts).slice(0, meta.promptCountNeeded);
+        const selectedPrompts = getWeightedPromptSelection(
+            enabledPrompts,
+            meta.promptCountNeeded,
+            settings.categoryWeights || getDefaultCategoryWeights()
+        );
         const freeIndexes = meta.hasFreeSpace ? getRandomFreeIndexes(meta.total, meta.freeSpaceCount) : [];
         const freeIndexSet = new Set(freeIndexes);
 
@@ -1971,6 +2793,51 @@ body{
         }
     }
 
+    function renderCategoryWeights(settings) {
+        const wrap = document.getElementById("bingo-weight-list");
+        if (!wrap) return;
+
+        const weights = settings.categoryWeights || getDefaultCategoryWeights();
+        const nsfwEnabled = areAllNSFWPromptsEnabled();
+
+        wrap.innerHTML = ALL_CATEGORIES.map(category => {
+            const disabled = category === "NSFW" && !nsfwEnabled;
+            const value = Number(weights[category]) || 1;
+
+            return `
+                <div class="bingo-weight-item${disabled ? " is-disabled" : ""}">
+                    <span class="bingo-weight-name">${escapeHtml(category)}</span>
+                    <input
+                        type="range"
+                        min="1"
+                        max="5"
+                        step="1"
+                        class="bingo-weight-slider bingo-weight-input"
+                        data-category="${escapeHtml(category)}"
+                        value="${value}"
+                        ${disabled ? "disabled" : ""}
+                    >
+                    <span class="bingo-weight-value" id="weight-value-${escapeHtml(category)}">${value}</span>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function resetCategoryWeightsToDefault() {
+        const defaults = getDefaultCategoryWeights();
+
+        document.querySelectorAll(".bingo-weight-input").forEach(input => {
+            const category = input.getAttribute("data-category");
+            const value = defaults[category] ?? 3;
+            input.value = value;
+
+            const valueEl = document.getElementById(`weight-value-${category}`);
+            if (valueEl) valueEl.textContent = value;
+        });
+
+        showSettingsMessage("Category weights reset.", false);
+    }
+
     function renderSettingsUI(options = {}) {
         const settings = loadSettings();
         const select = document.getElementById("grid-size-select");
@@ -1987,9 +2854,12 @@ body{
 
         if (select) select.value = String(settings.gridSize);
         if (freeSpaceToggle) freeSpaceToggle.checked = settings.includeFreeSpace;
+        const nsfwToggle = document.getElementById("nsfw-toggle");
+        if (nsfwToggle) nsfwToggle.checked = areAllNSFWPromptsEnabled();
 
         renderFreeSpaceInputs(settings);
         populatePromptCategoryView();
+        renderCategoryWeights(settings);
 
         const selectedPromptCategory = getPromptCategoryViewValue();
 
@@ -2015,6 +2885,7 @@ body{
 
         filterPromptList();
         updatePromptCountPreview();
+        syncNSFWToggleUI();
     }
 
     function filterPromptList() {
@@ -2055,13 +2926,21 @@ body{
             })
             : [];
 
+        const categoryWeights = {};
+        document.querySelectorAll(".bingo-weight-input").forEach(input => {
+            const category = input.getAttribute("data-category");
+            const value = Number(input.value);
+            categoryWeights[category] = Number.isFinite(value) && value >= 0 ? value : 0;
+        });
+
         return {
             gridSize,
             includeFreeSpace,
             freeSpaceCount,
             freeSpaceTexts,
             disabledPrompts: getAllDisabledPromptTexts(),
-            isLocked: loadSettings().isLocked
+            isLocked: loadSettings().isLocked,
+            categoryWeights
         };
     }
 
@@ -2176,14 +3055,6 @@ body{
         saveSettings(settings);
         renderSettingsUI();
         updateLockButton(settings.isLocked);
-    }
-
-    function resetSettingsToDefault() {
-        const defaults = getDefaultSettings();
-        saveSettings(defaults);
-        renderSettingsUI();
-        updatePromptCountPreview();
-        showSettingsMessage("Settings reset to default.", false);
     }
 
     function saveSettingsFromUI() {
@@ -2350,35 +3221,80 @@ body{
         sortedPrompts.map((prompt, index) => [prompt.text, index])
     );
 
+    function encodeIndexList(list) {
+        return (list || []).map(num => Number(num).toString(36)).join(".");
+    }
+
+    function decodeIndexList(text) {
+        if (!text) return [];
+        return text.split(".").map(part => parseInt(part, 36)).filter(num => Number.isFinite(num));
+    }
+
+    function encodePromptSequence(squares) {
+        return squares.map(text => {
+            const promptIndex = PROMPT_INDEX_BY_TEXT.get(text);
+            return typeof promptIndex === "number"
+                ? promptIndex.toString(36)
+                : `~${encodeURIComponent(text)}`;
+        }).join(".");
+    }
+
+    function decodePromptSequence(text) {
+        if (!text) return [];
+        return text.split(".").map(part => {
+            if (part.startsWith("~")) {
+                return decodeURIComponent(part.slice(1));
+            }
+
+            const index = parseInt(part, 36);
+            return sortedPrompts[index] ? sortedPrompts[index].text : "";
+        });
+    }
+
+    function encodeCheckedIndexes(checked) {
+        const indexes = [];
+        (checked || []).forEach((value, index) => {
+            if (value) indexes.push(index);
+        });
+        return encodeIndexList(indexes);
+    }
+
+    function decodeCheckedIndexes(text, total) {
+        const checked = new Array(total).fill(false);
+        decodeIndexList(text).forEach(index => {
+            if (index >= 0 && index < total) checked[index] = true;
+        });
+        return checked;
+    }
+
     function encodeBoardForShare(board) {
-        return {
-            g: board.gridSize,
-            f: board.includeFreeSpace ? 1 : 0,
-            c: board.freeSpaceCount,
-            t: board.freeSpaceTexts || [],
-            x: board.freeIndexes || [],
-            s: board.squares.map(text => {
-                const promptIndex = PROMPT_INDEX_BY_TEXT.get(text);
-                return typeof promptIndex === "number" ? promptIndex : text;
-            }),
-            k: board.checked.map(value => value ? 1 : 0)
+        const payload = {
+            g: Number(board.gridSize).toString(36),
+            s: encodePromptSequence(board.squares),
+            k: encodeCheckedIndexes(board.checked)
         };
+
+        if (board.includeFreeSpace) payload.f = 1;
+        if ((board.freeSpaceCount || 0) > 0) payload.c = Number(board.freeSpaceCount).toString(36);
+        if (board.freeIndexes && board.freeIndexes.length) payload.x = encodeIndexList(board.freeIndexes);
+        if (board.freeSpaceTexts && board.freeSpaceTexts.length) payload.t = board.freeSpaceTexts;
+
+        return payload;
     }
 
     function decodeBoardFromShare(sharedBoard) {
+        const gridSize = parseInt(sharedBoard.g, 36) || DEFAULT_GRID_SIZE;
+        const total = gridSize * gridSize;
+        const squares = decodePromptSequence(sharedBoard.s);
+
         return {
-            gridSize: Number(sharedBoard.g),
+            gridSize,
             includeFreeSpace: !!sharedBoard.f,
-            freeSpaceCount: Number(sharedBoard.c) || 0,
+            freeSpaceCount: parseInt(sharedBoard.c, 36) || 0,
             freeSpaceTexts: Array.isArray(sharedBoard.t) ? sharedBoard.t : [],
-            freeIndexes: Array.isArray(sharedBoard.x) ? sharedBoard.x : [],
-            squares: (sharedBoard.s || []).map(value => {
-                if (typeof value === "number" && sortedPrompts[value]) {
-                    return sortedPrompts[value].text;
-                }
-                return String(value);
-            }),
-            checked: (sharedBoard.k || []).map(value => !!value)
+            freeIndexes: decodeIndexList(sharedBoard.x),
+            squares,
+            checked: decodeCheckedIndexes(sharedBoard.k, total)
         };
     }
 
@@ -2387,14 +3303,14 @@ body{
         if (!board) return;
 
         const code = encodeShareCode({
-            version: 2,
-            board: encodeBoardForShare(board)
+            v: 3,
+            b: encodeBoardForShare(board)
         });
 
         const success = await copyTextToClipboard(code);
 
         showInlineCopyMessage(
-            success ? "Share code copied." : "Copy failed in this embed. Please try again or copy it manually from a prompt/output if available.",
+            success ? "Share code copied." : "Copy failed in this embed. Please try again or copy it manually.",
             !success
         );
     }
@@ -2421,14 +3337,25 @@ body{
 
         try {
             const decoded = decodeShareCode(input.value.trim());
-            if (!decoded || !decoded.board) {
+            if (!decoded) {
                 showSettingsMessage("That share code is not valid.", true);
                 return;
             }
 
-            const boardData = decoded.version === 2
-                ? decodeBoardFromShare(decoded.board)
-                : decoded.board;
+            let boardData = null;
+
+            if (decoded.v === 3 && decoded.b) {
+                boardData = decodeBoardFromShare(decoded.b);
+            } else if (decoded.version === 2 && decoded.board) {
+                boardData = decodeBoardFromShare(decoded.board);
+            } else if (decoded.board) {
+                boardData = decoded.board;
+            }
+
+            if (!boardData || !Array.isArray(boardData.squares) || !Array.isArray(boardData.checked)) {
+                showSettingsMessage("That share code could not be loaded.", true);
+                return;
+            }
 
             saveBoardData(boardData);
             lastBingoCount = 0;
@@ -2469,6 +3396,40 @@ body{
         const promptCategoryView = document.getElementById("prompt-category-view");
         const clearShareButton = document.getElementById("clear-share-code");
         const shareCodeInput = document.getElementById("share-code-input");
+        const nsfwToggle = document.getElementById("nsfw-toggle");
+        const resetCategoryWeightsButton = document.getElementById("reset-category-weights");
+        const toggleWeightsBtn = document.getElementById("toggle-weights");
+        const weightContainer = document.getElementById("bingo-weight-container");
+        const copyShareLinkButton = document.getElementById("copy-share-link");
+
+        if (toggleWeightsBtn && weightContainer) {
+            toggleWeightsBtn.addEventListener("click", () => {
+                const opening = weightContainer.hidden;
+
+                weightContainer.hidden = !opening;
+                toggleWeightsBtn.classList.toggle("is-open", opening);
+                toggleWeightsBtn.setAttribute("aria-expanded", opening ? "true" : "false");
+
+                const textEl = toggleWeightsBtn.querySelector(".bingo-expand-btn-text");
+                if (textEl) {
+                    textEl.textContent = opening ? "Hide category weights" : "Show category weights";
+                }
+            });
+        }
+
+        document.addEventListener("input", function (event) {
+            if (event.target && event.target.classList.contains("bingo-weight-input")) {
+                const category = event.target.getAttribute("data-category");
+                const valueEl = document.getElementById(`weight-value-${category}`);
+                if (valueEl) {
+                    valueEl.textContent = event.target.value;
+                }
+            }
+
+            if (event.target && event.target.classList.contains("bingo-free-space-text")) {
+                updatePromptCountPreview();
+            }
+        });
 
         document.addEventListener("change", function (event) {
             if (!event.target) return;
@@ -2476,21 +3437,25 @@ body{
             if (event.target.classList.contains("bingo-prompt-checkbox")) {
                 setPromptEnabled(event.target.value, event.target.checked);
                 updatePromptCountPreview();
+                syncNSFWToggleUI();
             }
         });
 
         renderSettingsUI({ preservePromptState: false });
+        const loadedFromUrl = loadShareCodeFromUrlIfPresent();
 
         let boardData = loadBoardData();
         const settings = loadSettings();
 
-        if (!boardData || boardData.gridSize !== settings.gridSize || boardData.includeFreeSpace !== settings.includeFreeSpace) {
-            boardData = createFreshBoardData(settings);
-            if (boardData) saveBoardData(boardData);
-        }
+        if (!loadedFromUrl) {
+            if (!boardData || boardData.gridSize !== settings.gridSize || boardData.includeFreeSpace !== settings.includeFreeSpace) {
+                boardData = createFreshBoardData(settings);
+                if (boardData) saveBoardData(boardData);
+            }
 
-        if (boardData) {
-            renderBoard(boardData);
+            if (boardData) {
+                renderBoard(boardData);
+            }
         }
 
         updateLockButton(settings.isLocked);
@@ -2616,11 +3581,25 @@ body{
             });
         }
 
-        document.addEventListener("input", function (event) {
-            if (event.target && event.target.classList.contains("bingo-free-space-text")) {
+        if (nsfwToggle) {
+            nsfwToggle.addEventListener("change", function () {
+                setAllNSFWPrompts(nsfwToggle.checked);
+
+                const settings = loadSettings();
+                renderCategoryWeights(settings);
+
                 updatePromptCountPreview();
-            }
-        });
+                syncNSFWToggleUI();
+            });
+        }
+
+        if (resetCategoryWeightsButton) {
+            resetCategoryWeightsButton.addEventListener("click", resetCategoryWeightsToDefault);
+        }
+
+        if (copyShareLinkButton) {
+            copyShareLinkButton.addEventListener("click", copyShareLink);
+        }
 
         updateTopControlsVisibility();
     });
