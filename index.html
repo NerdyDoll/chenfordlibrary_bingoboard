@@ -1271,7 +1271,6 @@ body{
                     <div class="bingo-settings-label">Share Board</div>
                     <div class="bingo-share-row">
                         <button type="button" id="copy-share-code" class="bingo-btn">Copy Share Code</button>
-                        <button type="button" id="copy-share-link" class="bingo-btn">Copy Share Link</button>
                     </div>
                     <div class="bingo-settings-inline-message" id="share-copy-message"></div>
                     <div class="bingo-share-row bingo-share-load">
@@ -2013,62 +2012,6 @@ body{
         return JSON.parse(LZString.decompressFromEncodedURIComponent(code));
     }
 
-    function getShareCodeFromUrl() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get("b") || "";
-    }
-
-    function buildShareUrl(code) {
-        const url = new URL(window.location.href);
-        url.searchParams.set("b", code);
-        return url.toString();
-    }
-
-    async function copyShareLink() {
-        const board = getCurrentBoardData();
-        if (!board) return;
-
-        const code = encodeShareCode({
-            v: 3,
-            b: encodeBoardForShare(board)
-        });
-
-        const url = buildShareUrl(code);
-        const success = await copyTextToClipboard(url);
-
-        showInlineCopyMessage(
-            success ? "Share link copied." : "Share link copy failed.",
-            !success
-        );
-    }
-
-    function loadShareCodeFromUrlIfPresent() {
-        const code = getShareCodeFromUrl();
-        if (!code) return false;
-
-        try {
-            const decoded = decodeShareCode(code);
-            if (!decoded) return false;
-
-            let boardData = null;
-
-            if (decoded.v === 3 && decoded.b) {
-                boardData = decodeBoardFromShare(decoded.b);
-            } else if (decoded.version === 2 && decoded.board) {
-                boardData = decodeBoardFromShare(decoded.board);
-            }
-
-            if (!boardData) return false;
-
-            saveBoardData(boardData);
-            lastBingoCount = 0;
-            renderBoard(boardData);
-            return true;
-        } catch (error) {
-            return false;
-        }
-    }
-
     function getDefaultCategoryWeights() {
         return {
             Action: 2,
@@ -2251,6 +2194,12 @@ body{
 
     function setPromptEnabled(text, enabled) {
         promptEnabledState.set(text, !!enabled);
+    }
+
+    function getAllEnabledPromptTexts() {
+        return sortedPrompts
+            .map(prompt => prompt.text)
+            .filter(text => getPromptEnabled(text));
     }
 
     function getAllDisabledPromptTexts() {
@@ -3221,80 +3170,30 @@ body{
         sortedPrompts.map((prompt, index) => [prompt.text, index])
     );
 
-    function encodeIndexList(list) {
-        return (list || []).map(num => Number(num).toString(36)).join(".");
-    }
-
-    function decodeIndexList(text) {
-        if (!text) return [];
-        return text.split(".").map(part => parseInt(part, 36)).filter(num => Number.isFinite(num));
-    }
-
-    function encodePromptSequence(squares) {
-        return squares.map(text => {
-            const promptIndex = PROMPT_INDEX_BY_TEXT.get(text);
-            return typeof promptIndex === "number"
-                ? promptIndex.toString(36)
-                : `~${encodeURIComponent(text)}`;
-        }).join(".");
-    }
-
-    function decodePromptSequence(text) {
-        if (!text) return [];
-        return text.split(".").map(part => {
-            if (part.startsWith("~")) {
-                return decodeURIComponent(part.slice(1));
-            }
-
-            const index = parseInt(part, 36);
-            return sortedPrompts[index] ? sortedPrompts[index].text : "";
-        });
-    }
-
-    function encodeCheckedIndexes(checked) {
-        const indexes = [];
-        (checked || []).forEach((value, index) => {
-            if (value) indexes.push(index);
-        });
-        return encodeIndexList(indexes);
-    }
-
-    function decodeCheckedIndexes(text, total) {
-        const checked = new Array(total).fill(false);
-        decodeIndexList(text).forEach(index => {
-            if (index >= 0 && index < total) checked[index] = true;
-        });
-        return checked;
-    }
-
     function encodeBoardForShare(board) {
-        const payload = {
-            g: Number(board.gridSize).toString(36),
-            s: encodePromptSequence(board.squares),
-            k: encodeCheckedIndexes(board.checked)
+        return {
+            g: board.gridSize,
+            x: board.freeIndexes || [],
+            s: board.squares.map(text => {
+                const i = PROMPT_INDEX_BY_TEXT.get(text);
+                return typeof i === "number" ? i : text;
+            }),
+            k: board.checked.map(v => v ? 1 : 0)
         };
-
-        if (board.includeFreeSpace) payload.f = 1;
-        if ((board.freeSpaceCount || 0) > 0) payload.c = Number(board.freeSpaceCount).toString(36);
-        if (board.freeIndexes && board.freeIndexes.length) payload.x = encodeIndexList(board.freeIndexes);
-        if (board.freeSpaceTexts && board.freeSpaceTexts.length) payload.t = board.freeSpaceTexts;
-
-        return payload;
     }
 
-    function decodeBoardFromShare(sharedBoard) {
-        const gridSize = parseInt(sharedBoard.g, 36) || DEFAULT_GRID_SIZE;
-        const total = gridSize * gridSize;
-        const squares = decodePromptSequence(sharedBoard.s);
-
+    function decodeBoardFromShare(d) {
         return {
-            gridSize,
-            includeFreeSpace: !!sharedBoard.f,
-            freeSpaceCount: parseInt(sharedBoard.c, 36) || 0,
-            freeSpaceTexts: Array.isArray(sharedBoard.t) ? sharedBoard.t : [],
-            freeIndexes: decodeIndexList(sharedBoard.x),
-            squares,
-            checked: decodeCheckedIndexes(sharedBoard.k, total)
+            gridSize: d.g,
+            includeFreeSpace: true,
+            freeSpaceCount: d.x?.length || 0,
+            freeIndexes: d.x || [],
+            squares: d.s.map(v =>
+                typeof v === "number" && sortedPrompts[v]
+                    ? sortedPrompts[v].text
+                    : String(v)
+            ),
+            checked: d.k.map(v => !!v)
         };
     }
 
@@ -3303,14 +3202,14 @@ body{
         if (!board) return;
 
         const code = encodeShareCode({
-            v: 3,
-            b: encodeBoardForShare(board)
+            version: 2,
+            board: encodeBoardForShare(board)
         });
 
         const success = await copyTextToClipboard(code);
 
         showInlineCopyMessage(
-            success ? "Share code copied." : "Copy failed in this embed. Please try again or copy it manually.",
+            success ? "Share code copied." : "Copy failed in this embed. Please try again or copy it manually from a prompt/output if available.",
             !success
         );
     }
@@ -3337,25 +3236,14 @@ body{
 
         try {
             const decoded = decodeShareCode(input.value.trim());
-            if (!decoded) {
+            if (!decoded || !decoded.board) {
                 showSettingsMessage("That share code is not valid.", true);
                 return;
             }
 
-            let boardData = null;
-
-            if (decoded.v === 3 && decoded.b) {
-                boardData = decodeBoardFromShare(decoded.b);
-            } else if (decoded.version === 2 && decoded.board) {
-                boardData = decodeBoardFromShare(decoded.board);
-            } else if (decoded.board) {
-                boardData = decoded.board;
-            }
-
-            if (!boardData || !Array.isArray(boardData.squares) || !Array.isArray(boardData.checked)) {
-                showSettingsMessage("That share code could not be loaded.", true);
-                return;
-            }
+            const boardData = decoded.version === 2
+                ? decodeBoardFromShare(decoded.board)
+                : decoded.board;
 
             saveBoardData(boardData);
             lastBingoCount = 0;
@@ -3400,7 +3288,6 @@ body{
         const resetCategoryWeightsButton = document.getElementById("reset-category-weights");
         const toggleWeightsBtn = document.getElementById("toggle-weights");
         const weightContainer = document.getElementById("bingo-weight-container");
-        const copyShareLinkButton = document.getElementById("copy-share-link");
 
         if (toggleWeightsBtn && weightContainer) {
             toggleWeightsBtn.addEventListener("click", () => {
@@ -3442,20 +3329,17 @@ body{
         });
 
         renderSettingsUI({ preservePromptState: false });
-        const loadedFromUrl = loadShareCodeFromUrlIfPresent();
 
         let boardData = loadBoardData();
         const settings = loadSettings();
 
-        if (!loadedFromUrl) {
-            if (!boardData || boardData.gridSize !== settings.gridSize || boardData.includeFreeSpace !== settings.includeFreeSpace) {
-                boardData = createFreshBoardData(settings);
-                if (boardData) saveBoardData(boardData);
-            }
+        if (!boardData || boardData.gridSize !== settings.gridSize || boardData.includeFreeSpace !== settings.includeFreeSpace) {
+            boardData = createFreshBoardData(settings);
+            if (boardData) saveBoardData(boardData);
+        }
 
-            if (boardData) {
-                renderBoard(boardData);
-            }
+        if (boardData) {
+            renderBoard(boardData);
         }
 
         updateLockButton(settings.isLocked);
@@ -3595,10 +3479,6 @@ body{
 
         if (resetCategoryWeightsButton) {
             resetCategoryWeightsButton.addEventListener("click", resetCategoryWeightsToDefault);
-        }
-
-        if (copyShareLinkButton) {
-            copyShareLinkButton.addEventListener("click", copyShareLink);
         }
 
         updateTopControlsVisibility();
