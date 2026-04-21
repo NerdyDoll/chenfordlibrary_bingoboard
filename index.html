@@ -117,11 +117,15 @@ body{
     align-items:center;
     justify-content:center;
     text-align:center;
-    font-size:.92rem;
+    font-size:.1rem;
+    font-weight: 600;
     line-height:1.35;
     cursor:pointer;
     transition:.25s ease;
     overflow:hidden;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+    hyphens:auto;
 }
 
 .bingo-square.is-last-col{
@@ -575,11 +579,17 @@ body{
     position:relative;
     z-index:1;
     width:min(92vw, 420px);
-    margin:10vh auto 0;
+    max-width:calc(100vw - 32px);
+    max-height:90vh;
+    margin:0 auto;
+    top:50%;
+    transform:translateY(-50%);
     padding:20px;
     border:1px solid var(--border-color);
     background:var(--post-background);
     box-shadow:0 16px 40px rgba(0,0,0,.18);
+    border-radius:14px;
+    overflow:auto;
 }
 
 .bingo-modal-title{
@@ -601,10 +611,6 @@ body{
     gap:10px;
 }
 
-.bingo-modal-dialog{
-    border-radius:14px;
-}
-
 .bingo-toggle-row{
     display:flex;
     align-items:center;
@@ -623,6 +629,16 @@ body{
 .bingo-toggle-inline-row .bingo-select{
     margin-bottom:0;
     flex:0 1 auto;
+}
+
+#challenge-builder-modal .bingo-toggle-inline-row{
+    flex-wrap:wrap;
+    align-items:stretch;
+}
+
+#challenge-builder-modal .bingo-toggle-inline-row > input,
+#challenge-builder-modal .bingo-toggle-inline-row > select{
+    flex:1 1 180px;
 }
 
 .bingo-toggle-control{
@@ -836,6 +852,179 @@ body{
     opacity: 0.4;
 }
 
+.bingo-challenge-meta{
+    margin:0 0 14px;
+    padding:14px 16px;
+    border:1px solid var(--border-color);
+    background:linear-gradient(
+        135deg,
+        rgba(221,139,206,.08),
+        rgba(93,186,139,.08)
+    );
+}
+
+.bingo-challenge-title{
+    font-family:var(--serif);
+    font-size:1.2rem;
+    font-weight:700;
+    margin-bottom:4px;
+}
+
+.bingo-challenge-details{
+    font-size:.9rem;
+    line-height:1.5;
+}
+
+.bingo-challenge-modal-dialog{
+    width:min(94vw, 900px);
+    max-width:calc(100vw - 32px);
+    max-height:90vh;
+    overflow:auto;
+}
+
+#challenge-builder-board{
+    margin-top:14px;
+}
+
+.challenge-builder-cell{
+    position:relative;
+    background:#fff;
+    aspect-ratio:1 / 1;
+    border-right:1px solid var(--border-color);
+    border-bottom:1px solid var(--border-color);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.challenge-builder-input{
+    width:100%;
+    height:100%;
+    border:none;
+    resize:none;
+    padding:28px 12px 12px;
+    background:transparent;
+    color:var(--text-color);
+    font:inherit;
+    font-size: .8rem;
+    text-align:center;
+    line-height:1.35;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.challenge-builder-input:focus{
+    outline:none;
+    background:rgba(221,139,206,.06);
+}
+
+.challenge-fill-cell-btn{
+    position:absolute;
+    top:6px;
+    right:6px;
+    z-index:2;
+}
+
+#exit-challenge{
+    margin:0 0 14px;
+}
+
+#exit-challenge[hidden]{
+    display:none !important;
+}
+
+#exit-challenge{
+    margin:0 0 14px;
+    width:auto;
+}
+
+.bingo-follow-btn{
+    margin-top:12px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:10px 14px;
+    border:1px solid transparent;
+    border-radius:999px;
+    background-image:linear-gradient(135deg, var(--gradient));
+    color:#fff;
+    font-family:var(--serif);
+    font-size:.95rem;
+    line-height:1.2;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.25s ease;
+}
+
+.bingo-follow-btn:hover{
+    color:#fff;
+    transform:translateY(-1px);
+    box-shadow:0 10px 24px rgba(0,0,0,.12);
+}
+
+.bingo-follow-btn i{
+    font-size:.9rem;
+}
+
+.challenge-builder-cell.is-empty{
+    box-shadow:inset 0 0 0 2px #c85a5a;
+    background:rgba(200,90,90,.06);
+}
+
+.challenge-builder-input.is-empty{
+    background:rgba(200,90,90,.04);
+}
+
+.challenge-social-wrap{
+    margin-top:14px;
+    margin-bottom:18px;
+}
+
+.challenge-date-row{
+    margin-top:4px;
+}
+
+.challenge-date-wrap{
+    flex:1 1 220px;
+}
+
+.bingo-print-social{
+    display:none;
+    margin-top:10px;
+    font-size:.88rem;
+    line-height:1.4;
+    word-break:break-word;
+}
+
+.challenge-date-row{
+    align-items:flex-end;
+}
+
+.challenge-date-row .bingo-select,
+.challenge-date-row .bingo-text-input{
+    min-height:42px;
+    box-sizing:border-box;
+}
+
+#challenge-grid-size{
+    height:42px;
+}
+
+.challenge-clear-cell-btn{
+    position:absolute;
+    bottom:6px;
+    right:6px;
+    z-index:2;
+    opacity:.75;
+}
+
+.challenge-clear-cell-btn:hover{
+    opacity:1;
+}
+
 @media screen and (max-width: 700px){
     .bingo-square{
         font-size:.8rem;
@@ -924,10 +1113,16 @@ body{
         flex:1 1 150px;
         min-width:0;
     }
+    
     .bingo-modal-dialog{
-        width:calc(90vw - 24px);
-        margin:8vh auto 0;
-        padding:16px;
+        width:calc(100vw - 20px);
+        max-width:calc(100vw - 20px);
+        max-height:92vh;
+        top:50%;
+        transform:translateY(-50%);
+        margin:0 auto;
+        padding:14px;
+        box-sizing:border-box;
     }
 
     .bingo-modal-title{
@@ -941,7 +1136,7 @@ body{
     }
 
     .bingo-modal-actions{
-        flex-direction:column-reverse;
+        flex-direction:column;
         gap:8px;
     }
 
@@ -949,6 +1144,11 @@ body{
         width:100%;
         justify-content:center;
     }
+
+    #challenge-builder-modal .bingo-modal-dialog{
+        padding-bottom:20px;
+    }
+
     .bingo-settings-actions{
         flex-wrap:nowrap;
         gap:6px;
@@ -987,7 +1187,7 @@ body{
     .bingo-toggle-inline-row{
         align-items:center;
         gap:10px;
-        flex-wrap:nowrap;
+        flex-wrap:wrap;
     }
 
     .bingo-toggle-inline-row .bingo-select{
@@ -1026,12 +1226,48 @@ body{
         font-size:.95rem;
     }
 
+    .challenge-builder-input{
+        font-size:.75rem;
+        font-weight: 600;
+        line-height:1.2;
+    }
+
+    #challenge-builder-modal .bingo-modal-actions{
+        display:flex;
+        flex-direction:column;
+    }
+
+    #challenge-builder-modal #challenge-apply{
+        order:1;
+    }
+
+    #challenge-builder-modal #challenge-download{
+        order:2;
+    }
+
+    #challenge-builder-modal #challenge-share{
+        order:3;
+    }
+
+    #challenge-builder-modal #challenge-close{
+        order:4;
+        margin-top:14px;
+    }
+
 }
 
 @media print{
     body{
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+        overflow:visible !important;
+        margin: 0;
+    }
+
+    .bingo-section {
+        margin: 0;
+        border: none;
+        box-shadow: none;
     }
 
     .bingo-section{
@@ -1071,6 +1307,9 @@ body{
         box-shadow:none !important;
         -webkit-print-color-adjust:exact;
         print-color-adjust:exact;
+        font-size:.82rem !important;
+        line-height:1.25 !important;
+        padding:8px !important;
     }
 
     .bingo-square.done{
@@ -1090,6 +1329,32 @@ body{
     .bingo-main-view{
         display:block !important;
     }
+
+    .bingo-modal,
+    #challenge-builder-modal,
+    #bingo-modal,
+    #exit-challenge{
+        display:none !important;
+    }
+
+    .bingo-follow-link{
+        display:none !important;
+    }
+
+    .bingo-print-social{
+        display:block !important;
+    }
+
+    .bingo-print-social strong{
+        font-weight:700;
+    }
+
+    #copy-current-share,
+    #copy-share-code,
+    .bingo-share-row,
+    .bingo-settings-inline-message {
+        display:none !important;
+    }
 }
 </style>
 </head>
@@ -1105,6 +1370,10 @@ body{
             </div>
 
             <div class="bingo-controls" id="bingo-controls">
+                <button type="button" id="open-challenge-builder" class="bingo-btn bingo-control-btn" title="Create Challenge" aria-label="Create Challenge">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    <span>Challenge</span>
+                </button>
                 <button type="button" id="shuffle-bingo" class="bingo-btn bingo-control-btn" title="Shuffle Board" aria-label="Shuffle Board">
                     <i class="fa-solid fa-shuffle" aria-hidden="true"></i>
                     <span>Shuffle</span>
@@ -1115,9 +1384,8 @@ body{
                     <span>Reset</span>
                 </button>
 
-                <button type="button" id="download-bingo" class="bingo-btn bingo-control-btn" title="Download PDF" aria-label="Download PDF">
+                <button type="button" id="download-bingo" class="bingo-icon-btn" aria-label="Download PDF" title="Download PDF">
                     <i class="fa-solid fa-download" aria-hidden="true"></i>
-                    <span>Download</span>
                 </button>
 
                 <button type="button" id="lock-bingo" class="bingo-icon-btn" aria-label="Lock board" title="Lock board">
@@ -1132,6 +1400,17 @@ body{
                     <i class="fa-solid fa-question" aria-hidden="true"></i>
                 </button>
             </div>
+
+            <button type="button" id="exit-challenge" class="bingo-btn" title="Exit Challenge" aria-label="Exit Challenge" hidden>
+                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                <span>Exit Challenge</span>
+            </button>
+
+            <button type="button" id="copy-current-share" class="bingo-btn">
+                <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
+                <span>Copy Share Code</span>
+            </button>
+            <div class="bingo-settings-inline-message" id="current-share-message"></div>
 
             <div class="bingo-help-panel" id="bingo-help-panel" hidden>
                 <div class="bingo-help-section">
@@ -1321,6 +1600,12 @@ body{
                 <div class="bingo-settings-message" id="bingo-settings-message"></div>
             </div>
 
+            <div class="bingo-challenge-meta" id="bingo-challenge-meta" hidden>
+                <div class="bingo-challenge-title" id="bingo-challenge-title"></div>
+                <div class="bingo-challenge-details" id="bingo-challenge-details"></div>
+                <div id="bingo-challenge-follow"></div>
+            </div>
+
             <div class="bingo-main-view" id="bingo-main-view">
                 <div class="bingo-meta-row">
                     <div class="bingo-status" id="bingo-status" aria-live="polite"></div>
@@ -1331,6 +1616,92 @@ body{
                 <div class="bingo-near" id="bingo-near"></div>
 
                 <div class="bingo-board" id="bingo-board"></div>
+            </div>
+
+            <div class="bingo-modal" id="challenge-launcher-modal" hidden>
+                <div class="bingo-modal-backdrop" id="challenge-launcher-backdrop"></div>
+                <div class="bingo-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="challenge-launcher-title">
+                    <div class="bingo-modal-title" id="challenge-launcher-title">Challenge</div>
+
+                    <div class="bingo-share-row bingo-share-load">
+                        <input type="text" id="challenge-launcher-code-input" class="bingo-text-input bingo-share-input" placeholder="Enter challenge/shared code">
+                        <button type="button" id="challenge-launcher-load" class="bingo-btn">Load</button>
+                        <button type="button" id="challenge-launcher-clear" class="bingo-icon-btn bingo-share-clear-btn" aria-label="Clear challenge code" title="Clear challenge code">
+                            <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <div class="bingo-settings-inline-message" id="challenge-launcher-message"></div>
+
+                    <div class="bingo-modal-actions" style="margin-top:18px; justify-content:flex-start;">
+                        <button type="button" id="open-challenge-creator" class="bingo-btn">Create New Challenge</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bingo-modal" id="challenge-builder-modal" hidden>
+                <div class="bingo-modal-backdrop" id="challenge-builder-backdrop"></div>
+                <div class="bingo-modal-dialog bingo-challenge-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="challenge-builder-title">
+                    <div class="bingo-modal-title" id="challenge-builder-title">Create Bingo Challenge</div>
+
+                    <div class="bingo-free-space-input-wrap">
+                        <label for="challenge-title-input">Title of Challenge</label>
+                        <input type="text" id="challenge-title-input" class="bingo-text-input" maxlength="50">
+                        <div class="bingo-settings-help">Maximum 50 characters.</div>
+                    </div>
+
+                    <div class="bingo-toggle-inline-row" style="margin-top:12px;">
+                        <input type="text" id="challenge-hosted-by" class="bingo-text-input" placeholder="Hosted by">
+                        <input type="text" id="challenge-for-name" class="bingo-text-input" placeholder="For">
+                    </div>
+
+                    <div class="bingo-free-space-input-wrap challenge-social-wrap">
+                        <label for="challenge-social">Social Media Link</label>
+                        <input type="text" id="challenge-social" class="bingo-text-input" placeholder="https://twitter.com/username">
+                    </div>
+
+                    <div class="bingo-toggle-inline-row challenge-date-row">
+                        <div class="bingo-free-space-input-wrap challenge-date-wrap">
+                            <label for="challenge-date">Deadline</label>
+                            <input type="date" id="challenge-date" class="bingo-text-input">
+                        </div>
+
+                        <select id="challenge-grid-size" class="bingo-select">
+                            <option value="3">3 × 3</option>
+                            <option value="4">4 × 4</option>
+                            <option value="5" selected>5 × 5</option>
+                        </select>
+                        <div class="bingo-toggle-control">
+                            <span class="bingo-toggle-label">NSFW</span>
+                            <label class="bingo-toggle">
+                                <input type="checkbox" id="challenge-nsfw-toggle">
+                                <span class="bingo-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bingo-filter-actions">
+                        <button type="button" id="challenge-fill-board" class="bingo-btn">Fill Board</button>
+                        <button type="button" id="challenge-fill-empty" class="bingo-btn">Fill Empty</button>
+                        <button type="button" id="challenge-shuffle-order" class="bingo-btn">Shuffle Order</button>
+                        <button type="button" id="challenge-shuffle" class="bingo-btn">New Random Board</button>
+                        <button type="button" id="challenge-clear-board" class="bingo-btn">Clear</button>
+                    </div>
+
+                    <div class="bingo-board" id="challenge-builder-board"></div>
+
+                    <div class="bingo-settings-inline-message" id="challenge-builder-message"></div>
+
+                    <div class="bingo-modal-actions" style="margin-top:18px;">
+                        <button type="button" id="challenge-close" class="bingo-btn">
+                            <i class="fa-solid fa-xmark"></i>
+                            Close
+                        </button>
+                        <button type="button" id="challenge-share" class="bingo-btn">Share Bingo Challenge</button>
+                        <button type="button" id="challenge-download" class="bingo-btn">Download as PDF</button>
+                        <button type="button" id="challenge-apply" class="bingo-btn">Open Challenge</button>
+                    </div>
+                </div>
             </div>
 
         </section>
@@ -1756,6 +2127,8 @@ body{
         { text: "Gunshot Wound - Chest", categories: ["Injuries", "Angst"] },
         { text: "Gunshot Wound - Hand", categories: ["Injuries", "Angst"] },
         { text: "Gunshot Wound - Leg", categories: ["Injuries", "Angst"] },
+        { text: "Preforming CPR", categories: ["Injuries", "Angst"] },
+        { text: "Coughing Up Blood", categories: ["Injuries", "Angst"] },
         { text: "Bleeding Out", categories: ["Injuries", "Angst"] },
         { text: "Trust Issues", categories: ["Relationship", "Angst"] },
         { text: "Fear of Loss", categories: ["Angst", "Romance"] },
@@ -1781,6 +2154,8 @@ body{
 		{ text: "Lost Love", categories: ["Fluff", "Angst", "Romance"] },
 		{ text: "Soul Marks", categories: ["Fluff", "Angst", "Romance"] },
 		{ text: "Rivals", categories: ["Angst", "Romance"] },
+		{ text: "Arranged Soulbonds", categories: ["Angst", "Romance"] },
+		{ text: "Attempted Self-sacrifice", categories: ["Angst"] },
         { text: "Bad Cooking", categories: ["Fluff"] },
         { text: "Fake Marriage", categories: ["Relationship", "Romance", "Angst"] },
 		{ text: "Marriage Pact", categories: ["Relationship", "Romance", "Angst"] },
@@ -1861,9 +2236,15 @@ body{
         { text: "Sunset", categories: ["Events", "Romance"] },
         { text: "Enclosed Spaces", categories: ["Locations", "Angst"] },
         { text: "Plane Crash", categories: ["Injuries", "Angst"] },
+        { text: "Dehydration", categories: ["Injuries", "Angst"] },
+        { text: "Miscarriage Scare", categories: ["Injuries", "Angst"] },
         { text: "Shipwrecked", categories: ["Angst"] },
         { text: "Helicopter Crash", categories: ["Injuries", "Angst"] },
+        { text: "Fear Of Flying", categories: ["Fluff", "Angst"] },
+        { text: "Flashbacks", categories: ["Fluff", "Angst"] },
         { text: "DOD Tattoo", categories: ["Angst"] },
+        { text: "Curses & Spells", categories: ["Angst"] },
+        { text: "Family Curse", categories: ["Angst"] },
 		{ text: "Hollywood Sign", categories: ["Locations"] },
 		{ text: "Abandoned Building", categories: ["Locations"] },
 		{ text: "Westview Hospital", categories: ["Locations"] },
@@ -2726,6 +3107,8 @@ body{
     }
 
     function reshuffleBoard() {
+        if (isChallengeMode) return;
+
         const settings = loadSettings();
         if (settings.isLocked) return;
 
@@ -2738,6 +3121,86 @@ body{
         saveBoardData(fresh);
         lastBingoCount = 0;
         renderBoard(fresh);
+    }
+
+    let challengeDraft = null;
+    let activeChallengeMeta = null;
+    let isChallengeMode = false;
+    let preChallengeBoardData = null;
+
+    function createEmptyChallengeDraft(gridSize = 5) {
+        const total = gridSize * gridSize;
+        return {
+            title: "",
+            hostedBy: "",
+            forName: "",
+            social: "",
+            dueDate: "",
+            gridSize,
+            includeNSFW: false,
+            squares: new Array(total).fill(""),
+            checked: new Array(total).fill(false)
+        };
+    }
+
+    function renderChallengeBuilderBoard() {
+        const board = document.getElementById("challenge-builder-board");
+        if (!board || !challengeDraft) return;
+
+        board.style.gridTemplateColumns = `repeat(${challengeDraft.gridSize}, 1fr)`;
+
+        board.innerHTML = challengeDraft.squares.map((text, index) => {
+            const isEmpty = isEmptyChallengeCellValue(text);
+
+            return `
+                <div class="challenge-builder-cell${isEmpty ? " is-empty" : ""}">
+                    <button type="button" class="bingo-help-mini-btn challenge-fill-cell-btn" data-index="${index}" title="Fill this box" aria-label="Fill this box">
+                        <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="bingo-help-mini-btn challenge-clear-cell-btn" data-index="${index}" title="Clear this box" aria-label="Clear this box">
+                        <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                    </button>
+                    <textarea class="challenge-builder-input${isEmpty ? " is-empty" : ""}" data-index="${index}" placeholder="Text...">${escapeHtml(text)}</textarea>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function openChallengeBuilder() {
+        openChallengeLauncher();
+    }
+
+    function applyChallengeDraftToBoard() {
+        if (!challengeDraft) return;
+
+        if (!isChallengeMode) {
+            preChallengeBoardData = loadBoardData();
+        }
+
+        const boardData = {
+            gridSize: challengeDraft.gridSize,
+            includeFreeSpace: false,
+            freeSpaceCount: 0,
+            freeSpaceTexts: [],
+            freeIndexes: [],
+            squares: challengeDraft.squares.slice(),
+            checked: challengeDraft.checked.slice()
+        };
+
+        activeChallengeMeta = {
+            title: challengeDraft.title.trim(),
+            hostedBy: challengeDraft.hostedBy.trim(),
+            forName: challengeDraft.forName.trim(),
+            dueDate: challengeDraft.dueDate,
+            social: challengeDraft.social
+        };
+
+        isChallengeMode = true;
+        saveBoardData(boardData);
+        renderBoard(boardData);
+        renderChallengeMeta(activeChallengeMeta);
+        updateChallengeModeUI();
+        updateLockButton(loadSettings().isLocked);
     }
 
     function updateFreeSpaceCountHelp(gridSize) {
@@ -3029,6 +3492,7 @@ body{
         const lockButton = document.getElementById("lock-bingo");
         const shuffleButton = document.getElementById("shuffle-bingo");
         const resetButton = document.getElementById("reset-bingo");
+
         if (!lockButton) return;
 
         const icon = lockButton.querySelector("i");
@@ -3040,8 +3504,13 @@ body{
             icon.className = isLocked ? "fa-solid fa-lock" : "fa-solid fa-lock-open";
         }
 
-        if (shuffleButton) shuffleButton.disabled = isLocked;
-        if (resetButton) resetButton.disabled = isLocked;
+        if (shuffleButton) {
+            shuffleButton.disabled = !!isLocked || !!isChallengeMode;
+        }
+
+        if (resetButton) {
+            resetButton.disabled = !!isLocked;
+        }
     }
 
     function toggleLockBoard() {
@@ -3282,7 +3751,21 @@ body{
 
         try {
             const decoded = decodeShareCode(input.value.trim());
-            if (!decoded || !decoded.board) {
+
+            if (!decoded) {
+                showSettingsMessage("That share code is not valid.", true);
+                return;
+            }
+
+            if (decoded.type === "challenge" && decoded.challenge) {
+                loadChallengeIntoDraft(decoded.challenge);
+                applyChallengeDraftToBoard();
+                showSettingsMessage("Challenge loaded.", false);
+                closeSettingsPanel();
+                return;
+            }
+
+            if (!decoded.board) {
                 showSettingsMessage("That share code is not valid.", true);
                 return;
             }
@@ -3295,6 +3778,7 @@ body{
             lastBingoCount = 0;
             renderBoard(boardData);
             updateLockButton(loadSettings().isLocked);
+            updateChallengeModeUI();
             showSettingsMessage("Shared board loaded.", false);
             closeSettingsPanel();
         } catch (error) {
@@ -3323,6 +3807,576 @@ body{
             btn.classList.remove("is-open");
             btn.setAttribute("aria-expanded", "false");
         }
+    }
+
+    function renderChallengeMeta(challenge) {
+        const wrap = document.getElementById("bingo-challenge-meta");
+        const titleEl = document.getElementById("bingo-challenge-title");
+        const detailsEl = document.getElementById("bingo-challenge-details");
+        const followWrap = document.getElementById("bingo-challenge-follow");
+
+        if (!wrap || !titleEl || !detailsEl) return;
+
+        const parts = [];
+        if (challenge.hostedBy) parts.push(`<strong>Hosted by:</strong> ${escapeHtml(challenge.hostedBy)}`);
+        if (challenge.forName) parts.push(`<strong>For:</strong> ${escapeHtml(challenge.forName)}`);
+        if (challenge.dueDate) parts.push(`<strong>Deadline:</strong> ${escapeHtml(challenge.dueDate)}`);
+
+        const hasAnything = !!challenge.title || parts.length > 0 || !!(challenge.social && isValidSocialLink(challenge.social));
+
+        if (followWrap) {
+            if (challenge.social && isValidSocialLink(challenge.social)) {
+                followWrap.innerHTML = `
+                    <a href="${challenge.social}" target="_blank" class="bingo-follow-btn bingo-follow-link">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Follow Host
+                    </a>
+                    <div class="bingo-print-social">
+                        <strong>Social:</strong> ${escapeHtml(challenge.social)}
+                    </div>
+                `;
+            } else {
+                followWrap.innerHTML = "";
+            }
+        }
+
+        wrap.hidden = !hasAnything;
+        titleEl.textContent = challenge.title || "";
+        detailsEl.innerHTML = parts.join(" | ");
+    }
+
+    function closeChallengeBuilder() {
+        closeChallengeCreator();
+    }
+
+    function syncChallengeDraftFromInputs() {
+        if (!challengeDraft) return;
+
+        const titleInput = document.getElementById("challenge-title-input");
+        const hostedByInput = document.getElementById("challenge-hosted-by");
+        const forInput = document.getElementById("challenge-for-name");
+        const dateInput = document.getElementById("challenge-date");
+        const gridSizeInput = document.getElementById("challenge-grid-size");
+        const nsfwInput = document.getElementById("challenge-nsfw-toggle");
+        const socialInput = document.getElementById("challenge-social");
+
+        challengeDraft.title = titleInput ? titleInput.value.trim() : "";
+        challengeDraft.hostedBy = hostedByInput ? hostedByInput.value.trim() : "";
+        challengeDraft.forName = forInput ? forInput.value.trim() : "";
+        challengeDraft.dueDate = dateInput ? dateInput.value : "";
+        challengeDraft.includeNSFW = !!(nsfwInput && nsfwInput.checked);
+        challengeDraft.social = socialInput ? normalizeSocialLink(socialInput.value) : "";
+
+        const nextGridSize = gridSizeInput ? Number(gridSizeInput.value) : 5;
+
+        if (nextGridSize !== challengeDraft.gridSize) {
+            const newTotal = nextGridSize * nextGridSize;
+            const nextSquares = new Array(newTotal).fill("");
+            const nextChecked = new Array(newTotal).fill(false);
+
+            for (let i = 0; i < Math.min(challengeDraft.squares.length, newTotal); i++) {
+                nextSquares[i] = challengeDraft.squares[i] || "";
+            }
+
+            challengeDraft.gridSize = nextGridSize;
+            challengeDraft.squares = nextSquares;
+            challengeDraft.checked = nextChecked;
+            renderChallengeBuilderBoard();
+        }
+    }
+
+    function shuffleChallengeDraft() {
+        if (!challengeDraft) return;
+
+        syncChallengeDraftFromInputs();
+
+        const total = challengeDraft.gridSize * challengeDraft.gridSize;
+
+        const eligiblePrompts = sortedPrompts.filter(prompt => {
+            if (!challengeDraft.includeNSFW && Array.isArray(prompt.categories) && prompt.categories.includes("NSFW")) {
+                return false;
+            }
+            return true;
+        });
+
+        if (eligiblePrompts.length < total) {
+            alert("Not enough prompts available for this challenge size.");
+            return;
+        }
+
+        const picked = shuffleArray(eligiblePrompts).slice(0, total);
+        challengeDraft.squares = picked.map(prompt => prompt.text);
+        challengeDraft.checked = new Array(total).fill(false);
+
+        renderChallengeBuilderBoard();
+    }
+
+    function clearChallengeDraftBoard() {
+        if (!challengeDraft) return;
+
+        const total = challengeDraft.gridSize * challengeDraft.gridSize;
+        challengeDraft.squares = new Array(total).fill("");
+        challengeDraft.checked = new Array(total).fill(false);
+
+        renderChallengeBuilderBoard();
+    }
+
+    function updateChallengeModeUI() {
+        const shuffleButton = document.getElementById("shuffle-bingo");
+        const exitChallengeButton = document.getElementById("exit-challenge");
+        const settings = loadSettings();
+
+        if (shuffleButton) {
+            shuffleButton.disabled = !!isChallengeMode || !!settings.isLocked;
+            shuffleButton.setAttribute(
+                "aria-label",
+                isChallengeMode ? "Shuffle disabled during challenge mode" : "Shuffle Board"
+            );
+            shuffleButton.setAttribute(
+                "title",
+                isChallengeMode ? "Shuffle disabled during challenge mode" : "Shuffle Board"
+            );
+        }
+
+        if (exitChallengeButton) {
+            exitChallengeButton.hidden = !isChallengeMode;
+        }
+    }
+
+    function clearChallengeMeta() {
+        const wrap = document.getElementById("bingo-challenge-meta");
+        const titleEl = document.getElementById("bingo-challenge-title");
+        const detailsEl = document.getElementById("bingo-challenge-details");
+
+        if (wrap) wrap.hidden = true;
+        if (titleEl) titleEl.textContent = "";
+        if (detailsEl) detailsEl.textContent = "";
+    }
+
+    function exitChallengeMode() {
+        isChallengeMode = false;
+        activeChallengeMeta = null;
+        challengeDraft = null;
+
+        clearChallengeMeta();
+        updateChallengeModeUI();
+
+        if (preChallengeBoardData) {
+            saveBoardData(preChallengeBoardData);
+            lastBingoCount = 0;
+            renderBoard(preChallengeBoardData);
+            preChallengeBoardData = null;
+        } else {
+            const settings = loadSettings();
+            const freshBoard = createFreshBoardData(settings);
+
+            if (freshBoard) {
+                saveBoardData(freshBoard);
+                lastBingoCount = 0;
+                renderBoard(freshBoard);
+            }
+        }
+
+        updateLockButton(loadSettings().isLocked);
+    }
+
+    function previewChallengeForPrint() {
+        if (!challengeDraft) return;
+
+        syncChallengeDraftFromInputs();
+
+        const boardData = {
+            gridSize: challengeDraft.gridSize,
+            includeFreeSpace: false,
+            freeSpaceCount: 0,
+            freeSpaceTexts: [],
+            freeIndexes: [],
+            squares: challengeDraft.squares.slice(),
+            checked: challengeDraft.checked.slice()
+        };
+
+        const meta = {
+            title: challengeDraft.title.trim(),
+            hostedBy: challengeDraft.hostedBy.trim(),
+            forName: challengeDraft.forName.trim(),
+            dueDate: challengeDraft.dueDate,
+            social: challengeDraft.social
+        };
+
+        renderBoard(boardData);
+        renderChallengeMeta(meta);
+    }
+
+    function loadChallengeIntoDraft(challengeData) {
+        if (!challengeData) return false;
+
+        const gridSize = [3, 4, 5].includes(Number(challengeData.gridSize))
+            ? Number(challengeData.gridSize)
+            : 5;
+
+        const total = gridSize * gridSize;
+        const squares = Array.isArray(challengeData.squares)
+            ? challengeData.squares.slice(0, total).map(v => String(v || ""))
+            : new Array(total).fill("");
+
+        while (squares.length < total) {
+            squares.push("");
+        }
+
+        challengeDraft = {
+            title: String(challengeData.title || ""),
+            hostedBy: String(challengeData.hostedBy || ""),
+            forName: String(challengeData.forName || ""),
+            social: normalizeSocialLink(String(challengeData.social || "")),
+            dueDate: String(challengeData.dueDate || ""),
+            gridSize,
+            includeNSFW: false,
+            squares,
+            checked: new Array(total).fill(false)
+        };
+
+        const titleInput = document.getElementById("challenge-title-input");
+        const hostedByInput = document.getElementById("challenge-hosted-by");
+        const forInput = document.getElementById("challenge-for-name");
+        const dateInput = document.getElementById("challenge-date");
+        const gridSizeInput = document.getElementById("challenge-grid-size");
+        const socialInput = document.getElementById("challenge-social");
+
+        if (titleInput) titleInput.value = challengeDraft.title;
+        if (hostedByInput) hostedByInput.value = challengeDraft.hostedBy;
+        if (forInput) forInput.value = challengeDraft.forName;
+        if (dateInput) dateInput.value = challengeDraft.dueDate;
+        if (gridSizeInput) gridSizeInput.value = String(challengeDraft.gridSize);
+        if (socialInput) socialInput.value = challengeDraft.social;
+
+        renderChallengeBuilderBoard();
+        return true;
+    }
+
+    function loadChallengeCodeFromPopup() {
+        const input = document.getElementById("challenge-launcher-code-input");
+        if (!input || !input.value.trim()) {
+            showChallengeLauncherMessage("Paste a share code first.", true);
+            return;
+        }
+
+        try {
+            const decoded = decodeShareCode(input.value.trim());
+
+            if (!decoded) {
+                showChallengeLauncherMessage("That code is not valid.", true);
+                return;
+            }
+
+            if (decoded.type === "challenge" && decoded.challenge) {
+                loadChallengeIntoDraft(decoded.challenge);
+                applyChallengeDraftToBoard();
+                closeChallengeLauncher();
+                showChallengeLauncherMessage("", false);
+                return;
+            }
+
+            if (decoded.board) {
+                const boardData = decoded.version === 2
+                    ? decodeBoardFromShare(decoded.board)
+                    : decoded.board;
+
+                saveBoardData(boardData);
+                lastBingoCount = 0;
+                isChallengeMode = false;
+                activeChallengeMeta = null;
+                preChallengeBoardData = null;
+                clearChallengeMeta();
+                renderBoard(boardData);
+                updateLockButton(loadSettings().isLocked);
+                updateChallengeModeUI();
+                closeChallengeLauncher();
+                showChallengeLauncherMessage("", false);
+                return;
+            }
+
+            showChallengeLauncherMessage("That code is not a valid board or challenge code.", true);
+        } catch (error) {
+            showChallengeLauncherMessage("That code could not be loaded.", true);
+        }
+    }
+
+    function getEligibleChallengePrompts() {
+        if (!challengeDraft) return [];
+
+        return sortedPrompts.filter(prompt => {
+            if (!challengeDraft.includeNSFW && Array.isArray(prompt.categories) && prompt.categories.includes("NSFW")) {
+                return false;
+            }
+            return true;
+        });
+    }
+
+    function getUsedChallengePromptSet(ignoreIndex = -1) {
+        const used = new Set();
+
+        if (!challengeDraft) return used;
+
+        challengeDraft.squares.forEach((text, index) => {
+            if (index === ignoreIndex) return;
+            const trimmed = String(text || "").trim();
+            if (trimmed) used.add(trimmed);
+        });
+
+        return used;
+    }
+
+    function getRandomUnusedChallengePrompt(ignoreIndex = -1) {
+        const eligible = getEligibleChallengePrompts();
+        const used = getUsedChallengePromptSet(ignoreIndex);
+
+        const available = eligible.filter(prompt => !used.has(prompt.text));
+        if (!available.length) return null;
+
+        return shuffleArray(available)[0];
+    }
+
+    function fillChallengeCell(index) {
+        if (!challengeDraft || !Number.isInteger(index)) return;
+
+        const prompt = getRandomUnusedChallengePrompt(index);
+        if (!prompt) return;
+
+        challengeDraft.squares[index] = prompt.text;
+        renderChallengeBuilderBoard();
+    }
+
+    function fillEmptyChallengeCells() {
+        if (!challengeDraft) return;
+
+        for (let i = 0; i < challengeDraft.squares.length; i++) {
+            if (!String(challengeDraft.squares[i] || "").trim()) {
+                const prompt = getRandomUnusedChallengePrompt(i);
+                if (!prompt) break;
+                challengeDraft.squares[i] = prompt.text;
+            }
+        }
+
+        renderChallengeBuilderBoard();
+    }
+
+    function fillEntireChallengeBoard() {
+        if (!challengeDraft) return;
+
+        const total = challengeDraft.gridSize * challengeDraft.gridSize;
+        const eligible = getEligibleChallengePrompts();
+
+        if (eligible.length < total) {
+            alert("Not enough prompts available for this challenge size.");
+            return;
+        }
+
+        const picked = shuffleArray(eligible).slice(0, total);
+        challengeDraft.squares = picked.map(prompt => prompt.text);
+        challengeDraft.checked = new Array(total).fill(false);
+
+        renderChallengeBuilderBoard();
+    }
+
+    function shuffleChallengeOrderOnly() {
+        if (!challengeDraft) return;
+
+        const filled = challengeDraft.squares.filter(text => String(text || "").trim());
+        const emptyCount = challengeDraft.squares.length - filled.length;
+
+        const shuffled = shuffleArray(filled);
+        challengeDraft.squares = shuffled.concat(new Array(emptyCount).fill(""));
+
+        renderChallengeBuilderBoard();
+    }
+
+    function openChallengeLauncher() {
+        const modal = document.getElementById("challenge-launcher-modal");
+        const input = document.getElementById("challenge-launcher-code-input");
+        const message = document.getElementById("challenge-launcher-message");
+
+        if (input) input.value = "";
+        if (message) {
+            message.textContent = "";
+            message.classList.remove("is-success", "is-error");
+        }
+
+        if (modal) modal.hidden = false;
+    }
+
+    function closeChallengeLauncher() {
+        const modal = document.getElementById("challenge-launcher-modal");
+        if (modal) modal.hidden = true;
+    }
+
+    function openChallengeCreator() {
+        challengeDraft = createEmptyChallengeDraft(5);
+
+        const modal = document.getElementById("challenge-builder-modal");
+        const titleInput = document.getElementById("challenge-title-input");
+        const hostedByInput = document.getElementById("challenge-hosted-by");
+        const forInput = document.getElementById("challenge-for-name");
+        const dateInput = document.getElementById("challenge-date");
+        const gridSizeInput = document.getElementById("challenge-grid-size");
+        const nsfwInput = document.getElementById("challenge-nsfw-toggle");
+
+        if (titleInput) titleInput.value = "";
+        if (hostedByInput) hostedByInput.value = "";
+        if (forInput) forInput.value = "";
+        if (dateInput) dateInput.value = "";
+        if (gridSizeInput) gridSizeInput.value = "5";
+        if (nsfwInput) nsfwInput.checked = false;
+
+        if (modal) modal.hidden = false;
+        renderChallengeBuilderBoard();
+    }
+
+    function closeChallengeCreator() {
+        const modal = document.getElementById("challenge-builder-modal");
+        if (modal) modal.hidden = true;
+
+        challengeDraft = null;
+
+        showChallengeBuilderMessage("", false);
+        highlightEmptyChallengeCells([]);
+    }
+
+    function showChallengeLauncherMessage(message, isError) {
+        const el = document.getElementById("challenge-launcher-message");
+        if (!el) return;
+
+        el.textContent = message;
+        el.classList.remove("is-success", "is-error");
+        el.classList.add(isError ? "is-error" : "is-success");
+    }
+
+    function normalizeSocialLink(url) {
+        const raw = String(url || "").trim();
+        if (!raw) return "";
+
+        if (/^https?:\/\//i.test(raw)) {
+            return raw;
+        }
+
+        return "https://" + raw;
+    }
+
+    function isValidSocialLink(url) {
+        if (!url) return true;
+
+        try {
+            const normalized = normalizeSocialLink(url);
+            const parsed = new URL(normalized);
+            const host = parsed.hostname.replace(/^www\./, "").toLowerCase();
+            const path = parsed.pathname.trim();
+
+            const allowedHosts = [
+                "twitter.com",
+                "x.com",
+                "tumblr.com",
+                "facebook.com",
+                "archiveofourown.org",
+                "bsky.app"
+            ];
+
+            const hostAllowed = allowedHosts.some(domain => host === domain || host.endsWith("." + domain));
+            const hasPath = path && path !== "/";
+
+            return hostAllowed && hasPath;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function showChallengeBuilderMessage(message, isError) {
+        const el = document.getElementById("challenge-builder-message");
+        if (!el) return;
+
+        el.textContent = message;
+        el.classList.remove("is-success", "is-error");
+        if (message) {
+            el.classList.add(isError ? "is-error" : "is-success");
+        }
+    }
+
+    function isEmptyChallengeCellValue(value) {
+        const text = String(value || "").trim();
+        return !text || text === "Text...";
+    }
+
+    function getEmptyChallengeCellIndexes() {
+        if (!challengeDraft) return [];
+
+        const empty = [];
+        challengeDraft.squares.forEach((text, index) => {
+            if (isEmptyChallengeCellValue(text)) {
+                empty.push(index);
+            }
+        });
+        return empty;
+    }
+
+    function highlightEmptyChallengeCells(indexes = []) {
+        document.querySelectorAll(".challenge-builder-cell").forEach((cell, index) => {
+            cell.classList.toggle("is-empty", indexes.includes(index));
+        });
+
+        document.querySelectorAll(".challenge-builder-input").forEach((input, index) => {
+            input.classList.toggle("is-empty", indexes.includes(index));
+        });
+    }
+
+    async function copyCurrentShareCode() {
+        const current = getCurrentBoardData();
+        if (!current) return;
+
+        let payload;
+
+        if (isChallengeMode && activeChallengeMeta) {
+            payload = {
+                version: 3,
+                type: "challenge",
+                challenge: {
+                    title: activeChallengeMeta.title || "",
+                    hostedBy: activeChallengeMeta.hostedBy || "",
+                    forName: activeChallengeMeta.forName || "",
+                    social: activeChallengeMeta.social || "",
+                    dueDate: activeChallengeMeta.dueDate || "",
+                    gridSize: current.gridSize,
+                    squares: current.squares,
+                    checked: new Array(current.squares.length).fill(false)
+                }
+            };
+        } else {
+            payload = {
+                version: 2,
+                board: encodeBoardForShare(current)
+            };
+        }
+
+        const success = await copyTextToClipboard(encodeShareCode(payload));
+
+        showCurrentShareMessage(
+            success ? "Share code copied." : "Could not copy share code here.",
+            !success
+        );
+    }
+
+    function showCurrentShareMessage(message, isError) {
+        const el = document.getElementById("current-share-message");
+        if (!el) return;
+
+        el.textContent = message;
+        el.classList.remove("is-success", "is-error");
+
+        if (message) {
+            el.classList.add(isError ? "is-error" : "is-success");
+        }
+
+        window.setTimeout(function () {
+            el.textContent = "";
+            el.classList.remove("is-success", "is-error");
+        }, 2500);
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -3356,6 +4410,32 @@ body{
         const promptFilterContainer = document.getElementById("bingo-prompt-filter-container");
         const toggleFreeSpaceBtn = document.getElementById("toggle-free-space-options");
         const freeSpaceOptions = document.getElementById("free-space-options");
+        const openChallengeBuilderButton = document.getElementById("open-challenge-builder");
+        const challengeShuffleButton = document.getElementById("challenge-shuffle");
+        const challengeClearButton = document.getElementById("challenge-clear-board");
+        const challengeApplyButton = document.getElementById("challenge-apply");
+        const challengeDownloadButton = document.getElementById("challenge-download");
+        const challengeTitleInput = document.getElementById("challenge-title-input");
+        const challengeHostedByInput = document.getElementById("challenge-hosted-by");
+        const challengeForInput = document.getElementById("challenge-for-name");
+        const challengeDateInput = document.getElementById("challenge-date");
+        const challengeGridSizeInput = document.getElementById("challenge-grid-size");
+        const challengeNSFWInput = document.getElementById("challenge-nsfw-toggle");
+        const challengeShareButton = document.getElementById("challenge-share");
+        const exitChallengeButton = document.getElementById("exit-challenge");
+        const challengeFillBoardButton = document.getElementById("challenge-fill-board");
+        const challengeFillEmptyButton = document.getElementById("challenge-fill-empty");
+        const challengeShuffleOrderButton = document.getElementById("challenge-shuffle-order");
+        const challengeLauncherModal = document.getElementById("challenge-launcher-modal");
+        const challengeLauncherBackdrop = document.getElementById("challenge-launcher-backdrop");
+        const challengeLauncherCodeInput = document.getElementById("challenge-launcher-code-input");
+        const challengeLauncherLoadButton = document.getElementById("challenge-launcher-load");
+        const challengeLauncherClearButton = document.getElementById("challenge-launcher-clear");
+        const openChallengeCreatorButton = document.getElementById("open-challenge-creator");
+        const challengeModal = document.getElementById("challenge-builder-modal");
+        const challengeBackdrop = document.getElementById("challenge-builder-backdrop");
+        const challengeCloseButton = document.getElementById("challenge-close");
+        const copyCurrentShareButton = document.getElementById("copy-current-share");
 
         if (toggleWeightsBtn && weightContainer) {
             toggleWeightsBtn.addEventListener("click", () => {
@@ -3585,8 +4665,204 @@ body{
             });
         }
 
+        document.addEventListener("input", function(event) {
+            if (event.target && event.target.classList.contains("challenge-builder-input")) {
+                const index = Number(event.target.getAttribute("data-index"));
+                if (challengeDraft && Number.isInteger(index)) {
+                    challengeDraft.squares[index] = event.target.value;
+                }
+            }
+        });
+
+        if (openChallengeBuilderButton) {
+            openChallengeBuilderButton.addEventListener("click", openChallengeLauncher);
+        }
+
+        if (challengeBackdrop) {
+            challengeBackdrop.addEventListener("click", closeChallengeBuilder);
+        }
+
+        if (challengeShuffleButton) {
+            challengeShuffleButton.addEventListener("click", shuffleChallengeDraft);
+        }
+
+        if (challengeClearButton) {
+            challengeClearButton.addEventListener("click", clearChallengeDraftBoard);
+        }
+
+        if (challengeApplyButton) {
+            challengeApplyButton.addEventListener("click", function () {
+                syncChallengeDraftFromInputs();
+
+                if (!isValidSocialLink(challengeDraft.social)) {
+                    showChallengeBuilderMessage(
+                        "Please use a valid Twitter/X, Tumblr, Facebook, AO3, or Bluesky page link.",
+                        true
+                    );
+                    return;
+                }
+
+                const emptyIndexes = getEmptyChallengeCellIndexes();
+                if (emptyIndexes.length) {
+                    highlightEmptyChallengeCells(emptyIndexes);
+                    showChallengeBuilderMessage(
+                        "Please fill all challenge squares before opening the challenge.",
+                        true
+                    );
+                    return;
+                }
+
+                showChallengeBuilderMessage("", false);
+                applyChallengeDraftToBoard();
+                closeChallengeBuilder();
+            });
+        }
+
+        if (challengeDownloadButton) {
+            challengeDownloadButton.addEventListener("click", function () {
+                previewChallengeForPrint();
+                downloadPDF();
+            });
+        }
+
+        [challengeTitleInput, challengeHostedByInput, challengeForInput, challengeDateInput, challengeNSFWInput]
+            .forEach(input => {
+                if (input) {
+                    input.addEventListener("input", syncChallengeDraftFromInputs);
+                    input.addEventListener("change", syncChallengeDraftFromInputs);
+                }
+            });
+
+        if (challengeGridSizeInput) {
+            challengeGridSizeInput.addEventListener("change", syncChallengeDraftFromInputs);
+        }
+
+        if (challengeShareButton) {
+            challengeShareButton.addEventListener("click", async function () {
+                syncChallengeDraftFromInputs();
+
+                const code = encodeShareCode({
+                    version: 3,
+                    type: "challenge",
+                    challenge: {
+                        title: challengeDraft.title,
+                        hostedBy: challengeDraft.hostedBy,
+                        forName: challengeDraft.forName,
+                        social: challengeDraft.social,
+                        dueDate: challengeDraft.dueDate,
+                        gridSize: challengeDraft.gridSize,
+                        squares: challengeDraft.squares,
+                        checked: challengeDraft.checked
+                    }
+                });
+
+                const success = await copyTextToClipboard(code);
+
+                showChallengeBuilderMessage(
+                    success ? "Challenge code copied." : "Could not copy challenge code here.",
+                    !success
+                );
+            });
+        }
+
+        if (exitChallengeButton) {
+            exitChallengeButton.addEventListener("click", exitChallengeMode);
+        }
+
+        if (challengeFillBoardButton) {
+            challengeFillBoardButton.addEventListener("click", fillEntireChallengeBoard);
+        }
+
+        if (challengeFillEmptyButton) {
+            challengeFillEmptyButton.addEventListener("click", fillEmptyChallengeCells);
+        }
+
+        if (challengeShuffleOrderButton) {
+            challengeShuffleOrderButton.addEventListener("click", shuffleChallengeOrderOnly);
+        }
+
+        if (challengeLauncherBackdrop) {
+            challengeLauncherBackdrop.addEventListener("click", closeChallengeLauncher);
+        }
+
+        if (challengeLauncherLoadButton) {
+            challengeLauncherLoadButton.addEventListener("click", loadChallengeCodeFromPopup);
+        }
+
+        if (challengeLauncherClearButton) {
+            challengeLauncherClearButton.addEventListener("click", function () {
+                if (challengeLauncherCodeInput) {
+                    challengeLauncherCodeInput.value = "";
+                    challengeLauncherCodeInput.focus();
+                }
+                showChallengeLauncherMessage("", false);
+            });
+        }
+
+        if (openChallengeCreatorButton) {
+            openChallengeCreatorButton.addEventListener("click", function () {
+                closeChallengeLauncher();
+                openChallengeCreator();
+            });
+        }
+
+        if (challengeCloseButton) {
+            challengeCloseButton.addEventListener("click", closeChallengeCreator);
+        }
+
+        if (copyCurrentShareButton) {
+            copyCurrentShareButton.addEventListener("click", copyCurrentShareCode);
+        }
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key !== "Escape") return;
+
+            if (challengeLauncherModal && !challengeLauncherModal.hidden) {
+                closeChallengeLauncher();
+                return;
+            }
+
+            if (challengeModal && !challengeModal.hidden) {
+                closeChallengeCreator();
+            }
+        });
+
+        document.addEventListener("click", function (event) {
+            const btn = event.target.closest(".challenge-fill-cell-btn");
+            if (!btn || !challengeDraft) return;
+
+            const index = Number(btn.getAttribute("data-index"));
+            if (Number.isInteger(index)) {
+                fillChallengeCell(index);
+            }
+        });
+
+        document.addEventListener("input", function(event) {
+            if (event.target && event.target.classList.contains("challenge-builder-input")) {
+                const index = Number(event.target.getAttribute("data-index"));
+                if (challengeDraft && Number.isInteger(index)) {
+                    challengeDraft.squares[index] = event.target.value;
+                    highlightEmptyChallengeCells(getEmptyChallengeCellIndexes());
+                    showChallengeBuilderMessage("", false);
+                }
+            }
+        });
+
+        document.addEventListener("click", function (event) {
+            const btn = event.target.closest(".challenge-clear-cell-btn");
+            if (!btn || !challengeDraft) return;
+
+            const index = Number(btn.getAttribute("data-index"));
+            if (!Number.isInteger(index)) return;
+
+            challengeDraft.squares[index] = "";
+            renderChallengeBuilderBoard();
+        });
+
         updateTopControlsVisibility();
         updateFreeSpaceDropdownState();
+        updateChallengeModeUI();
+        highlightEmptyChallengeCells(getEmptyChallengeCellIndexes());
     });
 })();
 </script>
