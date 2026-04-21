@@ -5,9 +5,10 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Archivo:ital,wght@0,100..900;1,100..900&family=Chewy&family=Dancing+Script:wght@400..700&family=Exo:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Parisienne&family=Poiret+One&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
 :root{
@@ -22,6 +23,8 @@
   --color-one:#dd8bce;
   --color-two:#5dba8b;
   --gradient:var(--color-one), var(--color-two);
+  --title-font:'Agbalumo', cursive;
+  --meta-font:'Nunito', sans-serif;
 }
 
 html, body{
@@ -1025,6 +1028,111 @@ body{
     opacity:1;
 }
 
+#challenge-image-export{
+    position:fixed;
+    left:-99999px;
+    top:0;
+    width:1400px;
+    padding:30px;
+    box-sizing:border-box;
+    --challenge-export-bg:url("https://raw.githubusercontent.com/NerdyDoll/chenfordlibrary_bingoboard/refs/heads/main/bingo_background.jpg");
+    background:
+        linear-gradient(rgba(255,255,255,.06), rgba(255,255,255,.06)),
+        var(--challenge-export-bg) center/cover no-repeat;
+    color:#ffffff;
+    z-index:-1;
+}
+
+.challenge-image-card{
+    min-height:1700px;
+    padding:60px 54px 54px;
+    box-sizing:border-box;
+    position:relative;
+}
+
+.challenge-image-header{
+    text-align:center;
+    margin-bottom:34px;
+    padding:12px 16px 16px;
+}
+
+.challenge-image-kicker{
+    font-family:var(--serif);
+    font-size:2.35rem;
+    font-style:italic;
+    line-height:1.1;
+    color:#e6e6e6;
+    margin-bottom:8px;
+}
+
+.challenge-image-title{
+    font-family:var(--title-font);
+    font-size:5.8rem;
+    line-height:1.05;
+    font-weight:400;
+    letter-spacing:.02em;
+    text-transform:none;
+    color:#e6e6e6;
+    margin-bottom:22px;
+}
+
+.challenge-image-meta{
+    font-family:var(--meta-font);
+    font-size:2rem;
+    line-height:1.55;
+    font-weight:700;
+    color:#e6e6e6;
+    margin-bottom:12px;
+}
+
+.challenge-image-social{
+    font-family:var(--meta-font);
+    font-size:2rem;
+    line-height:1.5;
+    font-weight:700;
+    color:#e6e6e6;
+    word-break:break-word;
+}
+
+.challenge-image-board{
+    display:grid;
+    gap:10px;
+    background:transparent;
+}
+
+.challenge-image-square{
+    min-height:0px;
+    aspect-ratio:1 / 1;
+    padding:12px;
+    box-sizing:border-box;
+    border:6px solid rgba(255,255,255,.72);
+    border-radius:28px;
+    background:rgba(255, 255, 255, 0.096);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:3.4rem;
+    font-weight:800;
+    line-height:1.12;
+    color:#eeeeee;
+    word-break:break-word;
+    hyphens: auto;
+    overflow-wrap:anywhere;
+    text-shadow:
+        0 0 3px rgba(48, 48, 48, 0.95),
+        0 0 6px rgba(41, 41, 41, 0.92),
+        0 2px 6px rgba(43, 43, 43, 0.7);
+}
+
+.challenge-image-square.is-free{
+    font-family:var(--serif);
+    color:#e6e6e6;
+    font-size:1.6rem;
+    line-height:1.02;
+    text-transform:uppercase;
+}
+
 @media screen and (max-width: 700px){
     .bingo-square{
         font-size:.8rem;
@@ -1256,106 +1364,6 @@ body{
 
 }
 
-@media print{
-    body{
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        overflow:visible !important;
-        margin: 0;
-    }
-
-    .bingo-section {
-        margin: 0;
-        border: none;
-        box-shadow: none;
-    }
-
-    .bingo-section{
-        padding:24px;
-        background:linear-gradient(
-            135deg,
-            rgba(221,139,206,0.12),
-            rgba(93,186,139,0.12)
-        ) !important;
-    }
-
-    .bingo-main-view{
-        background:#fff;
-        padding:20px;
-        border-radius:6px;
-    }
-
-    .bingo-controls,
-    .bingo-intro{
-        display:none !important;
-    }
-
-
-    .bingo-status{
-        margin:0 0 12px;
-        color:#000 !important;
-    }
-
-    .bingo-board{
-        border:1px solid #ccc;
-        background:#ccc;
-    }
-
-    .bingo-square{
-        background:#fff !important;
-        color:#000 !important;
-        box-shadow:none !important;
-        -webkit-print-color-adjust:exact;
-        print-color-adjust:exact;
-        font-size:.82rem !important;
-        line-height:1.25 !important;
-        padding:8px !important;
-    }
-
-    .bingo-square.done{
-        background:linear-gradient(
-            135deg,
-            rgba(221,139,206,.25),
-            rgba(93,186,139,.25)
-        ) !important;
-    }
-
-    .bingo-settings,
-    .bingo-celebration,
-    .bingo-near{
-        display:none !important;
-    }
-
-    .bingo-main-view{
-        display:block !important;
-    }
-
-    .bingo-modal,
-    #challenge-builder-modal,
-    #bingo-modal,
-    #exit-challenge{
-        display:none !important;
-    }
-
-    .bingo-follow-link{
-        display:none !important;
-    }
-
-    .bingo-print-social{
-        display:block !important;
-    }
-
-    .bingo-print-social strong{
-        font-weight:700;
-    }
-
-    #copy-current-share,
-    #copy-share-code,
-    .bingo-share-row,
-    .bingo-settings-inline-message {
-        display:none !important;
-    }
-}
 </style>
 </head>
 <body>
@@ -1384,7 +1392,7 @@ body{
                     <span>Reset</span>
                 </button>
 
-                <button type="button" id="download-bingo" class="bingo-icon-btn" aria-label="Download PDF" title="Download PDF">
+                <button type="button" id="download-bingo" class="bingo-icon-btn" aria-label="Download Image" title="Download Image">
                     <i class="fa-solid fa-download" aria-hidden="true"></i>
                 </button>
 
@@ -1698,13 +1706,26 @@ body{
                             Close
                         </button>
                         <button type="button" id="challenge-share" class="bingo-btn">Share Bingo Challenge</button>
-                        <button type="button" id="challenge-download" class="bingo-btn">Download as PDF</button>
+                        <button type="button" id="challenge-download" class="bingo-btn">Download as Image</button>
                         <button type="button" id="challenge-apply" class="bingo-btn">Open Challenge</button>
                     </div>
                 </div>
             </div>
 
         </section>
+
+        <div id="challenge-image-export" aria-hidden="true">
+            <div class="challenge-image-card">
+                <div class="challenge-image-header">
+                    <div class="challenge-image-kicker">Chenford Writing Bingo</div>
+                    <div class="challenge-image-title" id="export-challenge-title"></div>
+                    <div class="challenge-image-meta" id="export-challenge-meta"></div>
+                    <div class="challenge-image-social" id="export-challenge-social"></div>
+                </div>
+
+                <div class="challenge-image-board" id="export-challenge-board"></div>
+            </div>
+        </div>
         
 
 </div>
@@ -3786,10 +3807,6 @@ body{
         }
     }
 
-    function downloadPDF() {
-        window.print();
-    }
-
     function updateFreeSpaceDropdownState() {
         const toggle = document.getElementById("include-free-space");
         const btn = document.getElementById("toggle-free-space-options");
@@ -3980,31 +3997,174 @@ body{
         updateLockButton(loadSettings().isLocked);
     }
 
-    function previewChallengeForPrint() {
-        if (!challengeDraft) return;
 
-        syncChallengeDraftFromInputs();
+    function getChallengeDataForExport() {
+        if (challengeDraft) {
+            syncChallengeDraftFromInputs();
 
-        const boardData = {
-            gridSize: challengeDraft.gridSize,
-            includeFreeSpace: false,
-            freeSpaceCount: 0,
-            freeSpaceTexts: [],
-            freeIndexes: [],
-            squares: challengeDraft.squares.slice(),
-            checked: challengeDraft.checked.slice()
+            return {
+                title: challengeDraft.title || "Chenford Bingo",
+                hostedBy: challengeDraft.hostedBy || "",
+                forName: challengeDraft.forName || "",
+                dueDate: challengeDraft.dueDate || "",
+                social: challengeDraft.social || "thechenfordlibrary.tumblr.com",
+                gridSize: challengeDraft.gridSize,
+                squares: challengeDraft.squares.slice(),
+                isChallenge: true
+            };
+        }
+
+        if (isChallengeMode && activeChallengeMeta) {
+            const current = getCurrentBoardData();
+            if (!current) return null;
+
+            return {
+                title: activeChallengeMeta.title || "Chenford Bingo",
+                hostedBy: activeChallengeMeta.hostedBy || "",
+                forName: activeChallengeMeta.forName || "",
+                dueDate: activeChallengeMeta.dueDate || "",
+                social: activeChallengeMeta.social || "thechenfordlibrary.tumblr.com",
+                gridSize: current.gridSize,
+                squares: current.squares.slice(),
+                isChallenge: true
+            };
+        }
+
+        const current = getCurrentBoardData();
+        if (!current) return null;
+
+        return {
+            title: "Chenford Bingo",
+            hostedBy: "",
+            forName: "",
+            dueDate: "",
+            social: "thechenfordlibrary.tumblr.com",
+            gridSize: current.gridSize,
+            squares: current.squares.slice(),
+            isChallenge: false
         };
+    }
 
-        const meta = {
-            title: challengeDraft.title.trim(),
-            hostedBy: challengeDraft.hostedBy.trim(),
-            forName: challengeDraft.forName.trim(),
-            dueDate: challengeDraft.dueDate,
-            social: challengeDraft.social
-        };
+    function setRandomExportBackground() {
+        const exportEl = document.getElementById("challenge-image-export");
+        if (!exportEl) return;
 
-        renderBoard(boardData);
-        renderChallengeMeta(meta);
+        const backgrounds = [
+            "https://raw.githubusercontent.com/NerdyDoll/chenfordlibrary_bingoboard/refs/heads/main/bingo_background.jpg",
+            "https://raw.githubusercontent.com/NerdyDoll/chenfordlibrary_bingoboard/refs/heads/main/bingo_background_2.jpg",
+            "https://raw.githubusercontent.com/NerdyDoll/chenfordlibrary_bingoboard/refs/heads/main/bingo_background_3.jpg"
+        ];
+
+        const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+        exportEl.style.setProperty("--challenge-export-bg", `url("${randomBg}")`);
+    }
+
+    function populateChallengeImageExport(data) {
+        const titleEl = document.getElementById("export-challenge-title");
+        const metaEl = document.getElementById("export-challenge-meta");
+        const socialEl = document.getElementById("export-challenge-social");
+        const boardEl = document.getElementById("export-challenge-board");
+
+        if (!titleEl || !metaEl || !socialEl || !boardEl || !data) return;
+
+        titleEl.textContent = data.title || "Chenford Bingo";
+
+        if (data.isChallenge) {
+            const metaParts = [];
+            if (data.hostedBy) metaParts.push(`<strong>Hosted by:</strong> ${escapeHtml(data.hostedBy)}`);
+            if (data.forName) metaParts.push(`<strong>For:</strong> ${escapeHtml(data.forName)}`);
+            if (data.dueDate) metaParts.push(`<strong>Deadline:</strong> ${escapeHtml(data.dueDate)}`);
+
+            metaEl.innerHTML = metaParts.join(" &nbsp; • &nbsp; ");
+        } else {
+            metaEl.innerHTML = "";
+        }
+
+        socialEl.innerHTML = data.social
+            ? `<strong>Social:</strong> ${escapeHtml(data.social)}`
+            : "";
+
+        boardEl.style.gridTemplateColumns = `repeat(${data.gridSize}, 1fr)`;
+
+        boardEl.innerHTML = data.squares.map((text) => {
+            const isFree = String(text || "").trim().toUpperCase().startsWith("FREE SPACE");
+
+            return `
+                <div class="challenge-image-square${isFree ? " is-free" : ""}">
+                    ${escapeHtml(text || "")}
+                </div>
+            `;
+        }).join("");
+
+        const size = data.gridSize;
+
+        let cellHeight = 220;
+        let fontSize = "2.1rem";
+
+        if (size === 3) {
+            cellHeight = 320;
+            fontSize = "3.5rem";
+        } else if (size === 4) {
+            cellHeight = 255;
+            fontSize = "3rem";
+        } else if (size === 5) {
+            cellHeight = 220;
+            fontSize = "2.98rem";
+        }
+
+        boardEl.querySelectorAll(".challenge-image-square").forEach(el => {
+            el.style.minHeight = cellHeight + "px";
+            el.style.fontSize = fontSize;
+        });
+
+        setRandomExportBackground();
+    }
+
+    async function downloadChallengeImage() {
+        const data = getChallengeDataForExport();
+        if (!data) {
+            showChallengeBuilderMessage("No bingo data available to export.", true);
+            return;
+        }
+
+        populateChallengeImageExport(data);
+
+        const exportEl = document.getElementById("challenge-image-export");
+        if (!exportEl || typeof html2canvas === "undefined") {
+            showChallengeBuilderMessage("Image export library is missing.", true);
+            return;
+        }
+
+        try {
+            if (document.fonts && document.fonts.ready) {
+                await document.fonts.ready;
+            }
+
+            const canvas = await html2canvas(exportEl, {
+                backgroundColor: null,
+                scale: 1.5,
+                useCORS: true
+            });
+
+            const link = document.createElement("a");
+            link.href = canvas.toDataURL("image/png");
+            link.download = data.isChallenge
+                ? "chenford-bingo-challenge.png"
+                : "chenford-bingo.png";
+            link.click();
+
+            if (data.isChallenge && challengeDraft) {
+                showChallengeBuilderMessage("Challenge image downloaded.", false);
+            } else {
+                showCurrentShareMessage("Image downloaded.", false);
+            }
+        } catch (error) {
+            if (data.isChallenge && challengeDraft) {
+                showChallengeBuilderMessage("Could not generate challenge image.", true);
+            } else {
+                showCurrentShareMessage("Could not generate image.", true);
+            }
+        }
     }
 
     function loadChallengeIntoDraft(challengeData) {
@@ -4523,7 +4683,7 @@ body{
         }
 
         if (downloadButton) {
-            downloadButton.addEventListener("click", downloadPDF);
+            downloadButton.addEventListener("click", downloadChallengeImage);
         }
 
         if (settingsButton) {
@@ -4719,10 +4879,7 @@ body{
         }
 
         if (challengeDownloadButton) {
-            challengeDownloadButton.addEventListener("click", function () {
-                previewChallengeForPrint();
-                downloadPDF();
-            });
+            challengeDownloadButton.addEventListener("click", downloadChallengeImage);
         }
 
         [challengeTitleInput, challengeHostedByInput, challengeForInput, challengeDateInput, challengeNSFWInput]
